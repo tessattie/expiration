@@ -17,7 +17,6 @@
           <a href="#" class="dropdown-toggle navrightmenu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?= ucfirst($_SESSION['firstname']); ?> <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="/expiration/public/home">Home</a></li>
-            <li><a href="/expiration/public/account">Settings</a></li>
             <li><a href="/expiration/public/home/logout">Log out</a></li>
           </ul>
         </li>
