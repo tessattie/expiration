@@ -26,8 +26,8 @@
     <?php  
       if($_SESSION['role'] == 1 || $_SESSION['role'] == 2)
       {
-        echo '<li><a class="menuitems" href="/expiration/public/reports">Report list</a></li>';
-        echo '<li><a class="menuitems" href="/expiration/public/home">New report</a></li>';
+        echo '<li><a class="menuitems" href="/expiration/public/reports">Order list</a></li>';
+        echo '<li><a class="menuitems" href="/expiration/public/home">New order</a></li>';
       }
     ?>
     </ul>
