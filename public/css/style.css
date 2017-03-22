@@ -104,6 +104,12 @@ tbody
 	color:#142465;
 	font-weight: bold;
 }
+.upcPriceCompareTr > td
+{
+	padding:2px!important;
+	color:#f2f2f2;
+	background:rgba(0,0,0,0.7);
+}
 .salesrow
 {
 	margin-top:-15px!important;

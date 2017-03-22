@@ -29,14 +29,19 @@ class reports extends Controller{
 		$this->view('reports', array("reports" => $reports));
 	}
 
-	public function single($id = false)
+	public function single($id = false, $upc = false)
 	{
+		$upcPriceCompare = false;
 		if($id == false)
 		{
 			header('Location: /expiration/public/reports');
 		}
 		$report = $this->report->get_report($id);
-		$this->view('reports/single', array("report" => $report));
+		if($upc != false)
+		{
+			$upcPriceCompare = $this->brdata->get_upcReport($upc, $this->today, $report[0]['date_from'], $report[0]['date_to']);
+		}
+		$this->view('reports/single', array("report" => $report, "upcPriceCompare" => $upcPriceCompare, "report_id" => $id, "upc" => $upc));
 	}
 
 	public function reset()
