@@ -88,7 +88,14 @@
 			            echo '</tr>';
 					}
 		  			echo "<tr id='".$data['report'][$i]['id']."'>";
-		  			echo "<td><a href = '/expiration/public/reports/single/".$data['report_id']."/".$data['report'][$i]['upc']."'>".$data['report'][$i]['upc']."</a></td>";
+		  			if(!empty($data['upcPriceCompare']) && $data['upc'] == $data['report'][$i]['upc'])
+		  			{
+		  				echo "<td>".$data['report'][$i]['upc']."</td>";
+		  			}
+		  			else
+		  			{
+		  				echo "<td><a href = '/expiration/public/reports/single/".$data['report_id']."/".$data['report'][$i]['upc']."'>".$data['report'][$i]['upc']."</a></td>";
+		  			}
 		  			echo "<td>".$data['report'][$i]['itemcode']."</td>";
 		  			echo "<td>".$data['report'][$i]['description']."</td>";
 		  			echo "<td>".$data['report'][$i]['pack']."</td>";
@@ -132,7 +139,7 @@
 		  					echo "<tr class='upcPriceCompareTr'>";
 			  				echo "<td>".$data['upcPriceCompare'][$j]['UPC']."</td>";
 				  			echo "<td>".$data['upcPriceCompare'][$j]['CertCode']."</td>";
-				  			echo "<td>".$data['upcPriceCompare'][$j]['ItemDescription']."</td>";
+				  			echo "<td class = 'ItemDescription'>".$data['upcPriceCompare'][$j]['ItemDescription']."</td>";
 				  			echo "<td>".$data['upcPriceCompare'][$j]['Pack']."</td>";
 				  			echo "<td>".$data['upcPriceCompare'][$j]['SizeAlpha']."</td>";
 				  			echo "<td>".number_format($data['upcPriceCompare'][$j]['CaseCost'], 2, ".", "")."</td>";
@@ -147,9 +154,9 @@
 				  			echo "<td>".$data['upcPriceCompare'][$j]['tpr']."</td>";
 				  			echo "<td>".$data['upcPriceCompare'][$j]['tprStart']."</td>";
 				  			echo "<td>".$data['upcPriceCompare'][$j]['tprEnd']."</td>";
-				  			echo "<td>".$data['upcPriceCompare'][$j]['VdrNo']."</td>";
-				  			echo "<td>".$data['upcPriceCompare'][$j]['VdrName']."</td>";
-				  			echo "<td></td>";
+				  			echo "<td class = 'vendorno'>".$data['upcPriceCompare'][$j]['VdrNo']."</td>";
+				  			echo "<td class = 'vendor'>".$data['upcPriceCompare'][$j]['VdrName']."</td>";
+				  			echo "<td><span class='glyphicon glyphicon-credit-card'></span></td>";
 			  				echo "</tr>";
 		  				}
 		  				

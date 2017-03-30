@@ -114,7 +114,11 @@ tbody
 {
 	margin-top:-15px!important;
 	margin-left:-20px!important;
-}			
+}	
+.glyphicon-credit-card
+{
+	cursor:pointer;
+}		
 th 
 {
 	background:#f2f2f2;
@@ -319,10 +323,6 @@ thead > tr > th, thead > tr > td
 {
 	padding-left:6px;
 	padding-right: 6px;
-}
-a:link
-{
-	padding:10px 7px!important;
 }
 a:link.navbar-brand
 {

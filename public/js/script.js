@@ -25,6 +25,35 @@ jQuery(function($){
 		  }
 		});
 	})
+	$('.glyphicon-credit-card').click(function(){
+		var vendor = $(this).parent().parent().find('.vendor').text();
+		var vendorno = $(this).parent().parent().find('.vendorno').text();
+		var description = $(this).parent().parent().find('.ItemDescription').text();
+		var regex = /^\d+$/;
+		var units = prompt("How many units of "+description+" would you like to order from "+vendor+" ?");
+		if(regex.test(units))
+		{
+			// save order
+			$.ajax({
+			  type: "POST",
+			  url: "/expiration/public/orders/newOrder",
+			  data: {vdrname : vendor,
+			  		 vdrno : vendorno,
+			  		 desc : description,  
+			  		 quantity : units},
+			  success: function(data){
+			  	console.log(data);
+			  }, 
+			  error: function(error){
+			  	console.log(error);
+			  }
+			});
+		}
+		else
+		{
+			alert("You can only enter numbers");
+		}
+	})
 
 	$(".errorPara").click(function(){
 		$.ajax({
