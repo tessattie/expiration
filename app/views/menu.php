@@ -27,7 +27,6 @@
       {
         echo '<li><a class="menuitems" href="/expiration/public/reports">Order list</a></li>';
         echo '<li><a class="menuitems" href="/expiration/public/home">New order</a></li>';
-        echo '<li><a class="menuitems" href="/expiration/public/home">Pending orders</a></li>';
       }
     ?>
     </ul>

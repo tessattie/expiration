@@ -29,6 +29,7 @@ jQuery(function($){
 		var vendor = $(this).parent().parent().find('.vendor').text();
 		var vendorno = $(this).parent().parent().find('.vendorno').text();
 		var id = $(this).parent().parent().find('td:first').attr('class');
+		
 		$.ajax({
 		  type: "POST",
 		  url: "/expiration/public/orders/update_order_vendor",
@@ -36,7 +37,8 @@ jQuery(function($){
 		  		 vdrno : vendorno,
 		  		 ident : id},
 		  success: function(data){
-		  	console.log(data);
+		  	$('#'+id).find(".vdrNo").text(vendorno);
+		  	$('#'+id).find(".vdrName").text(vendor);
 		  }, 
 		  error: function(error){
 		  	console.log(error);

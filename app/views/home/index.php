@@ -74,8 +74,8 @@
 			  	<th>ORDER QTY</th>
 			  	<th>EXPIRATION</th>
 			  	<th>EXP QTY UNIT</th>
-			  	<th>LAST ORDER</th>
-			  	<th>LAST ORDER DATE</th>
+			  	<th>LAST RECEIVING</th>
+			  	<th>LAST RECEIVING DATE</th>
 			  	<th>SALES</th>
 			  	<th>TPR PRICE</th>
 			  	<th>TPR START</th>
