@@ -21,4 +21,11 @@ class orders extends Controller{
 		// ajax function to save orders
 		echo json_encode($_POST); die();
 	}
+
+	public function update_order_vendor()
+	{
+		$_POST['vdrno'] = str_replace(' ', '', $_POST['vdrno']);
+		$this->report->update_report_vendor($_POST['ident'], $_POST['vdrno'], $_POST['vdrname']);
+		echo json_encode($_POST); die();
+	}
 }

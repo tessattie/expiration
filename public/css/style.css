@@ -25,14 +25,14 @@ body {
 {
 	padding-right:3px;
 }
-.reportInputs
+.reportInputs, .reportInput
 {
 	width:60px;
 	border-radius:3px;
 	border:1px solid #C0c0c0;
 	padding:1px 3px;
 }
-.reportInputs.expdate
+.reportInputs.expdate, .reportInput.expdate
 {
 	width:105px;
 }

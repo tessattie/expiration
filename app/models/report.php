@@ -101,4 +101,22 @@ class report extends Model{
 	    	return "NOT SAVED";
 	    }
 	}
+
+	public function update_item($id, $field, $value)
+	{
+		$update = "UPDATE items SET ".$field." ='" . $value . "' WHERE id =" . $id;
+		$this->db->query($update);	
+	}
+
+	public function update_report_vendor($id, $vdrno, $vdrname)
+	{
+		$update = "UPDATE items SET vdrno ='" . $vdrno . "', vdrname = '".$vdrname."' WHERE id =" . $id;
+		$this->db->query($update);	
+	}
+
+	public function delete_report($id)
+	{
+		$delete = "DELETE FROM reports WHERE id = '" . $id . "'";
+		$this->db->query($delete);		
+	}
 }

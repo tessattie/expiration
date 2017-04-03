@@ -41,6 +41,11 @@ class reports extends Controller{
 		{
 			$upcPriceCompare = $this->brdata->get_upcReport($upc, $this->today, $report[0]['date_from'], $report[0]['date_to']);
 		}
+		if(count($report) == 0)
+		{
+			$this->report->delete_report($id);
+			header('Location: /expiration/public/home');
+		}
 		$this->view('reports/single', array("report" => $report, "upcPriceCompare" => $upcPriceCompare, "report_id" => $id, "upc" => $upc));
 	}
 
@@ -82,6 +87,13 @@ class reports extends Controller{
 		{
 			$_SESSION['report']['items'][$_POST['ident']][$_POST['name']] = $_POST['value'];
 		}
+		echo json_encode($_POST);
+		die();
+	}
+
+	public function update_itemValue()
+	{
+		$this->report->update_item($_POST['ident'], $_POST['name'], $_POST['value']);
 		echo json_encode($_POST);
 		die();
 	}
