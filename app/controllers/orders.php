@@ -25,7 +25,8 @@ class orders extends Controller{
 	public function update_order_vendor()
 	{
 		$_POST['vdrno'] = str_replace(' ', '', $_POST['vdrno']);
-		$this->report->update_report_vendor($_POST['ident'], $_POST['vdrno'], $_POST['vdrname']);
+		$this->report->update_report_vendor($_POST['ident'], $_POST['vdrno'], $_POST['vdrname'], 
+			$_POST['casecost'], $_POST['certcode'], $_POST['lastorder'], $_POST['lastorderdate']);
 		echo json_encode($_POST); die();
 	}
 }

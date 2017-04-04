@@ -108,15 +108,28 @@ class report extends Model{
 		$this->db->query($update);	
 	}
 
-	public function update_report_vendor($id, $vdrno, $vdrname)
+	public function update_report_vendor($id, $vdrno, $vdrname, $casecost, $certcode, $lastorder, $lastorderdate)
 	{
-		$update = "UPDATE items SET vdrno ='" . $vdrno . "', vdrname = '".$vdrname."' WHERE id =" . $id;
+		$update = "UPDATE items SET vdrno ='" . $vdrno . "', vdrname = '".$vdrname."', casecost = '".$casecost."', 
+		itemcode = '".$certcode."', lastorder = '".$lastorder."', lastorderdate = '".$lastorderdate."'  WHERE id =" . $id;
 		$this->db->query($update);	
 	}
 
 	public function delete_report($id)
 	{
 		$delete = "DELETE FROM reports WHERE id = '" . $id . "'";
+		$this->db->query($delete);		
+	}
+
+	public function delete_report_items($id)
+	{
+		$delete = "DELETE FROM items WHERE report_id = '" . $id . "'";
+		$this->db->query($delete);		
+	}
+
+	public function delete_item($id)
+	{
+		$delete = "DELETE FROM items WHERE id = '" . $id . "'";
 		$this->db->query($delete);		
 	}
 }

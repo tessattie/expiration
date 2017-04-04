@@ -96,25 +96,25 @@
 		  			{
 		  				echo "<td><a href = '/expiration/public/reports/single/".$data['report_id']."/".$data['report'][$i]['upc']."'>".$data['report'][$i]['upc']."</a></td>";
 		  			}
-		  			echo "<td>".$data['report'][$i]['itemcode']."</td>";
+		  			echo "<td  class='certcode'>".$data['report'][$i]['itemcode']."</td>";
 		  			echo "<td>".$data['report'][$i]['description']."</td>";
 		  			echo "<td>".$data['report'][$i]['pack']."</td>";
 		  			echo "<td>".$data['report'][$i]['size']."</td>";
-		  			echo "<td>".number_format($data['report'][$i]['casecost'], 2, ".", "")."</td>";
+		  			echo "<td  class='casecost'>".number_format($data['report'][$i]['casecost'], 2, ".", "")."</td>";
 		  			echo "<td>".number_format($data['report'][$i]['retail'], 2, ".", '')."</td>";
 		  			echo "<td>".round($data['report'][$i]['onhand'])."</td>";
 		  			echo "<td class='orderqty'><input value='".$data['report'][$i]['orderqty']."' placeholder='Order qty' class='reportInput'></td>";
 		  			echo "<td class='expiration_date'><input type='date' placeholder='Exp' class='reportInput expdate' value='".$data['report'][$i]['expiration_date']."'></td>";
 		  			echo "<td class='expiration'><input type='text' placeholder='Exp Qty' class='reportInput' value='".$data['report'][$i]['expiration']."'></td>";
-		  			echo "<td>".$data['report'][$i]['lastorder']."</td>";
-		  			echo "<td>".$data['report'][$i]['lastorderdate']."</td>";
+		  			echo "<td class='lo'>".$data['report'][$i]['lastorder']."</td>";
+		  			echo "<td class='lod'>".$data['report'][$i]['lastorderdate']."</td>";
 		  			echo "<td>".$data['report'][$i]['sales']."</td>";
 		  			echo "<td>".$data['report'][$i]['tprprice']."</td>";
 		  			echo "<td>".$data['report'][$i]['tprstart']."</td>";
 		  			echo "<td>".$data['report'][$i]['tprend']."</td>";
 		  			echo "<td class='vdrNo'>".$data['report'][$i]['vdrno']."</td>";
 		  			echo "<td class='vdrName'>".$data['report'][$i]['vdrname']."</td>";
-		  			echo "<td class = 'tdminus'><a href='/expiration/public/reports/removeItem/".$data['report'][$i]['id']."'><span class='glyphicon glyphicon-minus'></span></a></td>";
+		  			echo "<td class = 'tdminus'><a href='/expiration/public/reports/delete_item/".$data['report'][$i]['id']."/".$data['report'][$i]['report_id']."'><span class='glyphicon glyphicon-minus'></span></a></td>";
 		  			echo "</tr>";
 
 		  			if(!empty($data['upcPriceCompare']) && $data['upc'] == $data['report'][$i]['upc'])
@@ -140,18 +140,18 @@
 					  			}
 			  					echo "<tr class='upcPriceCompareTr'>";
 				  				echo "<td class = '".$data['report'][$i]['id']."'>".$data['upcPriceCompare'][$j]['UPC']."</td>";
-					  			echo "<td>".$data['upcPriceCompare'][$j]['CertCode']."</td>";
+					  			echo "<td  class = 'certcode'>".$data['upcPriceCompare'][$j]['CertCode']."</td>";
 					  			echo "<td class = 'ItemDescription'>".$data['upcPriceCompare'][$j]['ItemDescription']."</td>";
 					  			echo "<td>".$data['upcPriceCompare'][$j]['Pack']."</td>";
 					  			echo "<td>".$data['upcPriceCompare'][$j]['SizeAlpha']."</td>";
-					  			echo "<td>".number_format($data['upcPriceCompare'][$j]['CaseCost'], 2, ".", "")."</td>";
+					  			echo "<td class = 'casecost'>".number_format($data['upcPriceCompare'][$j]['CaseCost'], 2, ".", "")."</td>";
 					  			echo "<td>".number_format($data['upcPriceCompare'][$j]['Retail'], 2, ".", '')."</td>";
 					  			echo "<td>".round($data['upcPriceCompare'][$j]['onhand'])."</td>";
 					  			echo "<td class='order'></td>";
 					  			echo "<td class='expiration_date'></td>";
 					  			echo "<td class='expiration'></td>";
-					  			echo "<td>".$data['upcPriceCompare'][$j]['lastReceiving']."</td>";
-					  			echo "<td>".$data['upcPriceCompare'][$j]['lastReceivingDate']."</td>";
+					  			echo "<td class = 'lo'>".$data['upcPriceCompare'][$j]['lastReceiving']."</td>";
+					  			echo "<td class = 'lod'>".$data['upcPriceCompare'][$j]['lastReceivingDate']."</td>";
 					  			echo "<td>".$data['upcPriceCompare'][$j]['sales']."</td>";
 					  			echo "<td>".$data['upcPriceCompare'][$j]['tpr']."</td>";
 					  			echo "<td>".$data['upcPriceCompare'][$j]['tprStart']."</td>";

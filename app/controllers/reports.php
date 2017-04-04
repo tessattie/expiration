@@ -179,4 +179,19 @@ class reports extends Controller{
 		unset($_SESSION['error']);
 		die();
 	}
+
+	public function delete_report($id)
+	{
+		$this->report->delete_report($id);
+		$this->report->delete_report_items($id);
+
+		header("Location:/expiration/public/reports");
+	}
+
+	public function delete_item($id, $report_id)
+	{
+		$this->report->delete_item($id);
+
+		header("Location:/expiration/public/reports/single/".$report_id);
+	}
 }
