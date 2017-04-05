@@ -66,7 +66,9 @@
 		  			}
 		  			if($increment == 0 || $condition != $data['report'][$i]['SctNo'])
 			    	{
-						echo '<tr class = "section_name"><td></td><td></td>';
+						echo '<tr class = "section_name">
+						<td></td>
+						<td></td>';
 			            echo '<td class="SectionName">SECTION '.$data['report'][$i]['SctNo'].' - '.$data['report'][$i]['SctName'].'</td>
 			            <td></td>
 			            <td></td>
