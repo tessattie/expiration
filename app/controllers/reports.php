@@ -49,6 +49,53 @@ class reports extends Controller{
 		$this->view('reports/single', array("report" => $report, "upcPriceCompare" => $upcPriceCompare, "report_id" => $id, "upc" => $upc));
 	}
 
+	public function edit($id)
+	{
+		if($id == false)
+		{
+
+		}
+		else
+		{
+			 $report = $this->report->get_report($id);
+			 $_SESSION['report']['id'] = $report[0]['report_id'];
+			 $_SESSION['report']['name'] = $report[0]['name'];
+			 $_SESSION['report']['date_from'] = $report[0]['date_from'];
+			 $_SESSION['report']['date_to'] = $report[0]['date_to'];
+			 for($i=0;$i<count($report);$i++)
+			 {
+			 	$_SESSION['report']['items'][$i]['UPC'] = $report[$i]['upc'];
+			 	$_SESSION['report']['items'][$i]['CertCode'] = $report[$i]['itemcode'];
+			 	$_SESSION['report']['items'][$i]['ItemDescription'] = $report[$i]['description'];
+			 	$_SESSION['report']['items'][$i]['Pack'] = $report[$i]['pack'];
+			 	$_SESSION['report']['items'][$i]['SizeAlpha'] = $report[$i]['size'];
+			 	$_SESSION['report']['items'][$i]['Brand'] = $report[$i]['brand'];
+			 	$_SESSION['report']['items'][$i]['CaseCost'] = $report[$i]['casecost'];
+			 	$_SESSION['report']['items'][$i]['Retail'] = $report[$i]['retail'];
+			 	$_SESSION['report']['items'][$i]['onhand'] = $report[$i]['onhand'];
+			 	$_SESSION['report']['items'][$i]['lastReceiving'] = $report[$i]['lastorder'];
+			 	$_SESSION['report']['items'][$i]['lastReceivingDate'] = $report[$i]['lastorderdate'];
+			 	$_SESSION['report']['items'][$i]['sales'] = $report[$i]['sales'];
+			 	$_SESSION['report']['items'][$i]['VdrNo'] = $report[$i]['vdrno'];
+			 	$_SESSION['report']['items'][$i]['VdrName'] = $report[$i]['vdrname'];
+			 	$_SESSION['report']['items'][$i]['tpr'] = $report[$i]['tprprice'];
+			 	$_SESSION['report']['items'][$i]['tprStart'] = $report[$i]['tprstart'];
+			 	$_SESSION['report']['items'][$i]['tprEnd'] = $report[$i]['tprend'];
+			 	$_SESSION['report']['items'][$i]['lastReceivingDate'] = $report[$i]['lastorderdate'];
+			 	$_SESSION['report']['items'][$i]['expiration'] = $report[$i]['expiration'];
+			 	$_SESSION['report']['items'][$i]['expiration_date'] = $report[$i]['expiration_date'];
+			 	$_SESSION['report']['items'][$i]['lastReceivingDate'] = $report[$i]['lastorderdate'];
+			 	$_SESSION['report']['items'][$i]['expiration'] = $report[$i]['expiration'];
+			 	$_SESSION['report']['items'][$i]['order'] = $report[$i]['orderqty'];
+			 	$_SESSION['report']['items'][$i]['SctNo'] = $report[$i]['SctNo'];
+			 	$_SESSION['report']['items'][$i]['SctName'] = $report[$i]['SctName'];
+			 	$_SESSION['report']['items'][$i]['DptNo'] = $report[$i]['DptNo'];
+			 	$_SESSION['report']['items'][$i]['DptName'] = $report[$i]['DptName'];
+			 }
+		}
+		header('Location: /expiration/public/home');
+	}
+
 	public function reset()
 	{
 		unset($_SESSION['report']);
@@ -123,23 +170,32 @@ class reports extends Controller{
 							if(count($_SESSION['report']["items"]) > 0)
 							{
 								// save report information
-								$report = $this->report->save_report($_SESSION['report']);
-								if($report)
+								if(!empty($_SESSION['report']['id']))
 								{
+									// delete report items
+									$this->report->delete_report_items($_SESSION['report']['id']);
 									foreach($_SESSION['report']["items"] as $key => $value)
 									{
-										$saved_items[$key] = $this->report->save_item($value, $report);
+										$saved_items[$key] = $this->report->save_item($value, $_SESSION['report']['id']);
 									}
-									// require_once('export.php');
-									// $exportClass = new export();
-									// echo "<script>window.open</script>";
-									// $exportClass->reportExport($report);
-									// echo "<script>window.close</script>";
 									$this->reset();
+									// then save new report items
 								}
 								else
 								{
-									$_SESSION['error'] = "Something went wrong while saving the report. Please contact support";
+									$report = $this->report->save_report($_SESSION['report']);
+									if($report)
+									{
+										foreach($_SESSION['report']["items"] as $key => $value)
+										{
+											$saved_items[$key] = $this->report->save_item($value, $report);
+										}
+										$this->reset();
+									}
+									else
+									{
+										$_SESSION['error'] = "Something went wrong while saving the report. Please contact support";
+									}
 								}
 							}
 							else

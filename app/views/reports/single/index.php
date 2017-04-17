@@ -4,6 +4,7 @@
 
 <div class="row">
 <div class="row">
+<button type="button" class="btn btn-primary single"><a style="color:white" target="_blank" href="/expiration/public/reports/edit/<?= $data['report'][0]['report_id']?>"><span class="glyphicon glyphicon-pencil"></span> Edit</a></button>
 	<button type="button" class="btn btn-primary single"><a style="color:white" target="_blank" href="/expiration/public/export/reportExport/<?= $data['report'][0]['report_id']?>"><span class="glyphicon glyphicon-export"></span> Export</a></button>
 	<button type="button" class="btn btn-primary single"><a style="color:white" target="_blank" href="/expiration/public/reports"><span class="glyphicon glyphicon-arrow-left"></span> Back</a></button>
 	<button type="button" class="btn btn-primary single"><a style="color:white" href="/expiration/public/reports/single/<?= $data['report_id']?>"><span class="glyphicon glyphicon-refresh"></span> Refresh</a></button>
