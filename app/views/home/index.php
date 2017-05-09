@@ -59,6 +59,7 @@
 		    <input type="text" class="form-control" name="newitem" id="newitem" placeholder="Add item" autofocus>
 	  	</div>
 	  	<button type="button" class="btn btn-primary" id="reset" name="reset"><a style="color:white" href="/expiration/public/reports/reset"><span class="glyphicon glyphicon-refresh"> </span> RESET</a></button>
+	  	<button type="button" class="btn btn-primary" id="reset" name="reset"  style="margin-right:10px"><a style="color:white" href="/expiration/public/reports/addItems"><span class="glyphicon glyphicon-repeat"> </span> UPDATE</a></button>
 	  	<button type="button" class="btn btn-success" id="save" name="save"><a style="color:white" href="/expiration/public/reports/save_report"><span class="glyphicon glyphicon-save"> </span> SAVE</a></button>
 	    <table class="table">
 		  <thead>

@@ -57,13 +57,14 @@ class reports extends Controller{
 		}
 		else
 		{
-			 $report = $this->report->get_report($id);
-			 $_SESSION['report']['id'] = $report[0]['report_id'];
-			 $_SESSION['report']['name'] = $report[0]['name'];
-			 $_SESSION['report']['date_from'] = $report[0]['date_from'];
-			 $_SESSION['report']['date_to'] = $report[0]['date_to'];
-			 for($i=0;$i<count($report);$i++)
-			 {
+			$report = $this->report->get_report($id);
+			unset($_SESSION['error']);
+			$_SESSION['report']['id'] = $report[0]['report_id'];
+			$_SESSION['report']['name'] = $report[0]['name'];
+			$_SESSION['report']['date_from'] = $report[0]['date_from'];
+			$_SESSION['report']['date_to'] = $report[0]['date_to'];
+			for($i=0;$i<count($report);$i++)
+			{
 			 	$_SESSION['report']['items'][$i]['UPC'] = $report[$i]['upc'];
 			 	$_SESSION['report']['items'][$i]['CertCode'] = $report[$i]['itemcode'];
 			 	$_SESSION['report']['items'][$i]['ItemDescription'] = $report[$i]['description'];
@@ -91,10 +92,59 @@ class reports extends Controller{
 			 	$_SESSION['report']['items'][$i]['SctName'] = $report[$i]['SctName'];
 			 	$_SESSION['report']['items'][$i]['DptNo'] = $report[$i]['DptNo'];
 			 	$_SESSION['report']['items'][$i]['DptName'] = $report[$i]['DptName'];
-			 }
+			}
 		}
 		header('Location: /expiration/public/home');
 	}
+
+	public function duplicate($id)
+	{
+		if($id == false)
+		{
+
+		}
+		else
+		{
+			unset($_SESSION['report']);
+			unset($_SESSION['error']);
+			$report = $this->report->get_report($id);
+			$_SESSION['report']['date_from'] = $report[0]['date_from'];
+			$_SESSION['report']['date_to'] = $report[0]['date_to'];
+			for($i=0;$i<count($report);$i++)
+			{
+				$_SESSION['report']['items'][$i]['UPC'] = $report[$i]['upc'];
+				$_SESSION['report']['items'][$i]['CertCode'] = $report[$i]['itemcode'];
+				$_SESSION['report']['items'][$i]['ItemDescription'] = $report[$i]['description'];
+				$_SESSION['report']['items'][$i]['Pack'] = $report[$i]['pack'];
+				$_SESSION['report']['items'][$i]['SizeAlpha'] = $report[$i]['size'];
+				$_SESSION['report']['items'][$i]['Brand'] = $report[$i]['brand'];
+			 	$_SESSION['report']['items'][$i]['CaseCost'] = $report[$i]['casecost'];
+			 	$_SESSION['report']['items'][$i]['Retail'] = $report[$i]['retail'];
+			 	$_SESSION['report']['items'][$i]['onhand'] = $report[$i]['onhand'];
+			 	$_SESSION['report']['items'][$i]['lastReceiving'] = $report[$i]['lastorder'];
+			 	$_SESSION['report']['items'][$i]['lastReceivingDate'] = $report[$i]['lastorderdate'];
+			 	$_SESSION['report']['items'][$i]['sales'] = $report[$i]['sales'];
+			 	$_SESSION['report']['items'][$i]['VdrNo'] = $report[$i]['vdrno'];
+			 	$_SESSION['report']['items'][$i]['VdrName'] = $report[$i]['vdrname'];
+			 	$_SESSION['report']['items'][$i]['tpr'] = $report[$i]['tprprice'];
+			 	$_SESSION['report']['items'][$i]['tprStart'] = $report[$i]['tprstart'];
+			 	$_SESSION['report']['items'][$i]['tprEnd'] = $report[$i]['tprend'];
+			 	$_SESSION['report']['items'][$i]['lastReceivingDate'] = $report[$i]['lastorderdate'];
+			 	$_SESSION['report']['items'][$i]['expiration'] = $report[$i]['expiration'];
+			 	$_SESSION['report']['items'][$i]['expiration_date'] = $report[$i]['expiration_date'];
+			 	$_SESSION['report']['items'][$i]['lastReceivingDate'] = $report[$i]['lastorderdate'];
+			 	$_SESSION['report']['items'][$i]['expiration'] = $report[$i]['expiration'];
+			 	$_SESSION['report']['items'][$i]['order'] = $report[$i]['orderqty'];
+			 	$_SESSION['report']['items'][$i]['SctNo'] = $report[$i]['SctNo'];
+			 	$_SESSION['report']['items'][$i]['SctName'] = $report[$i]['SctName'];
+			 	$_SESSION['report']['items'][$i]['DptNo'] = $report[$i]['DptNo'];
+			 	$_SESSION['report']['items'][$i]['DptName'] = $report[$i]['DptName'];
+			}
+		}
+		header('Location: /expiration/public/home');
+	}
+
+
 
 	public function reset()
 	{
@@ -124,6 +174,19 @@ class reports extends Controller{
 				$item['expiration_date'] = null;
 				$_SESSION["report"]["items"][$item["UPC"]] = $item;
 			}
+		}
+		header('Location: /expiration/public/home');
+	}
+
+	public function addItems()
+	{
+		foreach($_SESSION["report"]["items"] AS $key => $value)
+		{
+			$item = $this->brdata->get_item($value['UPC'], $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
+			$item['order'] = $_SESSION["report"]["items"][$key]['order'];
+			$item['expiration'] = $_SESSION["report"]["items"][$key]['expiration'];
+			$item['expiration_date'] = $_SESSION["report"]["items"][$key]['expiration_date'];
+			$_SESSION["report"]["items"][$key] = $item;
 		}
 		header('Location: /expiration/public/home');
 	}
@@ -247,7 +310,6 @@ class reports extends Controller{
 	public function delete_item($id, $report_id)
 	{
 		$this->report->delete_item($id);
-
 		header("Location:/expiration/public/reports/single/".$report_id);
 	}
 }
