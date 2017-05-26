@@ -123,6 +123,34 @@ jQuery(function($){
 		$("#newItemsForm").submit();
 	})
 
+	$("#newBatchItem").change(function(){
+		$("#batchReport").append("<tr><td>" + $(this).val() + "</td></tr>");
+		$(this).val("");
+	})
+
+	$("#resetBatch").click(function(e){
+		e.preventDefault();
+		var i = 0;
+		var upcs = [];
+		$("#batchReport > tr").each(function(){
+			upcs[i] = $(this).find("td").text();
+			i++;
+		})
+		$.ajax({
+		  type: "POST",
+		  url: "/expiration/public/reports/updateBatch",
+		  data: {upcsArray : upcs},
+		  success: function(data){
+		  	console.log(data);
+		  	$("#resetBatch").removeClass("btn-primary");
+		  	$("#resetBatch").addClass("btn-success");
+		  }, 
+		  error: function(error){
+		  	console.log(error);
+		  }
+		});
+	})
+
 	$('.setpass').click(function(event){
 		if($('.newpass').val() == $('.newpass2').val())
 		{

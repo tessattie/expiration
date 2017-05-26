@@ -13,11 +13,14 @@ body {
 	padding:10px;
 	border-radius: 3px;
 }
+table.batchTable{
+	width:30%;
+}
 #newitem 
 {
 	width:300px;
 }
-#reset 
+#reset, #resetBatch, #view
 {
 	float : right;
 }
