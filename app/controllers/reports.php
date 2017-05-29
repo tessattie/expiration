@@ -35,16 +35,14 @@ class reports extends Controller{
 	}
 
 	public function updateBatch(){
-		for($i=0;$i<count($_POST['upcsArray']);$i++){
-			$item = $this->brdata->get_item($_POST['upcsArray'][$i], $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
-			// Set the item in the session 
-			if(!empty($item))
-			{
-				$item['order'] = null;
-				$item['expiration'] = null;
-				$item['expiration_date'] = null;
-				$_SESSION["report"]["items"][$item["UPC"]] = $item;
-			}
+		$item = $this->brdata->get_item($_POST['upc'], $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
+		// Set the item in the session 
+		if(!empty($item))
+		{
+			$item['order'] = null;
+			$item['expiration'] = null;
+			$item['expiration_date'] = null;
+			$_SESSION["report"]["items"][$item["UPC"]] = $item;
 		}
 		echo json_encode($_SESSION["report"]); die();
 	}

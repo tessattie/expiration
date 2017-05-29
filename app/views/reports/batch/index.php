@@ -53,16 +53,17 @@
 	  	<button type="button" class="btn btn-success" id="save" name="save"><a style="color:white" href="/expiration/public/reports/save_report"><span class="glyphicon glyphicon-save"> </span> SAVE</a></button>
 	    <table class="table batchTable">
 		  <thead>
-		  	<tr><th>BATCH REPORT</th></tr>
+		  	<tr><th colspan="2">BATCH REPORT</th></tr>
 		  	<tr>
 			  	<th>UPC</th>
+			  	<th></th>
 		  	</tr>
 		  </thead>
 		  <tbody id="batchReport">
 
 		  </tbody>
 		  <tfoot>
-		  	<tr><th colspan="17"></th></tr>
+		  	<tr><th colspan="2"></th></tr>
 		  </tfoot>
 		</table>
 	</form>

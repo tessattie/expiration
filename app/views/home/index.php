@@ -65,9 +65,9 @@
 		  <thead>
 		  	<tr><th colspan="17">NEW REPORT</th></tr>
 		  	<tr>
+		  		<th>ITEM DESCRIPTION</th>
 			  	<th>UPC</th>
 			  	<th>VRD ITEM #</th>
-			  	<th>ITEM DESCRIPTION</th>
 			  	<th>PACK</th>
 			  	<th>SIZE</th>
 			  	<th>RETAIL</th>
@@ -106,9 +106,9 @@
 		  				 $value['tprEnd'] = '';
 		  			}
 		  			echo "<tr id='".$key."'>";
+		  			echo "<td>".$value['ItemDescription']."</td>";
 		  			echo "<td>".$value['UPC']."</td>";
 		  			echo "<td>".$value['CertCode']."</td>";
-		  			echo "<td>".$value['ItemDescription']."</td>";
 		  			echo "<td>".$value['Pack']."</td>";
 		  			echo "<td>".$value['SizeAlpha']."</td>";
 		  			echo "<td>".number_format($value['Retail'], 2, ".", '')."</td>";

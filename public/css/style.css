@@ -16,6 +16,14 @@ body {
 table.batchTable{
 	width:30%;
 }
+.redTD{
+	background:#d9534f;
+	width:29px;
+}
+.greenTD{
+	background:#5cb85c;
+	width:29px;
+}
 #newitem 
 {
 	width:300px;

@@ -124,31 +124,30 @@ jQuery(function($){
 	})
 
 	$("#newBatchItem").change(function(){
-		$("#batchReport").append("<tr><td>" + $(this).val() + "</td></tr>");
+		$("#batchReport").append("<tr><td class='upcTD'>" + $(this).val() + "</td><td class='redTD colorTD'></td></tr>");
 		$(this).val("");
 	})
 
+
 	$("#resetBatch").click(function(e){
 		e.preventDefault();
-		var i = 0;
-		var upcs = [];
 		$("#batchReport > tr").each(function(){
-			upcs[i] = $(this).find("td").text();
-			i++;
-		})
-		$.ajax({
-		  type: "POST",
-		  url: "/expiration/public/reports/updateBatch",
-		  data: {upcsArray : upcs},
-		  success: function(data){
-		  	console.log(data);
-		  	$("#resetBatch").removeClass("btn-primary");
-		  	$("#resetBatch").addClass("btn-success");
-		  }, 
-		  error: function(error){
-		  	console.log(error);
-		  }
-		});
+			var tr = $(this);
+			$.ajax({
+			  type: "POST",
+			  url: "/expiration/public/reports/updateBatch",
+			  data: {upc : $(this).find(".upcTD").text()},
+			  success: function(data){
+			  	console.log(data);
+			  	tr.find(".colorTD").removeClass("redTD");
+			  	tr.find(".colorTD").addClass("greenTD");
+			  }, 
+			  error: function(error){
+			  	console.log(error);
+			  }
+			});
+		 });
+		
 	})
 
 	$('.setpass').click(function(event){
