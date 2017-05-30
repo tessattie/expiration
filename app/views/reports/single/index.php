@@ -21,9 +21,9 @@
 	  		<th colspan="3">Number of items : <?= count($data['report'])?></th>
 	  	</tr>
 	  	<tr>
-	  		<th>ITEM DESCRIPTION</th>
 		  	<th>UPC</th>
 		  	<th>VRD ITEM #</th>
+		  	<th>ITEM DESCRIPTION</th>
 		  	<th>PACK</th>
 		  	<th>SIZE</th>
 		  	<th>CASE COST</th>
@@ -69,10 +69,9 @@
 		  			if($increment == 0 || $condition != $data['report'][$i]['SctNo'])
 			    	{
 						echo '<tr class = "section_name">
-						<td class="SectionName">SECTION '.$data['report'][$i]['SctNo'].' - '.$data['report'][$i]['SctName'].'</td>
 						<td></td>
 						<td></td>';
-			            echo '
+			            echo '<td class="SectionName">SECTION '.$data['report'][$i]['SctNo'].' - '.$data['report'][$i]['SctName'].'</td>
 			            <td></td>
 			            <td></td>
 			            <td></td>
@@ -93,7 +92,7 @@
 			            echo '</tr>';
 					}
 		  			echo "<tr id='".$data['report'][$i]['id']."'>";
-		  			echo "<td>".$data['report'][$i]['description']."</td>";
+		  			
 		  			if(!empty($data['upcPriceCompare']) && $data['upc'] == $data['report'][$i]['upc'])
 		  			{
 		  				echo "<td>".$data['report'][$i]['upc']."</td>";
@@ -103,6 +102,7 @@
 		  				echo "<td><a href = '/expiration/public/reports/single/".$data['report_id']."/".$data['report'][$i]['upc']."'>".$data['report'][$i]['upc']."</a></td>";
 		  			}
 		  			echo "<td  class='certcode'>".$data['report'][$i]['itemcode']."</td>";
+		  			echo "<td class='textLeft'>".$data['report'][$i]['description']."</td>";
 		  			echo "<td>".$data['report'][$i]['pack']."</td>";
 		  			echo "<td>".$data['report'][$i]['size']."</td>";
 		  			echo "<td  class='casecost'>".number_format($data['report'][$i]['casecost'], 2, ".", "")."</td>";

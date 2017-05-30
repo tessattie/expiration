@@ -24,6 +24,9 @@ table.batchTable{
 	background:#5cb85c;
 	width:29px;
 }
+.textLeft{
+	text-align:left;
+}
 #newitem 
 {
 	width:300px;
