@@ -107,7 +107,11 @@
 		  			echo "<td>".$data['report'][$i]['size']."</td>";
 		  			echo "<td  class='casecost'>".number_format($data['report'][$i]['casecost'], 2, ".", "")."</td>";
 		  			echo "<td>".number_format($data['report'][$i]['retail'], 2, ".", '')."</td>";
-		  			echo "<td>".round($data['report'][$i]['onhand'])."</td>";
+		  			if(round($data['report'][$i]['onhand']) < 0){
+		  				echo "<td class='negative'>".round($data['report'][$i]['onhand'])."</td>";
+		  			}else{
+		  				echo "<td>".round($data['report'][$i]['onhand'])."</td>";
+		  			}
 		  			echo "<td class='orderqty'><input value='".$data['report'][$i]['orderqty']."' placeholder='Order qty' class='reportInput'></td>";
 		  			echo "<td class='expiration_date'><input type='date' placeholder='Exp' class='reportInput expdate' value='".$data['report'][$i]['expiration_date']."'></td>";
 		  			echo "<td class='expiration'><input type='text' placeholder='Exp Qty' class='reportInput' value='".$data['report'][$i]['expiration']."'></td>";

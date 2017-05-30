@@ -112,7 +112,11 @@
 		  			echo "<td>".$value['Pack']."</td>";
 		  			echo "<td>".$value['SizeAlpha']."</td>";
 		  			echo "<td>".number_format($value['Retail'], 2, ".", '')."</td>";
-		  			echo "<td>".round($value['onhand'])."</td>";
+		  			if(round($value['onhand']) < 0){
+		  				echo "<td class='negative'>".round($value['onhand'])."</td>";
+		  			}else{
+		  				echo "<td>".round($value['onhand'])."</td>";
+		  			}
 		  			echo "<td class='order'><input type='text' placeholder='Order qty' class='reportInputs' value='".$value['order']."'></td>";
 		  			echo "<td class='expiration_date'><input type='date' placeholder='Exp' class='reportInputs expdate' value='".$value['expiration_date']."'></td>";
 		  			echo "<td class='expiration'><input type='text' placeholder='Exp Qty' class='reportInputs' value='".$value['expiration']."'></td>";
