@@ -14,6 +14,11 @@
 	</div>
 </div>
 <div class="row newReport">
+	<form class="form-inline" id = "updExcelImportForm" method="post" enctype="multipart/form-data" action = "/expiration/public/reports/addExcel">
+		<label class="btn btn-primary btn-file">
+		<span class="glyphicon glyphicon-import"></span> IMPORT EXCEL <input type="file" style="display: none;" name="upcs" id="upcExcelImport">
+		</label>
+	</form>
 	<form method="POST" action="/expiration/public/reports/add_item" class="form-inline" id="newItemsForm">
 		<div class="form-group">
 		    <label class="sr-only" for="name">Report name</label>

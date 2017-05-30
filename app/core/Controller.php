@@ -41,6 +41,22 @@ class Controller{
 		return new PHPExcel();
 	}
 
+	public function phpExcelFactory($fileName)
+	{
+		if(file_exists('../app/vendors/PHPExcel/Classes/PHPExcel/IOFactory.php'))
+		{
+			require_once '../app/vendors/PHPExcel/Classes/PHPExcel/IOFactory.php';
+		}
+		else
+		{
+			require_once '../app/vendors/PHPExcel/Classes/PHPExcel/IOFactory.php';
+		}
+		$inputFileType = PHPExcel_IOFactory::identify($fileName);
+	    $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+	    $objPHPExcel = $objReader->load($fileName);
+		return $objPHPExcel;
+	}
+
 	public function view($view, $data = [])
 	{
 		if(file_exists('../app/views/'. $view . '/index.php'))

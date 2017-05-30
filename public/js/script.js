@@ -25,6 +25,10 @@ jQuery(function($){
 		  }
 		});
 	})
+
+	$("#upcExcelImport").change(function(){
+		$("#updExcelImportForm").submit();
+	})
 	$('.glyphicon-credit-card').click(function(){
 		var vendor = $(this).parent().parent().find('.vendor').text();
 		var lo = $(this).parent().parent().find('.lo').text();

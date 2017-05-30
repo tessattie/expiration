@@ -68,7 +68,7 @@ class export extends Controller{
 		$report = $this->report->get_report($id);
 		$this->setSheetName($report[0]['name']);
 		$lastItem = count($report) + 4;
-		$this->setHeader($report[0]['name'],"[ EXPORT DATE : ".date("Y-m-d"), $header, 'reportExport', $lastItem);
+		$this->setHeader($report[0]['name'],"[ EXPORT DATE : ".date("Y-m-d")." ] - [ SALES FROM ".$report[0]['date_from']." TO ".$report[0]['date_to']." ] ", $header, 'reportExport', $lastItem);
 		$this->setReportWithSection($header, $report);
 		$this->saveReport('reportExport_'.$report[0]['name'].'_'.$this->today);
 	}
@@ -194,13 +194,15 @@ class export extends Controller{
 		$finish = $alphabet[array_search($this->getItemDescriptionColumn($header), $alphabet) + 1];
 		$increment = 0;
 		$condition = 'ht';
+		$vdrcondition = 'vd';
 		for ($i=0; $i<count($report); $i++)
 		{
-			if($increment == 0 || $condition != $report[$i]["SctNo"])
+			if($increment == 0 || $condition != $report[$i]["SctNo"] || $vdrcondition != $report[$i]["vdrno"])
 			{
 				$this->sheet->mergeCells('A' . $j . ':' . $start . $j);
 				$this->sheet->setCellValue($current . $j, $report[$i]['SctNo'].' - '.$report[$i]['SctName']);
 				$condition = $report[$i]["SctNo"];
+				$vdrcondition = $report[$i]["vdrno"];
 				$this->sheet->getStyle($current . $j)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 				$this->sheet->getStyle($current . $j)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 				$this->sheet->getStyle($current . $j)->getFont()->setBold(true);

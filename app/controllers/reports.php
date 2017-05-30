@@ -10,6 +10,18 @@ class reports extends Controller{
 
 	protected $report;
 
+	private $phpExcel;
+		
+	private $sheet;
+		
+	private $columns;
+
+	private $columnWidths;
+
+	private $cell_border;
+
+	private $cacheMethod;
+
 	public function __construct()
 	{
 		parent:: __construct();
@@ -17,8 +29,8 @@ class reports extends Controller{
 		if(empty($_SESSION['report']))
 		{
 			$_SESSION["report"] = array("name" => "", 
-			"date_from" => "", 
-			"date_to" => "", 
+			"date_from" => date("Y-m-01"), 
+			"date_to" => date("Y-m-d"), 
 			"items" => null);
 		}
 	}
@@ -329,5 +341,51 @@ class reports extends Controller{
 	{
 		$this->report->delete_item($id);
 		header("Location:/expiration/public/reports/single/".$report_id);
+	}
+
+	public function addExcel(){
+		if(isset($_FILES))
+		{
+			if($_FILES['upcs']['error'] == 0)
+			{
+				$extension = explode('.',$_FILES['upcs']['name'])[1];
+				if($extension == "xlsx" || $extension == "xls")
+				{
+					$objPHPExcel = $this->phpExcelFactory($_FILES['upcs']['tmp_name']);
+					$sheet = $objPHPExcel->getSheet(0);
+				    $highestRow = $sheet->getHighestRow();
+				    for($i=1;$i<$highestRow;$i++)
+				    {
+				    	$upc = str_replace("-", "", strval((int)$sheet->getCell("A".$i)->getValue()));
+				    	$item = $this->brdata->get_item($upc, $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
+				   		var_dump($item);
+				   //  	if($item != null)
+				   //  	{
+				   //  		$item['order'] = null;
+							// $item['expiration'] = null;
+							// $item['expiration_date'] = null;
+							// $_SESSION["report"]["items"][$item["UPC"]] = $item;
+				   //  	}
+				   //  	else
+				   //  	{
+				   //  		$item['order'] = null;
+							// $item['expiration'] = null;
+							// $item['expiration_date'] = null;
+							// $item['description'] = "ITEM NOT FOUND IN THE DATABASE";
+							// $_SESSION["report"]["items"][$sheet->getCellByColumnAndRow(0,$i)->getFormattedValue()] = $item;
+				   //  	}
+				    }
+				}
+				else
+				{
+				// extension error
+				}
+			}
+			else
+			{
+				// file upload errors - file is deprecated
+			}
+		}
+		// header("Location:/expiration/public/home");
 	}
 }
