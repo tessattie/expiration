@@ -29,6 +29,16 @@
         echo '<li><a class="menuitems" href="/expiration/public/home">New order</a></li>';
         echo '<li><a class="menuitems" href="/expiration/public/reports/batch">Batch order</a></li>';
       }
+
+      if($_SESSION['role'] == 5 || $_SESSION['role'] == 6 || $_SESSION['role'] == 7)
+      {
+        echo '<li><a class="menuitems" href="/expiration/public/home">New order</a></li>';
+      }
+      if($_SESSION['role'] == 7 || $_SESSION['role'] == 6)
+      {
+        echo '<li><a class="menuitems" href="/expiration/public/reports">Order list</a></li>';
+        echo '<li><a class="menuitems" href="/expiration/public/reports/batch">Batch order</a></li>';
+      }
     ?>
     </ul>
       

@@ -2,19 +2,31 @@
 
 <?php include_once '/../menu.php'; ?>
 
+<?php  
+	$colspan="6";
+	if($_SESSION['role'] == 6)
+	{
+		$colspan="5";
+	}
+?>
 
 <div class="row newReport">
 	
 	<table class="table table-bordered">
 		  <thead>
-		  	<tr><th colspan="6">REPORTS</th></tr>
+		  	<tr><th colspan="<?= $colspan ?>">REPORTS</th></tr>
 		  	<tr>
 			  	<th>REPORT NAME</th>
 			  	<th>REPORT DATE</th>
 			  	<th>SALES FROM DATE</th>
 			  	<th>SALES TO DATE</th>
 			  	<th>USER</th>
-			  	<th class="tdminus"></th>
+			  	<?php  
+			  		if($_SESSION['role'] == 7)
+			  		{
+			  			echo '<th class="tdminus"></th>';
+			  		}
+			  	?>
 		  	</tr>
 		  </thead>
 		  <tbody>
@@ -29,14 +41,17 @@
 		  			echo "<td>".$data['reports'][$i]['date_from']."</td>";
 		  			echo "<td>".$data['reports'][$i]['date_to']."</td>";
 		  			echo "<td>".$data['reports'][$i]['user_firstname']." ".$data['reports'][$i]['user_lastname']."</td>";
-		  			echo "<td class = 'tdminus'><a href='/expiration/public/reports/delete_report/".$data['reports'][$i]['id']."'><span class='glyphicon glyphicon-minus'></span></a></td>";
+		  			if($_SESSION['role'] == 7)
+			  		{
+		  				echo "<td class = 'tdminus'><a href='/expiration/public/reports/delete_report/".$data['reports'][$i]['id']."'><span class='glyphicon glyphicon-minus'></span></a></td>";
+			  		}
 		  			echo "<tr>";
 		  		}
 		  	}
 		  	?>
 		  </tbody>
 		  <tfoot>
-		  	<tr><th colspan="6"></th></tr>
+		  	<tr><th colspan="<?= $colspan ?>"></th></tr>
 		  </tfoot>
 		</table>
 </div>
