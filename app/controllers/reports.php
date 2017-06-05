@@ -213,10 +213,42 @@ class reports extends Controller{
 		foreach($_SESSION["report"]["items"] AS $key => $value)
 		{
 			$item = $this->brdata->get_item($value['UPC'], $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
-			$item['order'] = $_SESSION["report"]["items"][$key]['order'];
-			$item['expiration'] = $_SESSION["report"]["items"][$key]['expiration'];
-			$item['expiration_date'] = $_SESSION["report"]["items"][$key]['expiration_date'];
-			$_SESSION["report"]["items"][$key] = $item;
+			if($item != null)
+	    	{
+	    		$item['order'] = null;
+				$item['expiration'] = null;
+				$item['expiration_date'] = null;
+				$_SESSION["report"]["items"][$item["UPC"]] = $item;
+	    	}
+	    	else
+	    	{
+	    		$item['UPC'] = $value['UPC'];
+				$item['ItemDescription'] = "ITEM NOT FOUND";
+				$item['VdrNo'] = null;
+				$item['Retail'] = null;
+				$item['CertCode'] = null;
+				$item['CaseCost'] = null;
+				$item['Brand'] = null;
+				$item['SizeAlpha'] = null;
+				$item['SctNo'] = "00";
+				$item['SctName'] = "N/A";
+				$item['DptNo'] = null;
+				$item['DptName'] = null;
+				$item['Pack'] = null;
+				$item['VdrName'] = null;
+				$item['tpr'] = null;
+				$item['tprStart'] = null;
+				$item['tprEnd'] = null;
+				$item['sales'] = null;
+				$item['lastReceiving'] = null;
+				$item['lastReceivingDate'] = null;
+				$item['onhand'] = null;
+				$item['unitPrice'] = null;
+				$item['order'] = null;
+				$item['expiration'] = null;
+				$item['expiration_date'] = null;
+				$_SESSION["report"]["items"][$value['UPC']] = $item;
+	    	}
 		}
 		header('Location: /expiration/public/home');
 	}
@@ -354,26 +386,51 @@ class reports extends Controller{
 					$objPHPExcel = $this->phpExcelFactory($_FILES['upcs']['tmp_name']);
 					$sheet = $objPHPExcel->getSheet(0);
 				    $highestRow = $sheet->getHighestRow();
-				    for($i=1;$i<$highestRow;$i++)
+				    $range = 'A1:A'.$highestRow;
+					$objPHPExcel->getActiveSheet()
+					    ->getStyle($range)
+					    ->getNumberFormat()
+					    ->setFormatCode( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
+				    for($i=1;$i<=$highestRow;$i++)
 				    {
-				    	$upc = str_replace("-", "", strval((int)$sheet->getCell("A".$i)->getValue()));
+				    	$upc = $sheet->getCell("A".$i)->getValue();
 				    	$item = $this->brdata->get_item($upc, $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
-				   		var_dump($item);
-				   //  	if($item != null)
-				   //  	{
-				   //  		$item['order'] = null;
-							// $item['expiration'] = null;
-							// $item['expiration_date'] = null;
-							// $_SESSION["report"]["items"][$item["UPC"]] = $item;
-				   //  	}
-				   //  	else
-				   //  	{
-				   //  		$item['order'] = null;
-							// $item['expiration'] = null;
-							// $item['expiration_date'] = null;
-							// $item['description'] = "ITEM NOT FOUND IN THE DATABASE";
-							// $_SESSION["report"]["items"][$sheet->getCellByColumnAndRow(0,$i)->getFormattedValue()] = $item;
-				   //  	}
+				    	if($item != null)
+				    	{
+				    		$item['order'] = null;
+							$item['expiration'] = null;
+							$item['expiration_date'] = null;
+							$_SESSION["report"]["items"][$item["UPC"]] = $item;
+				    	}
+				    	else
+				    	{
+				    		$item['UPC'] = $upc;
+							$item['ItemDescription'] = "ITEM NOT FOUND";
+							$item['VdrNo'] = null;
+							$item['Retail'] = null;
+							$item['CertCode'] = null;
+							$item['CaseCost'] = null;
+							$item['Brand'] = null;
+							$item['SizeAlpha'] = null;
+							$item['SctNo'] = "00";
+							$item['SctName'] = "N/A";
+							$item['DptNo'] = null;
+							$item['DptName'] = null;
+							$item['Pack'] = null;
+							$item['VdrName'] = null;
+							$item['tpr'] = null;
+							$item['tprStart'] = null;
+							$item['tprEnd'] = null;
+							$item['sales'] = null;
+							$item['lastReceiving'] = null;
+							$item['lastReceivingDate'] = null;
+							$item['onhand'] = null;
+							$item['unitPrice'] = null;
+							$item['order'] = null;
+							$item['expiration'] = null;
+							$item['expiration_date'] = null;
+							$_SESSION["report"]["items"][$upc] = $item;
+				    	}
 				    }
 				}
 				else
@@ -386,6 +443,7 @@ class reports extends Controller{
 				// file upload errors - file is deprecated
 			}
 		}
-		// header("Location:/expiration/public/home");
+		// var_dump($_SESSION['report']); die();
+		header("Location:/expiration/public/home");
 	}
 }

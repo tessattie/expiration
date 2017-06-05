@@ -16,7 +16,7 @@
 <div class="row newReport">
 	<form class="form-inline" id = "updExcelImportForm" method="post" enctype="multipart/form-data" action = "/expiration/public/reports/addExcel">
 		<label class="btn btn-primary btn-file">
-		<span class="glyphicon glyphicon-import"></span> IMPORT EXCEL <input type="file" style="display: none;" name="upcs" id="upcExcelImport">
+		<span class="glyphicon glyphicon-import"></span> IMPORT FROM EXCEL <input type="file" style="display: none;" name="upcs" id="upcExcelImport">
 		</label>
 	</form>
 	<form method="POST" action="/expiration/public/reports/add_item" class="form-inline" id="newItemsForm">
@@ -95,44 +95,68 @@
 		  	{
 		  		foreach($_SESSION['report']['items'] as $key => $value)
 		  		{
-		  			if($value['lastReceiving'] == ".0000")
+		  			if($value["ItemDescription"] == "ITEM NOT FOUND")
 		  			{
-		  				$value['lastReceiving'] = "";
+		  				echo "<tr id='".$value["UPC"]."' class='bg-danger'>";
+			  			echo "<td>".$value["UPC"]."</td>";
+			  			echo "<td></td>";
+			  			echo "<td class='textLeft'>".$value['ItemDescription']."</td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td class = 'tdminus'><a href='/expiration/public/reports/removeItem/".$key."'><span class='glyphicon glyphicon-minus'></span></a></td>";
+			  			echo "</tr>";
 		  			}
 		  			else
 		  			{
-		  				$value['lastReceiving'] = round($value['lastReceiving']);
+		  				if($value['lastReceiving'] == ".0000")
+			  			{
+			  				$value['lastReceiving'] = "";
+			  			}
+			  			else
+			  			{
+			  				$value['lastReceiving'] = round($value['lastReceiving']);
+			  			}
+			  			if($value['tpr'] == ".00")
+			  			{
+			  				 $value['tpr'] = '';
+			  				 $value['tprStart'] = '';
+			  				 $value['tprEnd'] = '';
+			  			}
+			  			echo "<tr id='".$key."'>";
+			  			echo "<td>".$value['UPC']."</td>";
+			  			echo "<td>".$value['CertCode']."</td>";
+			  			echo "<td class='textLeft'>".$value['ItemDescription']."</td>";
+			  			echo "<td>".$value['Pack']."</td>";
+			  			echo "<td>".$value['SizeAlpha']."</td>";
+			  			echo "<td>".number_format($value['Retail'], 2, ".", '')."</td>";
+			  			if(round($value['onhand']) < 0){
+			  				echo "<td class='negative'>".round($value['onhand'])."</td>";
+			  			}else{
+			  				echo "<td>".round($value['onhand'])."</td>";
+			  			}
+			  			echo "<td class='order'><input type='text' placeholder='Order qty' class='reportInputs' value='".$value['order']."'></td>";
+			  			echo "<td class='expiration_date'><input type='date' placeholder='Exp' class='reportInputs expdate' value='".$value['expiration_date']."'></td>";
+			  			echo "<td class='expiration'><input type='text' placeholder='Exp Qty' class='reportInputs' value='".$value['expiration']."'></td>";
+			  			echo "<td>".$value['lastReceiving']."</td>";
+			  			echo "<td>".$value['lastReceivingDate']."</td>";
+			  			echo "<td>".$value['sales']."</td>";
+			  			echo "<td>".$value['tpr']."</td>";
+			  			echo "<td>".$value['tprStart']."</td>";
+			  			echo "<td>".$value['tprEnd']."</td>";
+			  			echo "<td class = 'tdminus'><a href='/expiration/public/reports/removeItem/".$key."'><span class='glyphicon glyphicon-minus'></span></a></td>";
+			  			echo "</tr>";
 		  			}
-
-		  			if($value['tpr'] == ".00")
-		  			{
-		  				 $value['tpr'] = '';
-		  				 $value['tprStart'] = '';
-		  				 $value['tprEnd'] = '';
-		  			}
-		  			echo "<tr id='".$key."'>";
-		  			echo "<td>".$value['UPC']."</td>";
-		  			echo "<td>".$value['CertCode']."</td>";
-		  			echo "<td class='textLeft'>".$value['ItemDescription']."</td>";
-		  			echo "<td>".$value['Pack']."</td>";
-		  			echo "<td>".$value['SizeAlpha']."</td>";
-		  			echo "<td>".number_format($value['Retail'], 2, ".", '')."</td>";
-		  			if(round($value['onhand']) < 0){
-		  				echo "<td class='negative'>".round($value['onhand'])."</td>";
-		  			}else{
-		  				echo "<td>".round($value['onhand'])."</td>";
-		  			}
-		  			echo "<td class='order'><input type='text' placeholder='Order qty' class='reportInputs' value='".$value['order']."'></td>";
-		  			echo "<td class='expiration_date'><input type='date' placeholder='Exp' class='reportInputs expdate' value='".$value['expiration_date']."'></td>";
-		  			echo "<td class='expiration'><input type='text' placeholder='Exp Qty' class='reportInputs' value='".$value['expiration']."'></td>";
-		  			echo "<td>".$value['lastReceiving']."</td>";
-		  			echo "<td>".$value['lastReceivingDate']."</td>";
-		  			echo "<td>".$value['sales']."</td>";
-		  			echo "<td>".$value['tpr']."</td>";
-		  			echo "<td>".$value['tprStart']."</td>";
-		  			echo "<td>".$value['tprEnd']."</td>";
-		  			echo "<td class = 'tdminus'><a href='/expiration/public/reports/removeItem/".$key."'><span class='glyphicon glyphicon-minus'></span></a></td>";
-		  			echo "</tr>";
 		  		}
 		  	}
 		  	?>
@@ -143,6 +167,5 @@
 		</table>
 	</form>
 </div>
-
 
 <?php include_once '/../footer.php'; ?>

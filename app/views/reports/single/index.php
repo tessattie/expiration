@@ -94,93 +94,133 @@
 			            <td></td>';
 			            echo '</tr>';
 					}
-		  			echo "<tr id='".$data['report'][$i]['id']."'>";
-		  			
-		  			if(!empty($data['upcPriceCompare']) && $data['upc'] == $data['report'][$i]['upc'])
-		  			{
-		  				echo "<td>".$data['report'][$i]['upc']."</td>";
-		  			}
-		  			else
-		  			{
-		  				echo "<td><a href = '/expiration/public/reports/single/".$data['report_id']."/".$data['report'][$i]['upc']."'>".$data['report'][$i]['upc']."</a></td>";
-		  			}
-		  			echo "<td  class='certcode'>".$data['report'][$i]['itemcode']."</td>";
-		  			echo "<td>".$data['report'][$i]['brand']."</td>";
-		  			echo "<td class='textLeft'>".$data['report'][$i]['description']."</td>";
-		  			echo "<td>".$data['report'][$i]['pack']."</td>";
-		  			echo "<td>".$data['report'][$i]['size']."</td>";
-		  			echo "<td  class='casecost'>".number_format($data['report'][$i]['casecost'], 2, ".", "")."</td>";
-		  			echo "<td>".number_format($data['report'][$i]['retail'], 2, ".", '')."</td>";
-		  			if(round($data['report'][$i]['onhand']) < 0){
-		  				echo "<td class='negative'>".round($data['report'][$i]['onhand'])."</td>";
-		  			}else{
-		  				echo "<td>".round($data['report'][$i]['onhand'])."</td>";
-		  			}
-		  			echo "<td class='orderqty'><input value='".$data['report'][$i]['orderqty']."' placeholder='Order qty' class='reportInput'></td>";
-		  			echo "<td class='expiration_date'><input type='date' placeholder='Exp' class='reportInput expdate' value='".$data['report'][$i]['expiration_date']."'></td>";
-		  			echo "<td class='expiration'><input type='text' placeholder='Exp Qty' class='reportInput' value='".$data['report'][$i]['expiration']."'></td>";
-		  			echo "<td class='lo'>".$data['report'][$i]['lastorder']."</td>";
-		  			echo "<td class='lod'>".$data['report'][$i]['lastorderdate']."</td>";
-		  			echo "<td>".$data['report'][$i]['sales']."</td>";
-		  			echo "<td>".$data['report'][$i]['tprprice']."</td>";
-		  			echo "<td>".$data['report'][$i]['tprstart']."</td>";
-		  			echo "<td>".$data['report'][$i]['tprend']."</td>";
-		  			echo "<td class='vdrNo'>".$data['report'][$i]['vdrno']."</td>";
-		  			echo "<td class='vdrName'>".$data['report'][$i]['vdrname']."</td>";
-		  			echo "<td class = 'tdminus'><a href='/expiration/public/reports/delete_item/".$data['report'][$i]['id']."/".$data['report'][$i]['report_id']."'><span class='glyphicon glyphicon-minus'></span></a></td>";
-		  			echo "</tr>";
+					if($data['report'][$i]['description'] == "ITEM NOT FOUND")
+					{
+						echo "<tr id='".$data['report'][$i]['id']."' class='bg-danger'>";
+						if(!empty($data['upcPriceCompare']) && $data['upc'] == $data['report'][$i]['upc'])
+			  			{
+			  				echo "<td>".$data['report'][$i]['upc']."</td>";
+			  			}
+			  			else
+			  			{
+			  				echo "<td>".$data['report'][$i]['upc']."</td>";
+			  			}
+			  			echo "<td  class='certcode'></td>";
+			  			echo "<td></td>";
+			  			echo "<td class='textLeft'>".$data['report'][$i]['description']."</td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td></td>";
+			  			echo "<td class = 'tdminus'><a href='/expiration/public/reports/delete_item/".$data['report'][$i]['id']."/".$data['report'][$i]['report_id']."'><span class='glyphicon glyphicon-minus'></span></a></td>";
+			  			echo "</tr>";
 
-		  			if(!empty($data['upcPriceCompare']) && $data['upc'] == $data['report'][$i]['upc'])
-		  			{
-		  				for($j=0;$j<count($data['upcPriceCompare']);$j++)
-		  				{
-		  					if($data['upcPriceCompare'][$j]['VdrName'] != $data['report'][$i]['vdrname'])
-		  					{
-		  						if($data['upcPriceCompare'][$j]['lastReceiving'] == ".0000")
-					  			{
-					  				$data['upcPriceCompare'][$j]['lastReceiving'] = "";
-					  			}
-					  			else
-					  			{
-					  				$data['upcPriceCompare'][$j]['lastReceiving'] = round($data['upcPriceCompare'][$j]['lastReceiving']);
-					  			}
+			  			$increment = $increment + 1 ;
+	    				$condition = $data['report'][$i]['SctNo'];
+	    				$vdrCondition = $data['report'][$i]['vdrno'];
+					}
+					else
+					{
+						echo "<tr id='".$data['report'][$i]['id']."'>";
+						if(!empty($data['upcPriceCompare']) && $data['upc'] == $data['report'][$i]['upc'])
+			  			{
+			  				echo "<td>".$data['report'][$i]['upc']."</td>";
+			  			}
+			  			else
+			  			{
+			  				echo "<td><a href = '/expiration/public/reports/single/".$data['report_id']."/".$data['report'][$i]['upc']."'>".$data['report'][$i]['upc']."</a></td>";
+			  			}
+			  			echo "<td  class='certcode'>".$data['report'][$i]['itemcode']."</td>";
+			  			echo "<td>".$data['report'][$i]['brand']."</td>";
+			  			echo "<td class='textLeft'>".$data['report'][$i]['description']."</td>";
+			  			echo "<td>".$data['report'][$i]['pack']."</td>";
+			  			echo "<td>".$data['report'][$i]['size']."</td>";
+			  			echo "<td  class='casecost'>".number_format($data['report'][$i]['casecost'], 2, ".", "")."</td>";
+			  			echo "<td>".number_format($data['report'][$i]['retail'], 2, ".", '')."</td>";
+			  			if(round($data['report'][$i]['onhand']) < 0){
+			  				echo "<td class='negative'>".round($data['report'][$i]['onhand'])."</td>";
+			  			}else{
+			  				echo "<td>".round($data['report'][$i]['onhand'])."</td>";
+			  			}
+			  			echo "<td class='orderqty'><input value='".$data['report'][$i]['orderqty']."' placeholder='Order qty' class='reportInput'></td>";
+			  			echo "<td class='expiration_date'><input type='date' placeholder='Exp' class='reportInput expdate' value='".$data['report'][$i]['expiration_date']."'></td>";
+			  			echo "<td class='expiration'><input type='text' placeholder='Exp Qty' class='reportInput' value='".$data['report'][$i]['expiration']."'></td>";
+			  			echo "<td class='lo'>".$data['report'][$i]['lastorder']."</td>";
+			  			echo "<td class='lod'>".$data['report'][$i]['lastorderdate']."</td>";
+			  			echo "<td>".$data['report'][$i]['sales']."</td>";
+			  			echo "<td>".$data['report'][$i]['tprprice']."</td>";
+			  			echo "<td>".$data['report'][$i]['tprstart']."</td>";
+			  			echo "<td>".$data['report'][$i]['tprend']."</td>";
+			  			echo "<td class='vdrNo'>".$data['report'][$i]['vdrno']."</td>";
+			  			echo "<td class='vdrName'>".$data['report'][$i]['vdrname']."</td>";
+			  			echo "<td class = 'tdminus'><a href='/expiration/public/reports/delete_item/".$data['report'][$i]['id']."/".$data['report'][$i]['report_id']."'><span class='glyphicon glyphicon-minus'></span></a></td>";
+			  			echo "</tr>";
 
-					  			if($data['upcPriceCompare'][$j]['tpr'] == ".00")
-					  			{
-					  				 $data['upcPriceCompare'][$j]['tpr'] = '';
-					  				 $data['upcPriceCompare'][$j]['tprStart'] = '';
-					  				 $data['upcPriceCompare'][$j]['tprEnd'] = '';
-					  			}
-			  					echo "<tr class='upcPriceCompareTr'>";
-				  				echo "<td class = '".$data['report'][$i]['id']."'>".$data['upcPriceCompare'][$j]['UPC']."</td>";
-					  			echo "<td  class = 'certcode'>".$data['upcPriceCompare'][$j]['CertCode']."</td>";
-					  			echo "<td class = 'ItemDescription'>".$data['upcPriceCompare'][$j]['ItemDescription']."</td>";
-					  			echo "<td>".$data['upcPriceCompare'][$j]['Pack']."</td>";
-					  			echo "<td>".$data['upcPriceCompare'][$j]['SizeAlpha']."</td>";
-					  			echo "<td class = 'casecost'>".number_format($data['upcPriceCompare'][$j]['CaseCost'], 2, ".", "")."</td>";
-					  			echo "<td>".number_format($data['upcPriceCompare'][$j]['Retail'], 2, ".", '')."</td>";
-					  			echo "<td>".round($data['upcPriceCompare'][$j]['onhand'])."</td>";
-					  			echo "<td class='order'></td>";
-					  			echo "<td class='expiration_date'></td>";
-					  			echo "<td class='expiration'></td>";
-					  			echo "<td class = 'lo'>".$data['upcPriceCompare'][$j]['lastReceiving']."</td>";
-					  			echo "<td class = 'lod'>".$data['upcPriceCompare'][$j]['lastReceivingDate']."</td>";
-					  			echo "<td>".$data['upcPriceCompare'][$j]['sales']."</td>";
-					  			echo "<td>".$data['upcPriceCompare'][$j]['tpr']."</td>";
-					  			echo "<td>".$data['upcPriceCompare'][$j]['tprStart']."</td>";
-					  			echo "<td>".$data['upcPriceCompare'][$j]['tprEnd']."</td>";
-					  			echo "<td class = 'vendorno'>".$data['upcPriceCompare'][$j]['VdrNo']."</td>";
-					  			echo "<td class = 'vendor'>".$data['upcPriceCompare'][$j]['VdrName']."</td>";
-					  			echo "<td><span class='glyphicon glyphicon-credit-card'></span></td>";
-				  				echo "</tr>";
-		  					}
-		  					
-		  				}
-		  				
-		  			}
-		  			$increment = $increment + 1 ;
-    				$condition = $data['report'][$i]['SctNo'];
-    				$vdrCondition = $data['report'][$i]['vdrno'];
+			  			if(!empty($data['upcPriceCompare']) && $data['upc'] == $data['report'][$i]['upc'])
+			  			{
+			  				for($j=0;$j<count($data['upcPriceCompare']);$j++)
+			  				{
+			  					if($data['upcPriceCompare'][$j]['VdrName'] != $data['report'][$i]['vdrname'])
+			  					{
+			  						if($data['upcPriceCompare'][$j]['lastReceiving'] == ".0000")
+						  			{
+						  				$data['upcPriceCompare'][$j]['lastReceiving'] = "";
+						  			}
+						  			else
+						  			{
+						  				$data['upcPriceCompare'][$j]['lastReceiving'] = round($data['upcPriceCompare'][$j]['lastReceiving']);
+						  			}
+
+						  			if($data['upcPriceCompare'][$j]['tpr'] == ".00")
+						  			{
+						  				 $data['upcPriceCompare'][$j]['tpr'] = '';
+						  				 $data['upcPriceCompare'][$j]['tprStart'] = '';
+						  				 $data['upcPriceCompare'][$j]['tprEnd'] = '';
+						  			}
+				  					echo "<tr class='upcPriceCompareTr'>";
+					  				echo "<td class = '".$data['report'][$i]['id']."'>".$data['upcPriceCompare'][$j]['UPC']."</td>";
+						  			echo "<td  class = 'certcode'>".$data['upcPriceCompare'][$j]['CertCode']."</td>";
+						  			echo "<td  class = 'certcode'>".$data['upcPriceCompare'][$j]['Brand']."</td>";
+						  			echo "<td class = 'ItemDescription'>".$data['upcPriceCompare'][$j]['ItemDescription']."</td>";
+						  			echo "<td>".$data['upcPriceCompare'][$j]['Pack']."</td>";
+						  			echo "<td>".$data['upcPriceCompare'][$j]['SizeAlpha']."</td>";
+						  			echo "<td class = 'casecost'>".number_format($data['upcPriceCompare'][$j]['CaseCost'], 2, ".", "")."</td>";
+						  			echo "<td>".number_format($data['upcPriceCompare'][$j]['Retail'], 2, ".", '')."</td>";
+						  			echo "<td>".round($data['upcPriceCompare'][$j]['onhand'])."</td>";
+						  			echo "<td class='order'></td>";
+						  			echo "<td class='expiration_date'></td>";
+						  			echo "<td class='expiration'></td>";
+						  			echo "<td class = 'lo'>".$data['upcPriceCompare'][$j]['lastReceiving']."</td>";
+						  			echo "<td class = 'lod'>".$data['upcPriceCompare'][$j]['lastReceivingDate']."</td>";
+						  			echo "<td>".$data['upcPriceCompare'][$j]['sales']."</td>";
+						  			echo "<td>".$data['upcPriceCompare'][$j]['tpr']."</td>";
+						  			echo "<td>".$data['upcPriceCompare'][$j]['tprStart']."</td>";
+						  			echo "<td>".$data['upcPriceCompare'][$j]['tprEnd']."</td>";
+						  			echo "<td class = 'vendorno'>".$data['upcPriceCompare'][$j]['VdrNo']."</td>";
+						  			echo "<td class = 'vendor'>".$data['upcPriceCompare'][$j]['VdrName']."</td>";
+						  			echo "<td><span class='glyphicon glyphicon-credit-card'></span></td>";
+					  				echo "</tr>";
+			  					}
+			  					
+			  				}
+			  				
+			  			}
+			  			$increment = $increment + 1 ;
+	    				$condition = $data['report'][$i]['SctNo'];
+	    				$vdrCondition = $data['report'][$i]['vdrno'];
+					}
 		  		}
 		  	}
 	  	?>

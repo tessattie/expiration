@@ -24,9 +24,9 @@ class home extends Controller{
 		$this->today = date('Y-m-d', strtotime("-1 days"));
 		if(!isset($_COOKIE["from"]) || empty($_SESSION['report']["date_from"]))
 		{
-			setCookie("from", date('Y-m-d', strtotime("-1 week")));
-			$_COOKIE["from"] = date('Y-m-d', strtotime("-1 week"));
-			$_SESSION['report']["date_from"] = date('Y-m-d', strtotime("-1 week"));
+			setCookie("from", date('Y-m-01'));
+			$_COOKIE["from"] = date('Y-m-01');
+			$_SESSION['report']["date_from"] = date('Y-m-01');
 		}
 		else
 		{
@@ -36,7 +36,7 @@ class home extends Controller{
 		{
 			setCookie("to", date('Y-m-d'));
 			$_COOKIE["to"] = date('Y-m-d');
-			$_SESSION['report']["date_to"] = date('Y-m-d', strtotime("-1 week"));
+			$_SESSION['report']["date_to"] = date('Y-m-d');
 		}
 		else
 		{
