@@ -7,7 +7,7 @@
 <?php  
 	include "changePassword.php";
 
-	if($_SESSION$_SESSION['orders']['role'] == 7)
+	if($_SESSION['orders']['role'] == 7)
 	{
 		include "editUsers.php";
 	}
