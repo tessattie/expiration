@@ -8,36 +8,37 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/expiration/public/home"><p><img src="/expiration/public/images/logo.png" class="logo"></p></a>
+      <a class="navbar-brand" href="/orders/public/home"><p><img src="/orders/public/images/logo.png" class="logo"></p></a>
     </div>
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle navrightmenu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?= ucfirst($_SESSION['firstname']); ?> <span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle navrightmenu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?= ucfirst($_SESSION['orders']['firstname']); ?> <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="/expiration/public/home">Home</a></li>
-            <li><a href="/expiration/public/home/logout">Log out</a></li>
+            <li><a href="/orders/public/home">Home</a></li>
+            <li><a href="/orders/public/account">Settings</a></li>
+            <li><a href="/orders/public/home/logout">Log out</a></li>
           </ul>
         </li>
       </ul>
     <ul class="nav navbar-nav navbar-left">
     <?php  
-      if($_SESSION['role'] == 1 || $_SESSION['role'] == 2)
+      if($_SESSION['orders']['role'] == 1 || $_SESSION['orders']['role'] == 2)
       {
-        echo '<li><a class="menuitems" href="/expiration/public/reports">Order list</a></li>';
-        echo '<li><a class="menuitems" href="/expiration/public/home">New order</a></li>';
-        echo '<li><a class="menuitems" href="/expiration/public/reports/batch">Batch order</a></li>';
+        echo '<li><a class="menuitems" href="/orders/public/reports">Order list</a></li>';
+        echo '<li><a class="menuitems" href="/orders/public/home">New order</a></li>';
+        echo '<li><a class="menuitems" href="/orders/public/reports/batch">Batch order</a></li>';
       }
 
-      if($_SESSION['role'] == 5 || $_SESSION['role'] == 6 || $_SESSION['role'] == 7)
+      if($_SESSION['orders']['role'] == 5 || $_SESSION['orders']['role'] == 6 || $_SESSION['orders']['role'] == 7)
       {
-        echo '<li><a class="menuitems" href="/expiration/public/home">New order</a></li>';
+        echo '<li><a class="menuitems" href="/orders/public/home">New order</a></li>';
       }
-      if($_SESSION['role'] == 7 || $_SESSION['role'] == 6)
+      if($_SESSION['orders']['role'] == 7 || $_SESSION['orders']['role'] == 6)
       {
-        echo '<li><a class="menuitems" href="/expiration/public/reports">Order list</a></li>';
-        echo '<li><a class="menuitems" href="/expiration/public/reports/batch">Batch order</a></li>';
+        echo '<li><a class="menuitems" href="/orders/public/reports">Order list</a></li>';
+        echo '<li><a class="menuitems" href="/orders/public/reports/batch">Batch order</a></li>';
       }
     ?>
     </ul>
@@ -51,7 +52,7 @@
       <?php 
       if(!empty($data['title']))
       {
-        echo '<p class="filArianne"><span class="csm"><a href="/expiration/public/home">REPORTS</a></span><span class="glyphicon glyphicon-chevron-right"></span><span class="tablecaption">'.$data['title'].'</span>';
+        echo '<p class="filArianne"><span class="csm"><a href="/orders/public/home">REPORTS</a></span><span class="glyphicon glyphicon-chevron-right"></span><span class="tablecaption">'.$data['title'].'</span>';
       }
       ?>
     </div>

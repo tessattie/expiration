@@ -6,7 +6,7 @@ class account extends Controller{
 
 	private $exportURL;
 
-	private $roles = [];
+	protected $roles = [];
 
 	private $from;
 	
@@ -17,7 +17,7 @@ class account extends Controller{
 	{
 		parent::__construct();
 		$this->exportURL = "#";
-		$this->roles = array(1 => "Admin", 2 => "Level 1", 3 => "Level 2", 4 => "Level 0");
+		$this->roles = array(7 => "Order 0", 6 => "Order 1", 5 => "Order 2");
 		$this->from = date('Y-m-01');
 		$this->to = date('Y-m-d');
 	} 
@@ -40,7 +40,7 @@ class account extends Controller{
 			}
 			if(empty($this->roles[$_POST["role"]]))
 			{
-				$_POST["role"] = 3;
+				$_POST["role"] = 5;
 			}
 			$_POST['password'] = $password;
 			$this->users->setUser($_POST);
@@ -57,13 +57,13 @@ class account extends Controller{
 	public function delete($userId)
 	{
 		$this->users->deleteUser($userId);
-		if($_SESSION['id'] == $userId)
+		if($_SESSION["orders"]['id'] == $userId)
 		{
-			header('Location: /expiration/public/login');
+			header('Location: /orders/public/login');
 		}
 		else
 		{
-			header('Location: /expiration/public/account');
+			header('Location: /orders/public/account');
 		}
 	}
 
@@ -71,13 +71,13 @@ class account extends Controller{
 	{
 		$password = "01b307acba4f54f55aafc33bb06bbbf6ca803e9a";
 		$this->users->setPassword($userId, $password);
-		if($_SESSION['id'] == $userId)
+		if($_SESSION["orders"]['id'] == $userId)
 		{
-			header('Location: /expiration/public/login');
+			header('Location: /orders/public/login');
 		}
 		else
 		{
-			header('Location: /expiration/public/account');
+			header('Location: /orders/public/account');
 		}
 	}
 
@@ -86,24 +86,24 @@ class account extends Controller{
 		if(isset($_POST['oldpass']))
 		{
 			$oldpass = sha1($_POST['oldpass']);
-			$user = $this->users->getUser($_SESSION['username'], sha1($_POST['oldpass']));
+			$user = $this->users->getUser($_SESSION["orders"]['username'], sha1($_POST['oldpass']));
 			if(!empty($user))
 			{
 				if(isset($_POST['newpass']) && isset($_POST['newpass2']) && $_POST['newpass2'] == $_POST['newpass'])
 				{
-					$this->users->setPassword($_SESSION['id'], sha1($_POST['newpass']));
+					$this->users->setPassword($_SESSION["orders"]['id'], sha1($_POST['newpass']));
 					session_unset();
 					session_destroy();
-					header('Location: /expiration/public/login');
+					header('Location: /orders/public/login');
 				}
 				else
 				{
-					header('Location: /expiration/public/account');
+					header('Location: /orders/public/account');
 				}
 			}
 			else
 			{
-				header('Location: /expiration/public/account/');
+				header('Location: /orders/public/account/');
 			}
 		}
 	}

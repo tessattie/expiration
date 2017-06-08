@@ -14,12 +14,26 @@
 	</div>
 </div>
 <div class="row newReport">
-	<form class="form-inline" id = "updExcelImportForm" method="post" enctype="multipart/form-data" action = "/expiration/public/reports/addExcel">
+	<form class="form-inline" id = "updExcelImportForm" method="post" enctype="multipart/form-data" action = "/orders/public/reports/addExcel">
 		<label class="btn btn-primary btn-file">
 		<span class="glyphicon glyphicon-import"></span> IMPORT FROM EXCEL <input type="file" style="display: none;" name="upcs" id="upcExcelImport">
 		</label>
 	</form>
-	<form method="POST" action="/expiration/public/reports/add_item" class="form-inline" id="newItemsForm">
+	<form class="form-inline" id = "vendorSectionImport" method="post" action = "/orders/public/reports/importVendorSection">
+		  <button type="button" class="btn btn-primary" id="vendorSectionImportButton" ><a style="color:white" href="#"><span class="glyphicon glyphicon-import"> </span> VDR - SCT</a></button>
+		<input type="hidden" name="svendorNumber" id="svendorNumber">
+		<input type="hidden" name="sctvendorNumber" id="sctvendorNumber">
+	</form>
+	<form class="form-inline" id = "sectionImport" method="post" action = "/orders/public/reports/importSection">
+		  <button type="button" class="btn btn-primary" id="sectionImportButton" style="margin-right:10px"><a style="color:white" href="#"><span class="glyphicon glyphicon-import"> </span> SECTION</a></button>
+		<input type="hidden" name="sectionNumber" id="sectionNumber">
+	</form>
+	<form class="form-inline" id = "vendorImport" method="post" action = "/orders/public/reports/importVendor">
+		  <button type="button" class="btn btn-primary" id="vendorImportButton" style="margin-right:10px"><a style="color:white" href="#"><span class="glyphicon glyphicon-import"> </span> VENDOR</a></button>
+		<input type="hidden" name="vendorNumber" id="vendorNumber">
+	</form>
+	
+	<form method="POST" action="/orders/public/reports/add_item" class="form-inline" id="newItemsForm">
 		<div class="form-group">
 		    <label class="sr-only" for="name">Report name</label>
 		    <?php  
@@ -61,11 +75,20 @@
 	    </div>
 	    <div class="form-group">
 		    <label class="sr-only" for="newitem">Add item</label>
-		    <input type="text" class="form-control" name="newitem" id="newitem" placeholder="Add item" autofocus>
+		    <?php  
+		    	if(!empty($_SESSION["report"]["addItems"]))
+		    	{
+		    		echo '<input type="text" class="form-control" name="newitem" id="newitem" placeholder="Add item" autofocus '.$_SESSION["report"]["addItems"].'>';
+		    	}
+		    	else
+		    	{
+		    		echo '<input type="text" class="form-control" name="newitem" id="newitem" placeholder="Add item" autofocus '.$data['addItems'].'>';
+		    	}
+		    ?>
 	  	</div>
-	  	<button type="button" class="btn btn-primary" id="reset" name="reset"><a style="color:white" href="/expiration/public/reports/reset"><span class="glyphicon glyphicon-refresh"> </span> RESET</a></button>
-	  	<button type="button" class="btn btn-primary" id="reset" name="reset"  style="margin-right:10px"><a style="color:white" href="/expiration/public/reports/addItems"><span class="glyphicon glyphicon-repeat"> </span> UPDATE</a></button>
-	  	<button type="button" class="btn btn-success" id="save" name="save"><a style="color:white" href="/expiration/public/reports/save_report"><span class="glyphicon glyphicon-save"> </span> SAVE</a></button>
+	  	<button type="button" class="btn btn-primary" id="reset" name="reset" style="margin-right:10px"><a style="color:white" href="/orders/public/reports/reset"><span class="glyphicon glyphicon-refresh"> </span> RESET</a></button>
+	  	<button type="button" class="btn btn-primary" id="reset" name="reset"  style="margin-right:10px"><a style="color:white" href="/orders/public/reports/addItems"><span class="glyphicon glyphicon-repeat"> </span> UPDATE</a></button>
+	  	<button type="button" class="btn btn-success" id="save" name="save"><a style="color:white" href="/orders/public/reports/save_report"><span class="glyphicon glyphicon-save"> </span> SAVE</a></button>
 	    <table class="table">
 		  <thead>
 		  	<tr><th colspan="17">NEW REPORT</th></tr>
@@ -114,7 +137,7 @@
 			  			echo "<td></td>";
 			  			echo "<td></td>";
 			  			echo "<td></td>";
-			  			echo "<td class = 'tdminus'><a href='/expiration/public/reports/removeItem/".$key."'><span class='glyphicon glyphicon-minus'></span></a></td>";
+			  			echo "<td class = 'tdminus'><a href='/orders/public/reports/removeItem/".$key."'><span class='glyphicon glyphicon-minus'></span></a></td>";
 			  			echo "</tr>";
 		  			}
 		  			else
@@ -154,7 +177,7 @@
 			  			echo "<td>".$value['tpr']."</td>";
 			  			echo "<td>".$value['tprStart']."</td>";
 			  			echo "<td>".$value['tprEnd']."</td>";
-			  			echo "<td class = 'tdminus'><a href='/expiration/public/reports/removeItem/".$key."'><span class='glyphicon glyphicon-minus'></span></a></td>";
+			  			echo "<td class = 'tdminus'><a href='/orders/public/reports/removeItem/".$key."'><span class='glyphicon glyphicon-minus'></span></a></td>";
 			  			echo "</tr>";
 		  			}
 		  		}

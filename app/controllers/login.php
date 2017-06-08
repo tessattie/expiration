@@ -12,7 +12,7 @@ class login extends Controller{
 	{
 		if(!empty($_SESSION['id']))
 		{
-			header('Location: /expiration/public/home');
+			header('Location: /orders/public/home');
 		}
 		// csmreport51M
 		if(isset($_POST['submit']))
@@ -39,7 +39,7 @@ class login extends Controller{
 					{
 						$this->startUserSession($user);
 						$this->rememberUser($_POST);
-						header('Location: /expiration/public/home');
+						header('Location: /orders/public/home');
 					}
 				}
 			}
@@ -50,12 +50,12 @@ class login extends Controller{
 	private function startUserSession($user)
 	{
 		session_start();
-		$_SESSION["id"] = $user['id'];
-		$_SESSION["username"] = $user['username'];
-		$_SESSION["email"] = $user['email'];
-		$_SESSION["firstname"] = $user['firstname'];
-		$_SESSION["lastname"] = $user['lastname'];
-		$_SESSION["role"] = $user['role'];
+		$_SESSION["orders"]["id"] = $user['id'];
+		$_SESSION["orders"]["username"] = $user['username'];
+		$_SESSION["orders"]["email"] = $user['email'];
+		$_SESSION["orders"]["firstname"] = $user['firstname'];
+		$_SESSION["orders"]["lastname"] = $user['lastname'];
+		$_SESSION["orders"]["role"] = $user['role'];
 	}
 
 	private function rememberUser($post)

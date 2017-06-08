@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    background-image: url(/expiration/public/images/background.jpg);
+    background-image: url(/orders/public/images/background.jpg);
     background-position: 0 0;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -51,9 +51,9 @@ table.batchTable{
 }
 #newitem 
 {
-	width:300px;
+	width:200px;
 }
-#reset, #resetBatch, #view
+#reset, #resetBatch, #view, #vendorImport, #sectionImport, #vendorSectionImport
 {
 	float : right;
 }
@@ -84,52 +84,6 @@ tbody
 {
 	color:#9E0707!important;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .title
 {

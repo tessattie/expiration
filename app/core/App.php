@@ -29,11 +29,11 @@ class App{
 		{
 			$this->controller->checkSession();
 
-			// if($_SESSION['role'] < 5)
-			// {
-			// 	unset($_SESSION);
-			// 	header('Location: /expiration/public/login');
-			// }
+			if($_SESSION["orders"]['role'] < 5)
+			{
+				unset($_SESSION);
+				header('Location: /orders/public/login');
+			}
 		}
 
 		$methodName = $this->method;

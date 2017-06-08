@@ -31,6 +31,7 @@ class reports extends Controller{
 			$_SESSION["report"] = array("name" => "", 
 			"date_from" => date("Y-m-01"), 
 			"date_to" => date("Y-m-d"), 
+			"addItems" => '',
 			"items" => null);
 		}
 	}
@@ -39,6 +40,66 @@ class reports extends Controller{
 	{
 		$reports = $this->report->get_reports();
 		$this->view('reports', array("reports" => $reports));
+	}
+
+	public function importVendor()
+	{
+		if(isset($_POST["vendorNumber"]))
+		{
+			unset($_SESSION["report"]["items"]);
+			$items = $this->brdata->get_vendorReport($_POST["vendorNumber"], $this->today, $_SESSION["report"]["date_from"], $_SESSION["report"]["date_to"]);
+			for($i=0;$i<count($items);$i++)
+			{
+				$items[$i]['order'] = null;
+				$items[$i]['expiration'] = null;
+				$items[$i]['expiration_date'] = null;
+				$_SESSION["report"]["items"][$items[$i]["UPC"]] = $items[$i];
+			}
+			$_SESSION["report"]['name']  = $items[0]['VdrName'];
+			$_SESSION["report"]['addItems'] = 'disabled';
+		}
+		header('Location: /orders/public/home');
+
+	}
+
+	public function importSection()
+	{
+		if(isset($_POST["sectionNumber"]))
+		{
+			unset($_SESSION["report"]["items"]);
+			$items = $this->brdata->get_sectionReport($_POST["sectionNumber"], $this->today, $_SESSION["report"]["date_from"], $_SESSION["report"]["date_to"]);
+			for($i=0;$i<count($items);$i++)
+			{
+				$items[$i]['order'] = null;
+				$items[$i]['expiration'] = null;
+				$items[$i]['expiration_date'] = null;
+				$_SESSION["report"]["items"][$items[$i]["UPC"]] = $items[$i];
+			}
+			$_SESSION["report"]['name']  = $items[0]['SctName'];
+			$_SESSION["report"]['addItems'] = 'disabled';
+		}
+		header('Location: /orders/public/home');
+
+	}
+
+	public function importVendorSection()
+	{
+		if(isset($_POST["svendorNumber"]) && isset($_POST["sctvendorNumber"]))
+		{
+			unset($_SESSION["report"]["items"]);
+			$items = $this->brdata->get_vendorSectionReport($_POST["svendorNumber"], $_POST["sctvendorNumber"], $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
+			for($i=0;$i<count($items);$i++)
+			{
+				$items[$i]['order'] = null;
+				$items[$i]['expiration'] = null;
+				$items[$i]['expiration_date'] = null;
+				$_SESSION["report"]["items"][$items[$i]["UPC"]] = $items[$i];
+			}
+			$_SESSION["report"]['name']  = $items[0]['VdrName'] . " - " . $items[0]['SctName'];
+			$_SESSION["report"]['addItems'] = 'disabled';
+		}
+		header('Location: /orders/public/home');
+
 	}
 
 	public function batch()
@@ -64,7 +125,7 @@ class reports extends Controller{
 		$upcPriceCompare = false;
 		if($id == false)
 		{
-			header('Location: /expiration/public/reports');
+			header('Location: /orders/public/reports');
 		}
 		$report = $this->report->get_report($id);
 		if($upc != false)
@@ -74,7 +135,7 @@ class reports extends Controller{
 		if(count($report) == 0)
 		{
 			$this->report->delete_report($id);
-			header('Location: /expiration/public/home');
+			header('Location: /orders/public/home');
 		}
 		$this->view('reports/single', array("report" => $report, "upcPriceCompare" => $upcPriceCompare, "report_id" => $id, "upc" => $upc));
 	}
@@ -95,36 +156,36 @@ class reports extends Controller{
 			$_SESSION['report']['date_to'] = $report[0]['date_to'];
 			for($i=0;$i<count($report);$i++)
 			{
-			 	$_SESSION['report']['items'][$i]['UPC'] = $report[$i]['upc'];
-			 	$_SESSION['report']['items'][$i]['CertCode'] = $report[$i]['itemcode'];
-			 	$_SESSION['report']['items'][$i]['ItemDescription'] = $report[$i]['description'];
-			 	$_SESSION['report']['items'][$i]['Pack'] = $report[$i]['pack'];
-			 	$_SESSION['report']['items'][$i]['SizeAlpha'] = $report[$i]['size'];
-			 	$_SESSION['report']['items'][$i]['Brand'] = $report[$i]['brand'];
-			 	$_SESSION['report']['items'][$i]['CaseCost'] = $report[$i]['casecost'];
-			 	$_SESSION['report']['items'][$i]['Retail'] = $report[$i]['retail'];
-			 	$_SESSION['report']['items'][$i]['onhand'] = $report[$i]['onhand'];
-			 	$_SESSION['report']['items'][$i]['lastReceiving'] = $report[$i]['lastorder'];
-			 	$_SESSION['report']['items'][$i]['lastReceivingDate'] = $report[$i]['lastorderdate'];
-			 	$_SESSION['report']['items'][$i]['sales'] = $report[$i]['sales'];
-			 	$_SESSION['report']['items'][$i]['VdrNo'] = $report[$i]['vdrno'];
-			 	$_SESSION['report']['items'][$i]['VdrName'] = $report[$i]['vdrname'];
-			 	$_SESSION['report']['items'][$i]['tpr'] = $report[$i]['tprprice'];
-			 	$_SESSION['report']['items'][$i]['tprStart'] = $report[$i]['tprstart'];
-			 	$_SESSION['report']['items'][$i]['tprEnd'] = $report[$i]['tprend'];
-			 	$_SESSION['report']['items'][$i]['lastReceivingDate'] = $report[$i]['lastorderdate'];
-			 	$_SESSION['report']['items'][$i]['expiration'] = $report[$i]['expiration'];
-			 	$_SESSION['report']['items'][$i]['expiration_date'] = $report[$i]['expiration_date'];
-			 	$_SESSION['report']['items'][$i]['lastReceivingDate'] = $report[$i]['lastorderdate'];
-			 	$_SESSION['report']['items'][$i]['expiration'] = $report[$i]['expiration'];
-			 	$_SESSION['report']['items'][$i]['order'] = $report[$i]['orderqty'];
-			 	$_SESSION['report']['items'][$i]['SctNo'] = $report[$i]['SctNo'];
-			 	$_SESSION['report']['items'][$i]['SctName'] = $report[$i]['SctName'];
-			 	$_SESSION['report']['items'][$i]['DptNo'] = $report[$i]['DptNo'];
-			 	$_SESSION['report']['items'][$i]['DptName'] = $report[$i]['DptName'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['UPC'] = $report[$i]['upc'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['CertCode'] = $report[$i]['itemcode'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['ItemDescription'] = $report[$i]['description'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['Pack'] = $report[$i]['pack'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['SizeAlpha'] = $report[$i]['size'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['Brand'] = $report[$i]['brand'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['CaseCost'] = $report[$i]['casecost'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['Retail'] = $report[$i]['retail'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['onhand'] = $report[$i]['onhand'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['lastReceiving'] = $report[$i]['lastorder'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['lastReceivingDate'] = $report[$i]['lastorderdate'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['sales'] = $report[$i]['sales'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['VdrNo'] = $report[$i]['vdrno'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['VdrName'] = $report[$i]['vdrname'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['tpr'] = $report[$i]['tprprice'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['tprStart'] = $report[$i]['tprstart'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['tprEnd'] = $report[$i]['tprend'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['lastReceivingDate'] = $report[$i]['lastorderdate'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['expiration'] = $report[$i]['expiration'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['expiration_date'] = $report[$i]['expiration_date'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['lastReceivingDate'] = $report[$i]['lastorderdate'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['expiration'] = $report[$i]['expiration'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['order'] = $report[$i]['orderqty'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['SctNo'] = $report[$i]['SctNo'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['SctName'] = $report[$i]['SctName'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['DptNo'] = $report[$i]['DptNo'];
+			 	$_SESSION['report']['items'][$report[$i]['upc']]['DptName'] = $report[$i]['DptName'];
 			}
 		}
-		header('Location: /expiration/public/home');
+		header('Location: /orders/public/home');
 	}
 
 	public function duplicate($id)
@@ -171,7 +232,7 @@ class reports extends Controller{
 			 	$_SESSION['report']['items'][$i]['DptName'] = $report[$i]['DptName'];
 			}
 		}
-		header('Location: /expiration/public/home');
+		header('Location: /orders/public/home');
 	}
 
 
@@ -179,7 +240,7 @@ class reports extends Controller{
 	public function reset()
 	{
 		unset($_SESSION['report']);
-		header('Location: /expiration/public/home');
+		header('Location: /orders/public/home');
 	}
 
 	public function new_report()
@@ -205,7 +266,7 @@ class reports extends Controller{
 				$_SESSION["report"]["items"][$item["UPC"]] = $item;
 			}
 		}
-		header('Location: /expiration/public/home');
+		header('Location: /orders/public/home');
 	}
 
 	public function addItems()
@@ -250,7 +311,7 @@ class reports extends Controller{
 				$_SESSION["report"]["items"][$value['UPC']] = $item;
 	    	}
 		}
-		header('Location: /expiration/public/home');
+		header('Location: /orders/public/home');
 	}
 
 	public function set_itemValue()
@@ -276,7 +337,7 @@ class reports extends Controller{
 		{
 			unset($_SESSION['report']['items'][$upc]);
 		}
-		header('Location: /expiration/public/home');
+		header('Location: /orders/public/home');
 	}
 
 	public function save_report()
@@ -352,7 +413,7 @@ class reports extends Controller{
 		{
 			$_SESSION['error'] = "Your report cannot be saved because it was not found";
 		}
-		header("Location:/expiration/public/home");
+		header("Location:/orders/public/home");
 	}
 
 	public function reset_error()
@@ -366,13 +427,13 @@ class reports extends Controller{
 		$this->report->delete_report($id);
 		$this->report->delete_report_items($id);
 
-		header("Location:/expiration/public/reports");
+		header("Location:/orders/public/reports");
 	}
 
 	public function delete_item($id, $report_id)
 	{
 		$this->report->delete_item($id);
-		header("Location:/expiration/public/reports/single/".$report_id);
+		header("Location:/orders/public/reports/single/".$report_id);
 	}
 
 	public function addExcel(){
@@ -444,6 +505,15 @@ class reports extends Controller{
 			}
 		}
 		// var_dump($_SESSION['report']); die();
-		header("Location:/expiration/public/home");
+		header("Location:/orders/public/home");
+	}
+
+	public function close($id = false)
+	{
+		if($id == false){
+			header("Location:/orders/public/reports");
+		}
+		$this->report->updateStatus($id);
+		header("Location:/orders/public/reports/single/".$id);
 	}
 }

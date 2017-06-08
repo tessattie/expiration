@@ -45,11 +45,13 @@ class home extends Controller{
 		$this->classname = "thereport";
 		$this->brdata = $this->model('brdata');
 		$this->fileArianne = "NEW REPORT";
+
 	} 
 
 	public function index()
 	{
-		$data = array("from" => $this->from, "to" => $this->to, "action" => "index", "title" => $this->fileArianne);
+		$addItem = '';
+		$data = array("from" => $this->from, "to" => $this->to, "addItems" => $addItem, "action" => "index", "title" => $this->fileArianne);
 		$this->view('home', $data);
 	}
 
@@ -57,7 +59,7 @@ class home extends Controller{
 	{
 		session_unset();
 		session_destroy();
-		header('Location: /expiration/public/login');
+		header('Location: /orders/public/login');
 	}
 
 	private function renderView($data)

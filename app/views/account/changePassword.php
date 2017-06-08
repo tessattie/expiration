@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="changepw"></div>
-	<form action = "/expiration/public/account/changePassword" method = "POST" class="form-inline" id='setpassform'>
+	<form action = "/orders/public/account/changePassword" method = "POST" class="form-inline" id='setpassform'>
 		<div class="form-group">
 			<label>Change password : </label>
 		</div>

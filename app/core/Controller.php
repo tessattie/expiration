@@ -7,11 +7,17 @@ class Controller{
 
 	protected $users;
 
+	protected $userRole;
+
+	protected $roles;
+
 	public function __construct()
 	{
 		$this->brdata = $this->model('brdata');
 		$this->report = $this->model('report');
 		$this->users = $this->model('users');
+		$this->userRole = $this->setRole();
+		$this->roles = array(5 => "menuAdmin", 6 => "menuOne", 7 => "menuTwo", 8 => "menuZero");
 	}
 
 	public function model($model)
@@ -71,9 +77,27 @@ class Controller{
 
 	public function checkSession()
 	{
-		if(!isset($_SESSION['id']))
+		if(!isset($_SESSION["orders"]['id']))
 		{
-			header('Location: /expiration/public/login');
+			header('Location: /orders/public/login');
 		}
+	}
+
+	public function setRole()
+	{
+		$role = "";
+		$this->roles = array(5 => "menuAdmin", 6 => "menuOne", 7 => "menuTwo", 8 => "menuZero");
+		if(isset($_SESSION["orders"]['role']))
+		{
+			$role = $this->roles[$_SESSION["orders"]['role']];
+		}
+		else
+		{
+			if(!isset($_SESSION["orders"]['id']))
+			{
+				header('Location: /csm/public/login');
+			}
+		}
+		return $role;
 	}
 }

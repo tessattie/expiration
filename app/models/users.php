@@ -13,7 +13,7 @@ class users extends Model{
 
 	public function getUsers()
 	{
-		$SQL = "SELECT * FROM users ORDER BY lastname";
+		$SQL = "SELECT * FROM users WHERE role=5 OR role=6 OR role=7 ORDER BY lastname";
 		$result = $this->db->query($SQL);
 		// print_r($this->db->errorInfo());
 		return $result->fetchall(PDO::FETCH_BOTH);

@@ -13,7 +13,7 @@ jQuery(function($){
 	$(".newReportEdit").change(function(){
 		$.ajax({
 		  type: "POST",
-		  url: "/expiration/public/reports/new_report",
+		  url: "/orders/public/reports/new_report",
 		  data: {name : $("#name").val(),
 		  		 date_from : $("#date_from").val(),  
 		  		 date_to : $("#date_to").val()},
@@ -24,6 +24,50 @@ jQuery(function($){
 		  	console.log(error);
 		  }
 		});
+	})
+
+	$("#vendorImport").click(function(){
+		var regex = /[0-9]/;
+		var vendorNumber = prompt('Enter the vendor Number : ');
+		if(regex.test(vendorNumber))
+		{
+			$("#vendorNumber").val(vendorNumber);
+			document.forms["vendorImport"].submit();
+		}
+		else
+		{
+			alert("There are no vendor numbers with more than six digits. Try again.");
+		}
+	})
+
+	$("#sectionImport").click(function(){
+		var regex = /[0-9]/;
+		var vendorNumber = prompt('Enter the section Number : ');
+		if(regex.test(vendorNumber))
+		{
+			$("#sectionNumber").val(vendorNumber);
+			document.forms["sectionImport"].submit();
+		}
+		else
+		{
+			alert("There are no section numbers with more than four digits. Try again.");
+		}
+	})
+
+	$("#vendorSectionImport").click(function(){
+		var regex = /[0-9]/;
+		var vendorNumber = prompt('Enter the vendor number :')
+		var sectionNumber = prompt('Enter the section Number : ');
+		if(regex.test(sectionNumber) && regex.test(vendorNumber))
+		{
+			$("#svendorNumber").val(vendorNumber); // vendor number
+			$("#sctvendorNumber").val(sectionNumber); // section number 
+			document.forms["vendorSectionImport"].submit();
+		}
+		else
+		{
+			alert("Verify that the numbers are correct.");
+		}
 	})
 
 	$("#upcExcelImport").change(function(){
@@ -54,7 +98,7 @@ jQuery(function($){
 		
 		$.ajax({
 		  type: "POST",
-		  url: "/expiration/public/orders/update_order_vendor",
+		  url: "/orders/public/orders/update_order_vendor",
 		  data: {vdrname : vendor,
 		  		 vdrno : vendorno,
 		  		 ident : id, 
@@ -80,7 +124,7 @@ jQuery(function($){
 	$(".errorPara").click(function(){
 		$.ajax({
 		  type: "POST",
-		  url: "/expiration/public/reports/reset_error",
+		  url: "/orders/public/reports/reset_error",
 		  success: function(data){
 		  	$(".errorPara").fadeOut();
 		  	// $(".errorPara").remove();
@@ -94,7 +138,7 @@ jQuery(function($){
 	$(".reportInputs").change(function(){
 		$.ajax({
 		  type: "POST",
-		  url: "/expiration/public/reports/set_itemValue",
+		  url: "/orders/public/reports/set_itemValue",
 		  data: {name : $(this).parent().attr('class'),
 		  		 ident : $(this).parent().parent().attr('id'),  
 		  		 value : $(this).val()},
@@ -110,7 +154,7 @@ jQuery(function($){
 	$(".reportInput").change(function(){
 		$.ajax({
 		  type: "POST",
-		  url: "/expiration/public/reports/update_itemValue",
+		  url: "/orders/public/reports/update_itemValue",
 		  data: {name : $(this).parent().attr('class'),
 		  		 ident : $(this).parent().parent().attr('id'),  
 		  		 value : $(this).val()},
@@ -139,7 +183,7 @@ jQuery(function($){
 			var tr = $(this);
 			$.ajax({
 			  type: "POST",
-			  url: "/expiration/public/reports/updateBatch",
+			  url: "/orders/public/reports/updateBatch",
 			  data: {upc : $(this).find(".upcTD").text()},
 			  success: function(data){
 			  	console.log(data);
