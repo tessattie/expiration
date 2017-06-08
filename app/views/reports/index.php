@@ -1,7 +1,6 @@
 <?php include_once '/../header.php'; ?>
 
 <?php include_once '/../menu.php'; ?>
-
 <?php  
 	$colspan="7";
 	if($_SESSION['orders']['role'] == 6)

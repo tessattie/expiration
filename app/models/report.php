@@ -49,7 +49,7 @@ class report extends Model{
 				FROM dbo.reports r 
 				RIGHT JOIN dbo.items i ON i.report_id = r.id
 				WHERE r.id = ".$id."
-				ORDER BY i.SctNo, i.VdrNo";
+				ORDER BY i.VdrNo, i.SctNo";
 		$result = $this->db->query($SQL);
 		return $result->fetchAll(PDO::FETCH_BOTH);
 	}
