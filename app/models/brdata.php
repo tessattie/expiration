@@ -11,10 +11,6 @@ class brdata extends Model{
 
 	public function get_item($upcNumber, $today, $to, $from)
 	{
-		$upc = "4900000217";
-		var_dump($upc);
-		var_dump($upcNumber);
-
 		$SQL ="SELECT DISTINCT TOP 1 vc.UPC, vc.Vendor AS VdrNo, p.BasePRice AS Retail, vc.VendorItem AS CertCode, vc.CaseCost, i.Brand, i.Description AS ItemDescription,
 				i.SizeAlpha, i.Department AS SctNo, i.MajorDept as DptNo, d.Description AS SctName, md.Description AS DptName, vc.Pack, v.VendorName AS VdrName, p.TPRPrice AS tpr, p.TPRStartDate AS tprStart, p.TPREndDate AS tprEnd,
 				(SELECT SUM(im.QtySold) FROM dbo.ItemMovement im 
