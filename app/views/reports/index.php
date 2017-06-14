@@ -11,7 +11,8 @@
 		0 => "Normal", 
 		1 => "Vendor",
 		2 => "Section", 
-		3 => "Vendor section"
+		3 => "Vendor section", 
+		4 => "Excel"
 		);
 $status = array(0 => "OPEN", 1 => "CLOSED");
 ?>
@@ -27,8 +28,8 @@ $status = array(0 => "OPEN", 1 => "CLOSED");
 			  	<th>SALES FROM DATE</th>
 			  	<th>SALES TO DATE</th>
 			  	<th>USER</th>
-			  	<th>TYPE</th>
 			  	<th>STATUS</th>
+			  	<th>TYPE</th>
 			  	<?php  
 			  		if($_SESSION['orders']['role'] == 7)
 			  		{

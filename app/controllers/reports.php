@@ -467,6 +467,7 @@ class reports extends Controller{
 					    ->getStyle($range)
 					    ->getNumberFormat()
 					    ->setFormatCode( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
+					$_SESSION["report"]['type'] = 4;
 				    for($i=1;$i<=$highestRow;$i++)
 				    {
 				    	$upc = $sheet->getCell("A".$i)->getValue();

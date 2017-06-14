@@ -8,7 +8,8 @@
 		0 => "Normal", 
 		1 => "Vendor",
 		2 => "Section", 
-		3 => "Vendor section"
+		3 => "Vendor section",
+		4 => "Excel"
 		);
 ?>
 
