@@ -14,16 +14,17 @@ class report extends Model{
 	public function save_report($report)
 	{
 		$date = date('Y-m-d H:i:s');
-		$insert = $this->db->prepare("INSERT INTO dbo.reports (name, date_from, date_to, timestamp, user_firstname, user_lastname, user_id)
-	    VALUES (:name, :date_from, :date_to, :timestamp, :user_firstname, :user_lastname, :user_id)");
+		$insert = $this->db->prepare("INSERT INTO dbo.reports (name, date_from, date_to, timestamp, user_firstname, user_lastname, user_id, type)
+	    VALUES (:name, :date_from, :date_to, :timestamp, :user_firstname, :user_lastname, :user_id, :type)");
 
 	    $insert->bindParam(':name', $report['name']);
 	    $insert->bindParam(':date_from', $report['date_from']);
 	    $insert->bindParam(':date_to', $report['date_to']);
 	    $insert->bindParam(':timestamp', $date);
-	    $insert->bindParam(':user_firstname', $_SESSION["firstname"]);
-	    $insert->bindParam(':user_lastname', $_SESSION["lastname"]);
-	    $insert->bindParam(':user_id', $_SESSION["id"]);
+	    $insert->bindParam(':user_firstname', $_SESSION["orders"]["firstname"]);
+	    $insert->bindParam(':user_lastname', $_SESSION["orders"]["lastname"]);
+	    $insert->bindParam(':user_id', $_SESSION["orders"]["id"]);
+	    $insert->bindParam(':type', $report['type']);
 
 	    if($insert->execute())
 	    {
@@ -41,6 +42,15 @@ class report extends Model{
 		$SQL = "SELECT * FROM reports ORDER BY timestamp DESC";
 		$result = $this->db->query($SQL);
 		return $result->fetchAll(PDO::FETCH_BOTH);
+	}
+
+	public function getReportName($id){
+		$SQL = "SELECT r.name
+				FROM dbo.reports r 
+				WHERE r.id = " . $id;
+
+		$result = $this->db->query($SQL);
+		return $result->fetch(PDO::FETCH_BOTH)['name'];
 	}
 
 	public function get_report($id)
@@ -108,9 +118,15 @@ class report extends Model{
 		$this->db->query($update);	
 	}
 
-	public function updateStatus($id)
+	public function getItem($id){
+		$SQL = "SELECT * FROM items WHERE id = ".$id;
+		$result = $this->db->query($SQL);
+		return $result->fetch(PDO::FETCH_BOTH);
+	}
+
+	public function updateStatus($id, $status)
 	{
-		$update = "UPDATE reports SET status = 1 WHERE id = " . $id;
+		$update = "UPDATE reports SET status = ".$status." WHERE id = " . $id;
 		$this->db->query($update);	
 	}
 

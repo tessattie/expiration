@@ -18,6 +18,7 @@
           <ul class="dropdown-menu">
             <li><a href="/orders/public/home">Home</a></li>
             <li><a href="/orders/public/account">Settings</a></li>
+            <li><a href="/orders/public/logs">Logs</a></li>
             <li><a href="/orders/public/home/logout">Log out</a></li>
           </ul>
         </li>

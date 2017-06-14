@@ -46,6 +46,9 @@ table.batchTable{
 	background:#5cb85c;
 	width:29px;
 }
+.description{
+	text-align:left;
+}
 .textLeft{
 	text-align:left;
 }

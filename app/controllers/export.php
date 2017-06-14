@@ -67,6 +67,7 @@ class export extends Controller{
 						"T" => "VDR NAME");
 		$report = $this->report->get_report($id);
 		$this->setSheetName($report[0]['name']);
+		$this->exportOrderLog($report[0]['name']);
 		$lastItem = count($report) + 4;
 		$this->setHeader($report[0]['name'],"[ EXPORT DATE : ".date("Y-m-d")." ] - [ SALES FROM ".$report[0]['date_from']." TO ".$report[0]['date_to']." ] ", $header, 'reportExport', $lastItem);
 		$this->setReportWithSection($header, $report);

@@ -32,6 +32,7 @@ class reports extends Controller{
 			"date_from" => date("Y-m-01"), 
 			"date_to" => date("Y-m-d"), 
 			"addItems" => '',
+			"type" => 0, 
 			"items" => null);
 		}
 	}
@@ -55,8 +56,9 @@ class reports extends Controller{
 				$items[$i]['expiration_date'] = null;
 				$_SESSION["report"]["items"][$items[$i]["UPC"]] = $items[$i];
 			}
-			$_SESSION["report"]['name']  = $items[0]['VdrName'];
+			$_SESSION["report"]['name']  = "[ " . $items[0]['VdrNo'] . " - " . $items[0]['VdrName'] . " ]";
 			$_SESSION["report"]['addItems'] = 'disabled';
+			$_SESSION["report"]['type'] = 1;
 		}
 		header('Location: /orders/public/home');
 
@@ -75,8 +77,9 @@ class reports extends Controller{
 				$items[$i]['expiration_date'] = null;
 				$_SESSION["report"]["items"][$items[$i]["UPC"]] = $items[$i];
 			}
-			$_SESSION["report"]['name']  = $items[0]['SctName'];
+			$_SESSION["report"]['name']  = "[ " . $items[0]['SctNo'] . " - " . $items[0]['SctName'] . " ]";
 			$_SESSION["report"]['addItems'] = 'disabled';
+			$_SESSION["report"]['type'] = 2;
 		}
 		header('Location: /orders/public/home');
 
@@ -95,8 +98,9 @@ class reports extends Controller{
 				$items[$i]['expiration_date'] = null;
 				$_SESSION["report"]["items"][$items[$i]["UPC"]] = $items[$i];
 			}
-			$_SESSION["report"]['name']  = $items[0]['VdrName'] . " - " . $items[0]['SctName'];
+			$_SESSION["report"]['name']  = "[ " . $items[0]['VdrNo'] . " - " . $items[0]['VdrName'] . " ] - [ " . $items[0]['SctNo'] . " - " . $items[0]['SctName'] . " ]";
 			$_SESSION["report"]['addItems'] = 'disabled';
+			$_SESSION["report"]['type'] = 3;
 		}
 		header('Location: /orders/public/home');
 
@@ -127,10 +131,16 @@ class reports extends Controller{
 		{
 			header('Location: /orders/public/reports');
 		}
+		$name = $this->report->getReportName($id);
 		$report = $this->report->get_report($id);
 		if($upc != false)
 		{
 			$upcPriceCompare = $this->brdata->get_upcReport($upc, $this->today, $report[0]['date_from'], $report[0]['date_to']);
+			$this->UPCPriceCompareLog($name, $id, $upc);
+		}
+		else
+		{
+			$this->orderConsultLog($name, $id);
 		}
 		if(count($report) == 0)
 		{
@@ -152,6 +162,7 @@ class reports extends Controller{
 			unset($_SESSION['error']);
 			$_SESSION['report']['id'] = $report[0]['report_id'];
 			$_SESSION['report']['name'] = $report[0]['name'];
+			$_SESSION['report']['type'] = $report[0]['type'];
 			$_SESSION['report']['date_from'] = $report[0]['date_from'];
 			$_SESSION['report']['date_to'] = $report[0]['date_to'];
 			for($i=0;$i<count($report);$i++)
@@ -199,6 +210,7 @@ class reports extends Controller{
 			unset($_SESSION['report']);
 			unset($_SESSION['error']);
 			$report = $this->report->get_report($id);
+			$this->duplicateOrderLog($report[0]['name'], $id);
 			$_SESSION['report']['date_from'] = $report[0]['date_from'];
 			$_SESSION['report']['date_to'] = $report[0]['date_to'];
 			for($i=0;$i<count($report);$i++)
@@ -370,6 +382,7 @@ class reports extends Controller{
 								else
 								{
 									$report = $this->report->save_report($_SESSION['report']);
+									$this->saveOrderLog($_SESSION['report']["name"], $report);
 									if($report)
 									{
 										foreach($_SESSION['report']["items"] as $key => $value)
@@ -424,6 +437,8 @@ class reports extends Controller{
 
 	public function delete_report($id)
 	{
+		$name = $this->report->getReportName($id);
+		$this->deleteOrderLog($name);
 		$this->report->delete_report($id);
 		$this->report->delete_report_items($id);
 
@@ -508,12 +523,12 @@ class reports extends Controller{
 		header("Location:/orders/public/home");
 	}
 
-	public function close($id = false)
+	public function close($id = false, $status = 0)
 	{
 		if($id == false){
 			header("Location:/orders/public/reports");
 		}
-		$this->report->updateStatus($id);
+		$this->report->updateStatus($id, $status);
 		header("Location:/orders/public/reports/single/".$id);
 	}
 }

@@ -2,11 +2,17 @@
 
 <?php include_once '/../menu.php'; ?>
 <?php  
-	$colspan="7";
+	$colspan="8";
 	if($_SESSION['orders']['role'] == 6)
 	{
-		$colspan="6";
+		$colspan="7";
 	}
+	$type = array(
+		0 => "Normal", 
+		1 => "Vendor",
+		2 => "Section", 
+		3 => "Vendor section"
+		);
 $status = array(0 => "OPEN", 1 => "CLOSED");
 ?>
 
@@ -21,6 +27,7 @@ $status = array(0 => "OPEN", 1 => "CLOSED");
 			  	<th>SALES FROM DATE</th>
 			  	<th>SALES TO DATE</th>
 			  	<th>USER</th>
+			  	<th>TYPE</th>
 			  	<th>STATUS</th>
 			  	<?php  
 			  		if($_SESSION['orders']['role'] == 7)
@@ -37,12 +44,13 @@ $status = array(0 => "OPEN", 1 => "CLOSED");
 		  		for($i=0;$i<count($data['reports']);$i++)
 		  		{
 		  			echo "<tr>";
-		  			echo "<td><a href='/orders/public/reports/single/".$data['reports'][$i]['id']."'>".$data['reports'][$i]['name']."</a></td>";
+		  			echo "<td><a href='/orders/public/reports/single/".$data['reports'][$i]['id']."'>".strtoupper($data['reports'][$i]['name'])."</a></td>";
 		  			echo "<td>".date("D, F d-Y H:i:s",strtotime($data['reports'][$i]['timestamp']))."</td>";
 		  			echo "<td>".$data['reports'][$i]['date_from']."</td>";
 		  			echo "<td>".$data['reports'][$i]['date_to']."</td>";
 		  			echo "<td>".$data['reports'][$i]['user_firstname']." ".$data['reports'][$i]['user_lastname']."</td>";
 		  			echo "<td>".$status[$data['reports'][$i]['status']]."</td>";
+		  			echo "<td>".strtoupper($type[$data['reports'][$i]['type']])."</td>";
 		  			if($_SESSION['orders']['role'] == 7)
 			  		{
 		  				echo "<td class = 'tdminus'><a href='/orders/public/reports/delete_report/".$data['reports'][$i]['id']."'><span class='glyphicon glyphicon-minus'></span></a></td>";

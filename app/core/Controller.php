@@ -9,12 +9,15 @@ class Controller{
 
 	protected $userRole;
 
+	protected $logs;
+
 	protected $roles;
 
 	public function __construct()
 	{
 		$this->brdata = $this->model('brdata');
 		$this->report = $this->model('report');
+		$this->logs = $this->model('log');
 		$this->users = $this->model('users');
 		$this->userRole = $this->setRole();
 		$this->roles = array(5 => "menuAdmin", 6 => "menuOne", 7 => "menuTwo", 8 => "menuZero");
@@ -99,5 +102,48 @@ class Controller{
 			}
 		}
 		return $role;
+	}
+
+	public function deleteOrderLog($order, $id){
+		$action = $_SESSION["orders"]['firstname'] . " " . $_SESSION["orders"]['lastname'] . " deleted the order : " . $id . ", name : " . $order;
+		$date = date("Y-m-d H:i:s");
+		$this->logs->saveLog($date, 1, $action);
+	}
+
+	public function exportOrderLog($order, $id){
+		$action = $_SESSION["orders"]['firstname'] . " " . $_SESSION["orders"]['lastname'] . " exported the order id : " . $id . ", name : " . $order;
+		$date = date("Y-m-d H:i:s");
+		$this->logs->saveLog($date, 1, $action);
+	}
+
+	public function duplicateOrderLog($order, $id){
+		$action = $_SESSION["orders"]['firstname'] . " " . $_SESSION["orders"]['lastname'] . " clicked on 'duplicate' for the order id : " . $id . ", name : " . $order;
+		$date = date("Y-m-d H:i:s");
+		$this->logs->saveLog($date, 1, $action);
+	}
+
+	public function UPCPriceCompareLog($order, $id, $upc){
+		$action = $_SESSION["orders"]['firstname'] . " " . $_SESSION["orders"]['lastname'] . " checked the UPCPriceCompare for the UPC : " . $upc . " in the order id : " . $id . ", name : " . $order ;
+		$date = date("Y-m-d H:i:s");
+		$this->logs->saveLog($date, 1, $action);
+	}
+
+	public function currentVendorLog($order_id ,$order, $id, $upc, $fromVendor, $toVendor){
+		$action = $_SESSION["orders"]['firstname'] . " " . $_SESSION["orders"]['lastname'] . " changed the current vendor from : " . $fromVendor . "
+		to " . $toVendor . " for the item id : ". $id .", UPC : " . $upc . " in the order id : " . $order_id . ", name : " . $order ;
+		$date = date("Y-m-d H:i:s");
+		$this->logs->saveLog($date, 1, $action);
+	}
+
+	public function orderConsultLog($order, $id){
+		$action = $_SESSION["orders"]['firstname'] . " " . $_SESSION["orders"]['lastname'] . " consulted the order id : " . $id . ", name : " . $order ;
+		$date = date("Y-m-d H:i:s");
+		$this->logs->saveLog($date, 1, $action);
+	}
+
+	public function saveOrderLog($order, $id){
+		$action = $_SESSION["orders"]['firstname'] . " " . $_SESSION["orders"]['lastname'] . " saved a new order id : " . $id . ", name : " . $order;
+		$date = date("Y-m-d H:i:s");
+		$this->logs->saveLog($date, 1, $action);
 	}
 }
