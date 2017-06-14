@@ -212,6 +212,7 @@ class reports extends Controller{
 			$report = $this->report->get_report($id);
 			$this->duplicateOrderLog($report[0]['name'], $id);
 			$_SESSION['report']['date_from'] = $report[0]['date_from'];
+			$_SESSION['report']['type'] = $report[0]['type'];
 			$_SESSION['report']['date_to'] = $report[0]['date_to'];
 			for($i=0;$i<count($report);$i++)
 			{
@@ -381,6 +382,9 @@ class reports extends Controller{
 								}
 								else
 								{
+									if($_SESSION['report']['type'] == null){
+										$_SESSION['report']['type'] = 0;
+									}
 									$report = $this->report->save_report($_SESSION['report']);
 									$this->saveOrderLog($_SESSION['report']["name"], $report);
 									if($report)
@@ -438,7 +442,7 @@ class reports extends Controller{
 	public function delete_report($id)
 	{
 		$name = $this->report->getReportName($id);
-		$this->deleteOrderLog($name);
+		$this->deleteOrderLog($name, $id);
 		$this->report->delete_report($id);
 		$this->report->delete_report_items($id);
 
