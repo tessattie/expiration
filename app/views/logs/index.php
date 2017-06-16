@@ -11,7 +11,7 @@
 	<?php  
 		for($i=0;$i<count($data['logs']);$i++){
 			echo "<tr>";
-			echo "<td>".$data['logs'][$i]['date']."</td>";
+			echo "<td>".date("D, F d Y : H:i" ,strtotime($data['logs'][$i]['date']))."</td>";
 			echo "<td class='description'>".$data['logs'][$i]['action']."</td>";
 			echo "</tr>";
 		}

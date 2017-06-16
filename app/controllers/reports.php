@@ -160,6 +160,7 @@ class reports extends Controller{
 		{
 			$report = $this->report->get_report($id);
 			unset($_SESSION['error']);
+			$this->editOrderLog($report[0]['name'], $id);
 			$_SESSION['report']['id'] = $report[0]['report_id'];
 			$_SESSION['report']['name'] = $report[0]['name'];
 			$_SESSION['report']['type'] = $report[0]['type'];
@@ -534,6 +535,8 @@ class reports extends Controller{
 			header("Location:/orders/public/reports");
 		}
 		$this->report->updateStatus($id, $status);
+		$name = $this->report->getReportName($id);
+		$this->closeOrderLog($name, $id, $status);
 		header("Location:/orders/public/reports/single/".$id);
 	}
 }

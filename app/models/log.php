@@ -14,14 +14,14 @@ class log extends Model{
 
 	public function getLogs()
 	{
-		$SQL = "SELECT * FROM log WHERE application = 1 ORDER BY date DESC";
+		$SQL = "SELECT * FROM logs WHERE application = 1 ORDER BY date DESC";
 		$result = $this->db->query($SQL);
 		return $result->fetchAll(PDO::FETCH_BOTH);
 	}
 
 	public function saveLog($date, $application, $action)
 	{
-		$insert = $this->db->prepare("INSERT INTO log (date, application, action)
+		$insert = $this->db->prepare("INSERT INTO logs (date, application, action)
 	    VALUES (:date, :application, :action)");
 
 	    $insert->bindParam(':date', $date);
@@ -33,7 +33,7 @@ class log extends Model{
 
 	public function deleteLog($id)
 	{
-		$delete = "DELETE FROM log WHERE id = '" . $id . "'";
+		$delete = "DELETE FROM logs WHERE id = '" . $id . "'";
 		$this->db->query($delete);		
 	}
 }
