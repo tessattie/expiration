@@ -154,6 +154,22 @@ class Controller{
 		$this->logs->saveLog($date, 1, $action);
 	}
 
+	public function deleteOrderItemLog($order, $id, $item_id, $upc, $description){
+		$action = $_SESSION["orders"]['firstname'] . " " . $_SESSION["orders"]['lastname'] . " deleted the item id : ".$item_id.", UPC : ".$upc." , name : ".$description." in the order id : " . $id . ", name : " . $order;
+		$date = date("Y-m-d H:i:s");
+		$this->logs->saveLog($date, 1, $action);
+	}
+
+	public function updateOrderItemValueLog($order, $id, $update, $beforeval, $afterval, $item_id, $upc, $description){
+		if(empty($beforeval))
+		{
+			$beforeval = "empty";
+		}
+		$action = $_SESSION["orders"]['firstname'] . " " . $_SESSION["orders"]['lastname'] . " updated the item id : ".$item_id.", UPC : ".$upc." , name : ".$description." and set the ".$update." from ".$beforeval." to ".$afterval." in the order id : " . $id . ", name : " . $order;
+		$date = date("Y-m-d H:i:s");
+		$this->logs->saveLog($date, 1, $action);
+	}
+
 	public function closeOrderLog($order, $id, $status){
 		if($status == 0){
 			$oppositestatus = 1;

@@ -47,10 +47,6 @@ class account extends Controller{
 		}
 		$users = $this->users->getUsers();
 		$count = count($users);
-		for($i=0;$i<$count;$i++)
-		{
-			$users[$i]['role'] = $this->roles[$users[$i]['role']];
-		}
 		$this->view('account', array('users' => $users, 'error' => $errormessage, "menu" => $this->userRole, "exportURL" => $this->exportURL, "from" => $this->from, "to" => $this->to));
 	}
 
@@ -65,6 +61,18 @@ class account extends Controller{
 		{
 			header('Location: /orders/public/account');
 		}
+	}
+
+	public function edit($id = false)
+	{
+		$errormessage = "";
+		if(isset($_POST['submit']))
+		{
+			$this->users->updateUser($_POST['firstname'], $_POST['lastname'], $_POST['username'], $_POST['email'], $_POST['role'], $_POST['id']);
+		}
+		$users = $this->users->getUsers();
+		$user = $this->users->getUserById($id);
+		$this->view('account/edit', array("user" => $user, "users" => $users, "error" => $errormessage, "menu" => $this->userRole, "exportURL" => $this->exportURL, "from" => $this->from, "to" => $this->to));
 	}
 
 	public function reset($userId)

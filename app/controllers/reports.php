@@ -340,6 +340,9 @@ class reports extends Controller{
 
 	public function update_itemValue()
 	{
+		$item = $this->report->getItem($_POST['ident']);
+		$name = $this->report->getReportName($item['report_id']);
+		$this->updateOrderItemValueLog($name, $item['report_id'], $_POST['name'], $item[$_POST['name']], $_POST['value'], $_POST['ident'], $item['upc'], $item['description']);
 		$this->report->update_item($_POST['ident'], $_POST['name'], $_POST['value']);
 		echo json_encode($_POST);
 		die();
@@ -452,7 +455,10 @@ class reports extends Controller{
 
 	public function delete_item($id, $report_id)
 	{
+		$item = $this->report->getItem($id);
 		$this->report->delete_item($id);
+		$name = $this->report->getReportName($report_id);
+		$this->deleteOrderItemLog($name, $report_id, $id, $item['upc'], $item['description']);
 		header("Location:/orders/public/reports/single/".$report_id);
 	}
 

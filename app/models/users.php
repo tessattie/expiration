@@ -33,6 +33,13 @@ class users extends Model{
 		return $result->fetch(PDO::FETCH_BOTH);
 	}
 
+	public function getUserById($id)
+	{
+		$SQL = "SELECT * FROM users WHERE id =" . $id ;
+		$result = $this->db->query($SQL);
+		return $result->fetch(PDO::FETCH_BOTH);
+	}
+
 	public function setUser($user)
 	{
 		$insert = $this->db->prepare("INSERT INTO users (firstname, lastname, username, password, email, role)
@@ -54,9 +61,11 @@ class users extends Model{
 		$this->db->query($delete);		
 	}
 
-	public function updateUser($field, $value, $id)
+	public function updateUser($firstname, $lastname, $username, $email, $role, $id)
 	{
-		
+		$update = "UPDATE users SET firstname ='" . $firstname . "', lastname = '".$lastname."', username = '".$username."', 
+		email = '".$email."', role = '".$role."' WHERE id =" . $id;
+		$this->db->query($update);	
 	}
 
 	public function setPassword($id, $password)
