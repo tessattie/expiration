@@ -18,20 +18,18 @@
           <ul class="dropdown-menu">
             <li><a href="/orders/public/home">Home</a></li>
             <li><a href="/orders/public/account">Settings</a></li>
-            <li><a href="/orders/public/logs">Logs</a></li>
+            <?php 
+              if($_SESSION['orders']['role'] == 7)
+              {
+                echo '<li><a href="/orders/public/logs">Logs</a></li>';
+              }
+            ?>
             <li><a href="/orders/public/home/logout">Log out</a></li>
           </ul>
         </li>
       </ul>
     <ul class="nav navbar-nav navbar-left">
     <?php  
-      if($_SESSION['orders']['role'] == 1 || $_SESSION['orders']['role'] == 2)
-      {
-        echo '<li><a class="menuitems" href="/orders/public/reports">Order list</a></li>';
-        echo '<li><a class="menuitems" href="/orders/public/home">New order</a></li>';
-        echo '<li><a class="menuitems" href="/orders/public/reports/batch">Batch order</a></li>';
-      }
-
       if($_SESSION['orders']['role'] == 5 || $_SESSION['orders']['role'] == 6 || $_SESSION['orders']['role'] == 7)
       {
         echo '<li><a class="menuitems" href="/orders/public/home">New order</a></li>';
