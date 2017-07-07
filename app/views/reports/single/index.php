@@ -16,6 +16,10 @@
 <div class="row">
 <div class="row">
 <?php 
+	if(!empty($data['anchor']))
+	{
+		echo "<input type = 'hidden' value='#".$data['anchor']."' id = 'anchorvalue'";
+	}
 	if($_SESSION['orders']['role'] == 7)
 	{
 		if($data['report'][0]['status'] == 0){
@@ -166,7 +170,7 @@
 			  			{
 			  				echo "<td><a href = '/orders/public/reports/single/".$data['report_id']."/".$data['report'][$i]['upc']."'>".$data['report'][$i]['upc']."</a></td>";
 			  			}
-			  			echo "<td  class='certcode'>".$data['report'][$i]['itemcode']."</td>";
+			  			echo "<td id='".$data['report'][$i]['upc']."' class='certcode'>".$data['report'][$i]['itemcode']."</td>";
 			  			echo "<td>".$data['report'][$i]['brand']."</td>";
 			  			echo "<td class='textLeft'>".$data['report'][$i]['description']."</td>";
 			  			echo "<td>".$data['report'][$i]['pack']."</td>";
@@ -178,7 +182,7 @@
 			  			}else{
 			  				echo "<td>".round($data['report'][$i]['onhand'])."</td>";
 			  			}
-			  			echo "<td class='orderqty'><input value='".$data['report'][$i]['orderqty']."' placeholder='Order qty' class='reportInput'></td>";
+			  			echo "<td class='orderqty'><input value='".$data['report'][$i]['orderqty']."' placeholder='Order qty' class='reportInput' tabindex='".($i+1)."'></td>";
 			  			echo "<td class='expiration_date'><input type='date' placeholder='Exp' class='reportInput expdate' value='".$data['report'][$i]['expiration_date']."'></td>";
 			  			echo "<td class='expiration'><input type='text' placeholder='Exp Qty' class='reportInput' value='".$data['report'][$i]['expiration']."'></td>";
 			  			echo "<td class='lo'>".$data['report'][$i]['lastorder']."</td>";

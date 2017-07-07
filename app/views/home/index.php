@@ -14,24 +14,11 @@
 	</div>
 </div>
 <div class="row newReport">
-	<form class="form-inline" id = "updExcelImportForm" method="post" enctype="multipart/form-data" action = "/orders/public/reports/addExcel">
-		<label class="btn btn-primary btn-file">
-		<span class="glyphicon glyphicon-import"></span> IMPORT FROM EXCEL <input type="file" style="display: none;" name="upcs" id="upcExcelImport">
-		</label>
-	</form>
-	<form class="form-inline" id = "vendorSectionImport" method="post" action = "/orders/public/reports/importVendorSection">
-		  <button type="button" class="btn btn-primary" id="vendorSectionImportButton" ><a style="color:white" href="#"><span class="glyphicon glyphicon-import"> </span> VDR - SCT</a></button>
-		<input type="hidden" name="svendorNumber" id="svendorNumber">
-		<input type="hidden" name="sctvendorNumber" id="sctvendorNumber">
-	</form>
-	<form class="form-inline" id = "sectionImport" method="post" action = "/orders/public/reports/importSection">
-		  <button type="button" class="btn btn-primary" id="sectionImportButton" style="margin-right:10px"><a style="color:white" href="#"><span class="glyphicon glyphicon-import"> </span> SECTION</a></button>
-		<input type="hidden" name="sectionNumber" id="sectionNumber">
-	</form>
-	<form class="form-inline" id = "vendorImport" method="post" action = "/orders/public/reports/importVendor">
-		  <button type="button" class="btn btn-primary" id="vendorImportButton" style="margin-right:10px"><a style="color:white" href="#"><span class="glyphicon glyphicon-import"> </span> VENDOR</a></button>
-		<input type="hidden" name="vendorNumber" id="vendorNumber">
-	</form>
+	<?php  
+		if($_SESSION['orders']['role'] != 5){
+			include "importMenu.php";
+		}
+	?>
 	
 	<form method="POST" action="/orders/public/reports/add_item" class="form-inline" id="newItemsForm">
 		<div class="form-group">
@@ -86,9 +73,9 @@
 		    	}
 		    ?>
 	  	</div>
-	  	<button type="button" class="btn btn-primary" id="reset" name="reset" style="margin-right:10px"><a style="color:white" href="/orders/public/reports/reset"><span class="glyphicon glyphicon-refresh"> </span> RESET</a></button>
-	  	<button type="button" class="btn btn-primary" id="reset" name="reset"  style="margin-right:10px"><a style="color:white" href="/orders/public/reports/addItems"><span class="glyphicon glyphicon-repeat"> </span> UPDATE</a></button>
-	  	<button type="button" class="btn btn-success" id="save" name="save"><a style="color:white" href="/orders/public/reports/save_report"><span class="glyphicon glyphicon-save"> </span> SAVE</a></button>
+	  	<a style="color:white" href="/orders/public/reports/reset" id="resetButton"><button type="button" class="btn btn-primary" id="reset" name="reset" style="margin-right:10px"><span class="glyphicon glyphicon-refresh"> </span> DELETE</button></a>
+	  	<a style="color:white" href="/orders/public/reports/addItems"><button type="button" class="btn btn-primary" id="reset" name="reset"  style="margin-right:10px"><span class="glyphicon glyphicon-repeat"> </span> UPDATE</button></a>
+	  	<a style="color:white" href="/orders/public/reports/save_report"><button type="button" class="btn btn-success" id="save" name="save"><span class="glyphicon glyphicon-save"> </span> SAVE</button></a>
 	    <table class="table">
 		  <thead>
 		  	<tr><th colspan="17">NEW REPORT</th></tr>

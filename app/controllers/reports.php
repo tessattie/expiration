@@ -147,7 +147,7 @@ class reports extends Controller{
 			$this->report->delete_report($id);
 			header('Location: /orders/public/home');
 		}
-		$this->view('reports/single', array("report" => $report, "upcPriceCompare" => $upcPriceCompare, "report_id" => $id, "upc" => $upc));
+		$this->view('reports/single', array("report" => $report, "anchor" => $upc, "upcPriceCompare" => $upcPriceCompare, "report_id" => $id, "upc" => $upc));
 	}
 
 	public function edit($id)

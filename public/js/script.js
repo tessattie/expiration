@@ -214,4 +214,12 @@ jQuery(function($){
 			event.preventDefault();
 		}
 	})
+
+	if($("#anchorvalue").val() != undefined){
+		location.href = $("#anchorvalue").val();
+	}
+
+	$("#resetButton").click(function(){
+		return confirm("Are you sure you would like to reset this report?");
+	})
 });

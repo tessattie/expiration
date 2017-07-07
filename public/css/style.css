@@ -573,10 +573,15 @@ td > a > .btn
 	margin:auto;
 	font-size: 10px;
 }
-.form-inline > .btn
+.form-inline > a > .btn
 {
 	font-size: 11px;
+	margin-top:10px;
+	font-weight:bold;
 }
+.form-inline .form-group {
+	margin-top:-3px;
+	}
 .changepw
 {
 	width:88%;
