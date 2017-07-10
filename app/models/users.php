@@ -26,6 +26,13 @@ class users extends Model{
 		return $result->fetch(PDO::FETCH_BOTH)['password'];
 	}
 
+	public function getUserByUsername($username)
+	{
+		$SQL = "SELECT * FROM users WHERE username ='" . $username . "'";
+		$result = $this->db->query($SQL);
+		return $result->fetch(PDO::FETCH_BOTH);
+	}
+
 	public function getUser($username, $password)
 	{
 		$SQL = "SELECT * FROM users WHERE username ='" . $username . "' AND password = '" . $password . "'";

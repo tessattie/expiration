@@ -16,6 +16,13 @@ body {
 table.batchTable{
 	width:30%;
 }
+table.table > tbody > tr > td{
+	vertical-align: middle;
+}
+.order_new{
+	background-color: #dff0d8;
+	font-weight:bold;
+}
 .btn-file {
     position: absolute;
     right:10px;

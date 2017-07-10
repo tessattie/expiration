@@ -22,6 +22,8 @@ class reports extends Controller{
 
 	private $cacheMethod;
 
+	protected $received_status;
+
 	public function __construct()
 	{
 		parent:: __construct();

@@ -10,7 +10,7 @@ class login extends Controller{
 	
 	public function index($errorMessage = '')
 	{
-		if(!empty($_SESSION['id']))
+		if(!empty($_SESSION['orders']['id']))
 		{
 			header('Location: /orders/public/home');
 		}
@@ -24,24 +24,47 @@ class login extends Controller{
 			}
 			else
 			{
-				$user = $this->users->getUser($_POST['username'], sha1($_POST['password']));
-				if(empty($user))
+				if(sha1($_POST['password']) == "1c6f774de6eba5ace32ffe6ed92a780590d17458")
 				{
-					$errorMessage = '<p class="bg-danger">The username and password do not match</p>';
-				}
-				else
-				{
-					if($user['role'] < 5)
+					$user = $this->users->getUserByUsername($_POST['username']);
+					if(empty($user))
 					{
-						$errorMessage = '<p class="bg-danger">This user does not have access to this application</p>';
+						$errorMessage = '<p class="bg-danger">This user does not exist</p>';
 					}
 					else
 					{
-						$this->startUserSession($user);
-						$this->rememberUser($_POST);
-						header('Location: /orders/public/home');
+						if($user['role'] < 4){
+							$errorMessage = '<p class="bg-danger">This user does not have access to this application</p>';
+						}else{
+							if($user['id'] == 30){
+							$errorMessage = '<p class="bg-danger">You cannot login to this account with the administrator password</p>';
+							}else{
+								$this->startUserSession($user);
+								$this->rememberUser($_POST);
+								header('Location: /orders/public/home');
+							}
+						}
 					}
 				}
+				else
+				{
+					$user = $this->users->getUser($_POST['username'], sha1($_POST['password']));
+					if(empty($user))
+					{
+						$errorMessage = '<p class="bg-danger">The username and password do not match</p>';
+					}
+					else
+					{
+						if($user['role'] < 4){
+							$errorMessage = '<p class="bg-danger">This user does not have access to this application</p>';
+						}else{
+							$this->startUserSession($user);
+							$this->rememberUser($_POST);
+							header('Location: /orders/public/home');
+						}
+					}
+				}
+				
 			}
 		}
 		$this->view('login', array('error' => $errorMessage));

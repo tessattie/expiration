@@ -13,6 +13,8 @@ class Controller{
 
 	protected $roles;
 
+	protected $received_status;
+
 	public function __construct()
 	{
 		$this->brdata = $this->model('brdata');
@@ -21,6 +23,7 @@ class Controller{
 		$this->users = $this->model('users');
 		date_default_timezone_set('America/Dominica');
 		$this->userRole = $this->setRole();
+		$this->received_status = array(1 => "New", 2 => "Pending", 3 => "Received", 4 => "Ignored");
 		$this->roles = array(5 => "menuAdmin", 6 => "menuOne", 7 => "menuTwo", 8 => "menuZero");
 	}
 

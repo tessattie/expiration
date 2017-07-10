@@ -14,8 +14,9 @@ class report extends Model{
 	public function save_report($report)
 	{
 		$date = date('Y-m-d H:i:s');
-		$insert = $this->db->prepare("INSERT INTO dbo.reports (name, date_from, date_to, timestamp, user_firstname, user_lastname, user_id, type)
-	    VALUES (:name, :date_from, :date_to, :timestamp, :user_firstname, :user_lastname, :user_id, :type)");
+		$received_status = 1;
+		$insert = $this->db->prepare("INSERT INTO dbo.reports (name, date_from, date_to, timestamp, user_firstname, user_lastname, user_id, type, received_status)
+	    VALUES (:name, :date_from, :date_to, :timestamp, :user_firstname, :user_lastname, :user_id, :type, :received_status)");
 
 	    $insert->bindParam(':name', $report['name']);
 	    $insert->bindParam(':date_from', $report['date_from']);
@@ -25,6 +26,7 @@ class report extends Model{
 	    $insert->bindParam(':user_lastname', $_SESSION["orders"]["lastname"]);
 	    $insert->bindParam(':user_id', $_SESSION["orders"]["id"]);
 	    $insert->bindParam(':type', $report['type']);
+	    $insert->bindParam(':received_status', $received_status);
 
 	    if($insert->execute())
 	    {
@@ -68,12 +70,13 @@ class report extends Model{
 	{
 		$item['onhand'] = round($item['onhand']);
 		$item['lastReceiving'] = round($item['lastReceiving']);
+		$status = 1;
 		$insert = $this->db->prepare("INSERT INTO dbo.items (report_id, upc, itemcode, description, pack, size, brand, casecost, retail, 
 			onhand, lastorder, lastorderdate, sales, vdrno, vdrname, tprprice, tprstart, tprend, expiration, expiration_date, orderqty, 
-			SctNo, SctName, DptNo, DptName)
+			SctNo, SctName, DptNo, DptName, status)
 	    VALUES (:report_id, :upc, :itemcode, :description, :pack, :size, :brand, :casecost, :retail, 
 			:onhand, :lastorder, :lastorderdate, :sales, :vdrno, :vdrname, :tprprice, :tprstart, :tprend, :expiration, :expiration_date, :orderqty, 
-			:SctNo, :SctName, :DptNo, :DptName)");
+			:SctNo, :SctName, :DptNo, :DptName, :status)");
 
 	    $insert->bindParam(':report_id', $report);
 	    $insert->bindParam(':upc', $item['UPC']);
@@ -100,6 +103,7 @@ class report extends Model{
 	    $insert->bindParam(':SctName', $item['SctName']);
 	    $insert->bindParam(':DptNo', $item['DptNo']);
 	    $insert->bindParam(':DptName', $item['DptName']);
+	    $insert->bindParam(':status', $item['status']);
 
 	    // $insert->execute();
 	    if($insert->execute())
