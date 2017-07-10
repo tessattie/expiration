@@ -57,7 +57,7 @@ class report extends Model{
 
 	public function get_report($id)
 	{
-		$SQL = "SELECT r.*, i.* 
+		$SQL = "SELECT r.id, r.name, r.date_to, r.date_from, r.status as rstat, r.received_status, r.timestamp, r.user_firstname, r.user_lastname, r.user_id, r.type, i.* 
 				FROM dbo.reports r 
 				RIGHT JOIN dbo.items i ON i.report_id = r.id
 				WHERE r.id = ".$id."
@@ -131,6 +131,12 @@ class report extends Model{
 	public function updateStatus($id, $status)
 	{
 		$update = "UPDATE reports SET status = ".$status." WHERE id = " . $id;
+		$this->db->query($update);	
+	}
+
+	public function update_itemStatus($id, $status)
+	{
+		$update = "UPDATE items SET status = ".$status." WHERE id = " . $id;
 		$this->db->query($update);	
 	}
 

@@ -344,6 +344,7 @@ class reports extends Controller{
 	{
 		$item = $this->report->getItem($_POST['ident']);
 		$name = $this->report->getReportName($item['report_id']);
+		$this->report->update_itemStatus($_POST['ident'], 2);
 		$this->updateOrderItemValueLog($name, $item['report_id'], $_POST['name'], $item[$_POST['name']], $_POST['value'], $_POST['ident'], $item['upc'], $item['description']);
 		$this->report->update_item($_POST['ident'], $_POST['name'], $_POST['value']);
 		echo json_encode($_POST);

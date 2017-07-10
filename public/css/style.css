@@ -20,7 +20,11 @@ table.table > tbody > tr > td{
 	vertical-align: middle;
 }
 .order_new{
-	background-color: #dff0d8;
+	background-color: #fcf8e3;
+	font-weight:bold;
+}
+.order_edited{
+	background-color: #d9edf7;
 	font-weight:bold;
 }
 .btn-file {
