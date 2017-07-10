@@ -71,7 +71,7 @@ class export extends Controller{
 		$lastItem = count($report) + 4;
 		$this->setHeader($report[0]['name'],"[ EXPORT DATE : ".date("Y-m-d")." ] - [ SALES FROM ".$report[0]['date_from']." TO ".$report[0]['date_to']." ] ", $header, 'reportExport', $lastItem);
 		$this->setReportWithSection($header, $report);
-		$this->saveReport('reportExport_'.$report[0]['name'].'_'.$this->today);
+		$this->saveReport('orders_'.$report[0]['name'].'_'.$this->today);
 	}
 
 	private function setSheetName($sheetName)
