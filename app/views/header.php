@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>CARIBBEAN</title>
+	<title>CARIBBEAN - ORDERS</title>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="/orders/public/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/orders/public/bootstrap/css/bootstrap.css">

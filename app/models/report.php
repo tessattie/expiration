@@ -107,7 +107,7 @@ class report extends Model{
 	    $insert->bindParam(':SctName', $item['SctName']);
 	    $insert->bindParam(':DptNo', $item['DptNo']);
 	    $insert->bindParam(':DptName', $item['DptName']);
-	    $insert->bindParam(':status', $item['status']);
+	    $insert->bindParam(':status', $status);
 
 	    // $insert->execute();
 	    if($insert->execute())
