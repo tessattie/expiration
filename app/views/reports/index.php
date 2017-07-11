@@ -14,7 +14,7 @@
 		3 => "Vendor section", 
 		4 => "Excel"
 		);
-	$r_status = array(1 => "New", 2 => "Pending", 3 => "Received", 4 => "Ignored");
+	$r_status = array(1 => "New", 2 => "Edited", 3 => "Pending", 4 => "Received", 5 => "Ignored");
 	$status = array(0 => "OPEN", 1 => "CLOSED");
 ?>
 

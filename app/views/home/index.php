@@ -103,7 +103,7 @@
 		  	<?php 
 		  	if(!empty($_SESSION['report']['items']))
 		  	{
-		  		foreach($_SESSION['report']['items'] as $key => $value)
+		  		foreach(array_reverse($_SESSION['report']['items']) as $key => $value)
 		  		{
 		  			if($value["ItemDescription"] == "ITEM NOT FOUND")
 		  			{

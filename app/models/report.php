@@ -71,6 +71,10 @@ class report extends Model{
 		$item['onhand'] = round($item['onhand']);
 		$item['lastReceiving'] = round($item['lastReceiving']);
 		$status = 1;
+		if($item['order'] > 0){
+			$status = 2;
+		}
+		
 		$insert = $this->db->prepare("INSERT INTO dbo.items (report_id, upc, itemcode, description, pack, size, brand, casecost, retail, 
 			onhand, lastorder, lastorderdate, sales, vdrno, vdrname, tprprice, tprstart, tprend, expiration, expiration_date, orderqty, 
 			SctNo, SctName, DptNo, DptName, status)
@@ -137,6 +141,12 @@ class report extends Model{
 	public function update_itemStatus($id, $status)
 	{
 		$update = "UPDATE items SET status = ".$status." WHERE id = " . $id;
+		$this->db->query($update);	
+	}
+
+	public function update_reportStatus($id, $status)
+	{
+		$update = "UPDATE reports SET received_status = ".$status." WHERE id = " . $id;
 		$this->db->query($update);	
 	}
 

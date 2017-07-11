@@ -126,7 +126,7 @@ class reports extends Controller{
 		echo json_encode($_SESSION["report"]); die();
 	}
 
-	public function single($id = false, $upc = false)
+	public function single($id = false, $anchor = false, $upc = false)
 	{
 		$upcPriceCompare = false;
 		if($id == false)
@@ -149,7 +149,7 @@ class reports extends Controller{
 			$this->report->delete_report($id);
 			header('Location: /orders/public/home');
 		}
-		$this->view('reports/single', array("report" => $report, "anchor" => $upc, "upcPriceCompare" => $upcPriceCompare, "report_id" => $id, "upc" => $upc));
+		$this->view('reports/single', array("report" => $report, "anchor" => $anchor, "upcPriceCompare" => $upcPriceCompare, "report_id" => $id, "upc" => $upc));
 	}
 
 	public function edit($id)
@@ -281,6 +281,35 @@ class reports extends Controller{
 				$item['expiration_date'] = null;
 				$_SESSION["report"]["items"][$item["UPC"]] = $item;
 			}
+			else
+			{
+				$item['UPC'] = $value['UPC'];
+				$item['ItemDescription'] = "ITEM NOT FOUND";
+				$item['VdrNo'] = null;
+				$item['Retail'] = null;
+				$item['CertCode'] = null;
+				$item['CaseCost'] = null;
+				$item['Brand'] = null;
+				$item['SizeAlpha'] = null;
+				$item['SctNo'] = "00";
+				$item['SctName'] = "N/A";
+				$item['DptNo'] = null;
+				$item['DptName'] = null;
+				$item['Pack'] = null;
+				$item['VdrName'] = null;
+				$item['tpr'] = null;
+				$item['tprStart'] = null;
+				$item['tprEnd'] = null;
+				$item['sales'] = null;
+				$item['lastReceiving'] = null;
+				$item['lastReceivingDate'] = null;
+				$item['onhand'] = null;
+				$item['unitPrice'] = null;
+				$item['order'] = null;
+				$item['expiration'] = null;
+				$item['expiration_date'] = null;
+				$_SESSION["report"]["items"][$value['UPC']] = $item;
+			}
 		}
 		header('Location: /orders/public/home');
 	}
@@ -345,6 +374,7 @@ class reports extends Controller{
 		$item = $this->report->getItem($_POST['ident']);
 		$name = $this->report->getReportName($item['report_id']);
 		$this->report->update_itemStatus($_POST['ident'], 2);
+		$this->report->update_reportStatus($item['report_id'], 2);
 		$this->updateOrderItemValueLog($name, $item['report_id'], $_POST['name'], $item[$_POST['name']], $_POST['value'], $_POST['ident'], $item['upc'], $item['description']);
 		$this->report->update_item($_POST['ident'], $_POST['name'], $_POST['value']);
 		echo json_encode($_POST);
@@ -456,13 +486,13 @@ class reports extends Controller{
 		header("Location:/orders/public/reports");
 	}
 
-	public function delete_item($id, $report_id)
+	public function delete_item($id, $report_id, $anchor = null)
 	{
 		$item = $this->report->getItem($id);
 		$this->report->delete_item($id);
 		$name = $this->report->getReportName($report_id);
 		$this->deleteOrderItemLog($name, $report_id, $id, $item['upc'], $item['description']);
-		header("Location:/orders/public/reports/single/".$report_id);
+		header("Location:/orders/public/reports/single/".$report_id."/".$anchor);
 	}
 
 	public function addExcel(){

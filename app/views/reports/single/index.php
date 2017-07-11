@@ -16,6 +16,13 @@
 
 <div class="row">
 <div class="row">
+<select class="form-control reportStatusChange">
+		<option value="1">New</option>
+		<option value="2">Edited</option>
+		<option value="3">Pending</option>
+		<option value="4">Received</option>
+		<option value="5">Ignored</option>
+	</select>
 <?php 
 	if(!empty($data['anchor']))
 	{
@@ -32,6 +39,7 @@
 		}
 	}
 ?>
+	
 	<button type="button" class="btn btn-primary single"><a style="color:white" target="_blank" href="/orders/public/reports/edit/<?= $data['report'][0]['report_id']?>"><span class="glyphicon glyphicon-pencil"></span> Edit</a></button>
 	<button type="button" class="btn btn-primary single"><a style="color:white" target="_blank" href="/orders/public/reports/duplicate/<?= $data['report'][0]['report_id']?>"><span class="glyphicon glyphicon-duplicate"></span> Duplicate</a></button>
 	<button type="button" class="btn btn-primary single"><a style="color:white" target="_blank" href="/orders/public/export/reportExport/<?= $data['report'][0]['report_id']?>"><span class="glyphicon glyphicon-export"></span> Export</a></button>
@@ -121,6 +129,12 @@
 					if($data['report'][$i]['description'] == "ITEM NOT FOUND")
 					{
 						echo "<tr id='".$data['report'][$i]['id']."' class='bg-danger'>";
+						if($i > 0)
+			  			{
+			  				echo "<td class = 'tdminus'><a href='/orders/public/reports/delete_item/".$data['report'][$i]['id']."/".$data['report'][$i]['report_id']."/".$data['report'][$i-1]['upc']."'><span class='glyphicon glyphicon-minus'></span></a></td>";
+			  			}else{
+			  				echo "<td class = 'tdminus'><a href='/orders/public/reports/delete_item/".$data['report'][$i]['id']."/".$data['report'][$i]['report_id']."'><span class='glyphicon glyphicon-minus'></span></a></td>";
+			  			}
 						if(!empty($data['upcPriceCompare']) && $data['upc'] == $data['report'][$i]['upc'])
 			  			{
 			  				echo "<td>".$data['report'][$i]['upc']."</td>";
@@ -130,7 +144,6 @@
 			  				echo "<td>".$data['report'][$i]['upc']."</td>";
 			  			}
 			  			echo "<td  class='certcode'></td>";
-			  			echo "<td></td>";
 			  			echo "<td></td>";
 			  			echo "<td class='textLeft'>".$data['report'][$i]['description']."</td>";
 			  			echo "<td></td>";
@@ -146,7 +159,9 @@
 			  			echo "<td></td>";
 			  			echo "<td></td>";
 			  			echo "<td></td>";
-			  			echo "<td class = 'tdminus'><a href='/orders/public/reports/delete_item/".$data['report'][$i]['id']."/".$data['report'][$i]['report_id']."'><span class='glyphicon glyphicon-minus'></span></a></td>";
+			  			echo "<td></td>";
+
+			  			
 			  			echo "</tr>";
 
 			  			$increment = $increment + 1 ;
@@ -156,14 +171,19 @@
 					else
 					{
 						echo "<tr id='".$data['report'][$i]['id']."'>";
-						echo "<td class = 'tdminus'><a href='/orders/public/reports/delete_item/".$data['report'][$i]['id']."/".$data['report'][$i]['report_id']."'><span class='glyphicon glyphicon-minus'></span></a></td>";
+						if($i > 0)
+			  			{
+			  				echo "<td class = 'tdminus'><a href='/orders/public/reports/delete_item/".$data['report'][$i]['id']."/".$data['report'][$i]['report_id']."/".$data['report'][$i-1]['upc']."'><span class='glyphicon glyphicon-minus'></span></a></td>";
+			  			}else{
+			  				echo "<td class = 'tdminus'><a href='/orders/public/reports/delete_item/".$data['report'][$i]['id']."/".$data['report'][$i]['report_id']."'><span class='glyphicon glyphicon-minus'></span></a></td>";
+			  			}
 						if(!empty($data['upcPriceCompare']) && $data['upc'] == $data['report'][$i]['upc'])
 			  			{
 			  				echo "<td>".$data['report'][$i]['upc']."</td>";
 			  			}
 			  			else
 			  			{
-			  				echo "<td><a href = '/orders/public/reports/single/".$data['report_id']."/".$data['report'][$i]['upc']."'>".$data['report'][$i]['upc']."</a></td>";
+			  				echo "<td><a href = '/orders/public/reports/single/".$data['report_id']."/".$data['report'][$i]['upc']."/".$data['report'][$i]['upc']."'>".$data['report'][$i]['upc']."</a></td>";
 			  			}
 			  			echo "<td id='".$data['report'][$i]['upc']."' class='certcode'>".$data['report'][$i]['itemcode']."</td>";
 			  			echo "<td>".$data['report'][$i]['brand']."</td>";
@@ -211,7 +231,7 @@
 						  				 $data['upcPriceCompare'][$j]['tprEnd'] = '';
 						  			}
 				  					echo "<tr class='upcPriceCompareTr'>";
-				  					echo "<td><span class='glyphicon glyphicon-credit-card'></span></td>";
+				  					echo "<td class = '".$data['report'][$i]['id']."'></td>";
 					  				echo "<td class = '".$data['report'][$i]['id']."'>".$data['upcPriceCompare'][$j]['UPC']."</td>";
 						  			echo "<td  class = 'certcode'>".$data['upcPriceCompare'][$j]['CertCode']."</td>";
 						  			echo "<td  class = 'certcode'>".$data['upcPriceCompare'][$j]['Brand']."</td>";
@@ -229,7 +249,7 @@
 						  			echo "<td>".$data['upcPriceCompare'][$j]['sales']."</td>";
 						  			echo "<td class = 'vendorno'>".$data['upcPriceCompare'][$j]['VdrNo']."</td>";
 						  			echo "<td class = 'vendor'>".$data['upcPriceCompare'][$j]['VdrName']."</td>";
-						  			echo "<td></td>";
+						  			echo "<td><span class='glyphicon glyphicon-credit-card'></span></td>";
 					  				echo "</tr>";
 			  					}
 			  					
