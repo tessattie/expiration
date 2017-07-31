@@ -19,7 +19,6 @@
 			include "importMenu.php";
 		}
 	?>
-	
 	<form method="POST" action="/orders/public/reports/add_item" class="form-inline" id="newItemsForm">
 		<div class="form-group">
 		    <label class="sr-only" for="name">Report name</label>
@@ -103,6 +102,7 @@
 		  	<?php 
 		  	if(!empty($_SESSION['report']['items']))
 		  	{
+		  		$i = 1;
 		  		foreach(array_reverse($_SESSION['report']['items']) as $key => $value)
 		  		{
 		  			if($value["ItemDescription"] == "ITEM NOT FOUND")
@@ -155,7 +155,7 @@
 			  			}else{
 			  				echo "<td>".round($value['onhand'])."</td>";
 			  			}
-			  			echo "<td class='order'><input type='text' placeholder='Order qty' class='reportInputs' value='".$value['order']."'></td>";
+			  			echo "<td class='order'><input type='text' placeholder='Order qty' tabindex = '".$i."' class='reportInputs' value='".$value['order']."'></td>";
 			  			echo "<td class='expiration_date'><input type='date' placeholder='Exp' class='reportInputs expdate' value='".$value['expiration_date']."'></td>";
 			  			echo "<td class='expiration'><input type='text' placeholder='Exp Qty' class='reportInputs' value='".$value['expiration']."'></td>";
 			  			echo "<td>".$value['lastReceiving']."</td>";

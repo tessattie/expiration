@@ -57,7 +57,7 @@ class report extends Model{
 
 	public function get_report($id)
 	{
-		$SQL = "SELECT r.id, r.name, r.date_to, r.date_from, r.status as rstat, r.received_status, r.timestamp, r.user_firstname, r.user_lastname, r.user_id, r.type, i.* 
+		$SQL = "SELECT r.id AS rid, r.name, r.date_to, r.date_from, r.status as rstat, r.received_status, r.timestamp, r.user_firstname, r.user_lastname, r.user_id, r.type, r.received_status, i.* 
 				FROM dbo.reports r 
 				RIGHT JOIN dbo.items i ON i.report_id = r.id
 				WHERE r.id = ".$id."

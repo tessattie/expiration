@@ -11,6 +11,7 @@ class brdata extends Model{
 
 	public function get_item($upcNumber, $today, $to, $from)
 	{
+		$upcNumber = "".$upcNumber;
 		$SQL ="SELECT DISTINCT TOP 1 vc.UPC, vc.Vendor AS VdrNo, p.BasePRice AS Retail, vc.VendorItem AS CertCode, vc.CaseCost, i.Brand, i.Description AS ItemDescription,
 				i.SizeAlpha, vc.Pack, v.VendorName AS VdrName, p.TPRPrice AS tpr, p.TPRStartDate AS tprStart, p.TPREndDate AS tprEnd, i.Department AS SctNo, d.Description AS SctName,
 				(SELECT SUM(im.QtySold) FROM dbo.ItemMovement im 
@@ -28,7 +29,7 @@ class brdata extends Model{
 				INNER JOIN dbo.Vendors v ON v.Vendor = vc.Vendor 
 				INNER JOIN dbo.Departments d ON d.Department = i.Department
 				LEFT JOIN dbo.InventoryDetail id ON id.UPC = vc.UPC
-				WHERE vc.UPC LIKE '%".$upcNumber."'
+				WHERE vc.UPC = '".$upcNumber."'
 				ORDER BY unitPrice, vc.CaseCost;";
 
 		// Execute query

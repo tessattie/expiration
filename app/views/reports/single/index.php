@@ -17,11 +17,11 @@
 <div class="row">
 <div class="row">
 <select class="form-control reportStatusChange">
-		<option value="1">New</option>
-		<option value="2">Edited</option>
-		<option value="3">Pending</option>
-		<option value="4">Received</option>
-		<option value="5">Ignored</option>
+		<option <?= ($data['report'][0]['received_status'] == "1") ? "selected" : "" ?> value="1">New</option>
+		<option <?= ($data['report'][0]['received_status'] == "2") ? "selected" : "" ?>  value="2">Edited</option>
+		<option <?= ($data['report'][0]['received_status'] == "3") ? "selected" : "" ?>  value="3">Pending</option>
+		<option <?= ($data['report'][0]['received_status'] == "4") ? "selected" : "" ?>  value="4">Received</option>
+		<option <?= ($data['report'][0]['received_status'] == "5") ? "selected" : "" ?>  value="5">Ignored</option>
 	</select>
 <?php 
 	if(!empty($data['anchor']))
