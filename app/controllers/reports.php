@@ -114,7 +114,9 @@ class reports extends Controller{
 	}
 
 	public function updateBatch(){
-		$item = $this->brdata->get_item($_POST['upc'], $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
+		$_POST["upc"] = $this->completeUPC($_POST["upc"]);
+		if(!empty($_POST['upc'])){
+					$item = $this->brdata->get_item($_POST['upc'], $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
 		// Set the item in the session 
 		if(!empty($item))
 		{
@@ -124,7 +126,7 @@ class reports extends Controller{
 			$_SESSION["report"]["items"][$item["UPC"]] = $item;
 		}
 		else{
-			$item['UPC'] = $value['UPC'];
+			$item['UPC'] = $_POST['upc'];
 			$item['ItemDescription'] = "ITEM NOT FOUND";
 			$item['VdrNo'] = null;
 			$item['Retail'] = null;
@@ -149,8 +151,10 @@ class reports extends Controller{
 			$item['order'] = null;
 			$item['expiration'] = null;
 			$item['expiration_date'] = null;
-			$_SESSION["report"]["items"][$value['UPC']] = $item;
+			$_SESSION["report"]["items"][$_POST['upc']] = $item;
 		}
+		}
+
 		echo json_encode($_SESSION["report"]); die();
 	}
 
@@ -379,9 +383,9 @@ class reports extends Controller{
 			$item = $this->brdata->get_item($value['UPC'], $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
 			if($item != null)
 	    	{
-	    		$item['order'] = null;
-				$item['expiration'] = null;
-				$item['expiration_date'] = null;
+	    		$item['order'] = $_SESSION['report']['items'][$value['UPC']]['order'];
+				$item['expiration'] = $_SESSION['report']['items'][$value['UPC']]['expiration'];
+				$item['expiration_date'] = $_SESSION['report']['items'][$value['UPC']]['expiration_date'];
 				$_SESSION["report"]["items"][$item["UPC"]] = $item;
 	    	}
 	    	else
@@ -573,6 +577,7 @@ class reports extends Controller{
 				    for($i=1;$i<=$highestRow;$i++)
 				    {
 				    	$upc = $sheet->getCell("A".$i)->getValue();
+				    	$upc = $this->completeUPC($upc);
 				    	$item = $this->brdata->get_item($upc, $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
 				    	if($item != null)
 				    	{

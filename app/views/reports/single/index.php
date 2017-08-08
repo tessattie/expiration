@@ -234,7 +234,7 @@
 				  					echo "<td class = '".$data['report'][$i]['id']."'></td>";
 					  				echo "<td class = '".$data['report'][$i]['id']."'>".$data['upcPriceCompare'][$j]['UPC']."</td>";
 						  			echo "<td  class = 'certcode'>".$data['upcPriceCompare'][$j]['CertCode']."</td>";
-						  			echo "<td  class = 'certcode'>".$data['upcPriceCompare'][$j]['Brand']."</td>";
+						  			echo "<td  class = 'brand'>".$data['upcPriceCompare'][$j]['Brand']."</td>";
 						  			echo "<td class = 'ItemDescription'>".$data['upcPriceCompare'][$j]['ItemDescription']."</td>";
 						  			echo "<td>".$data['upcPriceCompare'][$j]['Pack']."</td>";
 						  			echo "<td>".$data['upcPriceCompare'][$j]['SizeAlpha']."</td>";
