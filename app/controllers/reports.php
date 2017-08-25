@@ -183,18 +183,46 @@ class reports extends Controller{
 	}
 
 	public function updateReportStatuses($report){
+		$j = 0;
 		for($i=0;$i<count($report);$i++){
-			if((int)$report[$i]['orderqty'] > 0 && $report[$i]['status'] == 1){
-				$this->report->update_itemStatus($report[$i]['id'], "2");
-			}
-			if((int)$report[$i]['orderqty'] > 0 && $report[$i]['received_status'] == 1){
-				$this->report->update_reportStatus($report[$i]['rid'], "2");
-			}
-			if($report[$i]['received_status'] == 3){
-				if((int)$report[$i]['orderqty'] > 0 && $report[$i]['status'] != 3){
-					$this->report->update_itemStatus($report[$i]['id'], "3");
+			$orderinfo = $this->brdata->get_LastReceivingReport($report[$i]['upc']);
+			if($report[$i]['received_status'] == 3 && $report[$i]['status'] == 3){
+				if($orderinfo[0]["lastReceivingDate"]." 00:00:00" > $report[$i]['timestamp'])
+				{
+					$this->report->update_item($report[$i]['id'], "status", 4);
+					$this->report->update_reportStatus($report[0]['rid'], "4");
 				}
 			}
+			if((int)$report[$i]['orderqty'] > 0 ){
+				if($report[$i]['status'] == 1){
+					$this->report->update_itemStatus($report[$i]['id'], "2");
+				}
+				if($report[$i]['received_status'] == 3){
+					$this->report->update_itemStatus($report[$i]['id'], "3");
+				}
+				if($report[$i]['received_status'] == 2){
+					$this->report->update_itemStatus($report[$i]['id'], "2");
+				}
+				$j++;
+			}
+			else{
+				$this->report->update_itemStatus($report[$i]['id'], "1");
+			}
+		}
+		if($j > 0 && $report[0]['received_status'] == 1){
+			$this->report->update_reportStatus($report[0]['rid'], "2");
+		}
+		else{
+			//$this->report->update_reportStatus($report[0]['rid'], "1");
+		}
+	}
+
+	public function updateReportStatus(){
+		if(!empty($_POST['id']) && !empty($_POST['status'])){
+			$this->report->update_reportStatus($_POST['id'], $_POST['status']);
+			header('Location: /orders/public/reports/single/'. $_POST['id']);
+		}else{
+			header('Location:/orders/public/reports');
 		}
 	}
 

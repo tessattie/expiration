@@ -124,6 +124,7 @@ class report extends Model{
 	{
 		$update = "UPDATE items SET ".$field." ='" . $value . "' WHERE id =" . $id;
 		$this->db->query($update);	
+		return $this->db->errorInfo();
 	}
 
 	public function getItem($id){
@@ -142,6 +143,7 @@ class report extends Model{
 	{
 		$update = "UPDATE items SET status = ".$status." WHERE id = " . $id;
 		$this->db->query($update);	
+		return "dhjsfkjsdhfkhsdkjhsdf";
 	}
 
 	public function update_reportStatus($id, $status)

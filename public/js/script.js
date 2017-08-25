@@ -40,6 +40,10 @@ jQuery(function($){
 		}
 	})
 
+	$("#reportStatusChange").change(function(){
+		$("#updateReportStatusForm").submit();
+	})
+
 	$("#sectionImport").click(function(){
 		var regex = /[0-9]/;
 		var vendorNumber = prompt('Enter the section Number : ');

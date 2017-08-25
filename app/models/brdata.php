@@ -72,6 +72,30 @@ class brdata extends Model{
 		return $report ;
 	}
 
+	public function get_LastReceivingReport($upcNumber)
+	{
+		$SQL ="SELECT TOP 1 vc.UPC,
+				v.VendorName AS VdrName,
+				(SELECT TOP 1 id.Date FROM dbo.InventoryDetail id WHERE id.RecordType = 'R' 
+				AND id.UPC=vc.UPC AND id.Vendor=vc.Vendor ORDER BY id.LastUpdated DESC, id.Date DESC) AS lastReceivingDate,
+				ISNULL((SELECT SUM(id.Units) FROM dbo.InventoryDetail id WHERE id.RecordType = 'R'  AND id.Vendor=vc.Vendor 
+				AND id.UPC=vc.UPC AND id.Date = (SELECT TOP 1 id.Date FROM dbo.InventoryDetail id 
+				WHERE id.RecordType = 'R' AND id.UPC=vc.UPC AND id.Vendor=vc.Vendor 
+				ORDER BY id.LastUpdated DESC, id.Date DESC)),0) AS lastReceiving
+				FROM dbo.VendorCost vc
+				INNER JOIN dbo.Vendors v ON v.Vendor = vc.Vendor 
+				LEFT JOIN dbo.InventoryDetail id ON id.UPC = vc.UPC
+				WHERE vc.UPC LIKE '%".$upcNumber."'
+				ORDER BY lastReceivingDate DESC";
+
+		// Execute query
+		$results = $this->db->query($SQL);
+		// print_r($this->db->errorInfo());die();
+		$report = $results->fetchall(PDO::FETCH_BOTH);
+
+		return $report ;
+	}
+
 	public function get_sectionReport($sectionNumber, $today, $from, $to)
 	{
 		$SQL = "SELECT vc.UPC, vc.Vendor AS VdrNo, vc.VendorItem AS CertCode, vc.CaseCost, i.Brand, i.Description AS ItemDescription, i.SizeAlpha, vc.Pack, i.Department AS SctNo, i.MajorDept AS DptNo, v.VendorName AS VdrName,
