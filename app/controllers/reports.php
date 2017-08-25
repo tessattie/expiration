@@ -167,7 +167,6 @@ class reports extends Controller{
 		}
 		$name = $this->report->getReportName($id);
 		$report = $this->report->get_report($id);
-		$this->updateReportStatuses($report);
 		$report = $this->report->get_report($id);
 		if($upc != false)
 		{
@@ -184,41 +183,6 @@ class reports extends Controller{
 			header('Location: /orders/public/home');
 		}
 		$this->view('reports/single', array("report" => $report, "anchor" => $anchor, "upcPriceCompare" => $upcPriceCompare, "report_id" => $id, "upc" => $upc));
-	}
-
-	public function updateReportStatuses($report){
-		$j = 0;
-		for($i=0;$i<count($report);$i++){
-			$orderinfo = $this->brdata->get_LastReceivingReport($report[$i]['upc']);
-			if($report[$i]['received_status'] == 3 && $report[$i]['status'] == 3){
-				if($orderinfo[0]["lastReceivingDate"]." 00:00:00" > $report[$i]['timestamp'])
-				{
-					$this->report->update_item($report[$i]['id'], "status", 4);
-					$this->report->update_reportStatus($report[0]['rid'], "4");
-				}
-			}
-			if((int)$report[$i]['orderqty'] > 0 ){
-				if($report[$i]['status'] == 1){
-					$this->report->update_itemStatus($report[$i]['id'], "2");
-				}
-				if($report[$i]['received_status'] == 3){
-					$this->report->update_itemStatus($report[$i]['id'], "3");
-				}
-				if($report[$i]['received_status'] == 2){
-					$this->report->update_itemStatus($report[$i]['id'], "2");
-				}
-				$j++;
-			}
-			else{
-				$this->report->update_itemStatus($report[$i]['id'], "1");
-			}
-		}
-		if($j > 0 && $report[0]['received_status'] == 1){
-			$this->report->update_reportStatus($report[0]['rid'], "2");
-		}
-		else{
-			//$this->report->update_reportStatus($report[0]['rid'], "1");
-		}
 	}
 
 	public function updateReportStatus(){

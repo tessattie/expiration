@@ -79,7 +79,6 @@
 		  	<th>SALES</th>
 		  	<th>VDR NO</th>
 		  	<th>VDR NAME</th>
-		  	<th></th>
 	  	</tr>
 	  </thead>
 	  <tbody>
@@ -125,7 +124,6 @@
 			            <td></td>
 			            <td></td>
 			            <td></td>
-			            <td></td>
 			            <td></td>';
 			            echo '</tr>';
 					}
@@ -149,7 +147,6 @@
 			  			echo "<td  class='certcode'></td>";
 			  			echo "<td></td>";
 			  			echo "<td class='textLeft'>".$data['report'][$i]['description']."</td>";
-			  			echo "<td></td>";
 			  			echo "<td></td>";
 			  			echo "<td></td>";
 			  			echo "<td></td>";
@@ -208,7 +205,6 @@
 			  			echo "<td>".$data['report'][$i]['sales']."</td>";
 			  			echo "<td class='vdrNo'>".$data['report'][$i]['vdrno']."</td>";
 			  			echo "<td class='vdrName'>".$data['report'][$i]['vdrname']."</td>";
-			  			echo "<td class='order_".strtolower($r_status[$data['report'][$i]['status']])."'>".$r_status[$data['report'][$i]['status']][0]."</td>";
 			  			
 			  			echo "</tr>";
 
@@ -234,7 +230,7 @@
 						  				 $data['upcPriceCompare'][$j]['tprEnd'] = '';
 						  			}
 				  					echo "<tr class='upcPriceCompareTr'>";
-				  					echo "<td class = '".$data['report'][$i]['id']."'></td>";
+				  					echo "<td class = '".$data['report'][$i]['id']."'><span class='glyphicon glyphicon-credit-card'></span></td>";
 					  				echo "<td class = '".$data['report'][$i]['id']."'>".$data['upcPriceCompare'][$j]['UPC']."</td>";
 						  			echo "<td  class = 'certcode'>".$data['upcPriceCompare'][$j]['CertCode']."</td>";
 						  			echo "<td  class = 'brand'>".$data['upcPriceCompare'][$j]['Brand']."</td>";
@@ -252,7 +248,6 @@
 						  			echo "<td>".$data['upcPriceCompare'][$j]['sales']."</td>";
 						  			echo "<td class = 'vendorno'>".$data['upcPriceCompare'][$j]['VdrNo']."</td>";
 						  			echo "<td class = 'vendor'>".$data['upcPriceCompare'][$j]['VdrName']."</td>";
-						  			echo "<td><span class='glyphicon glyphicon-credit-card'></span></td>";
 					  				echo "</tr>";
 			  					}
 			  					
@@ -268,7 +263,7 @@
 	  	?>
 	  </tbody>
 	  <tfoot>
-	  	<tr><th colspan="19"></th></tr>
+	  	<tr><th colspan="18"></th></tr>
 	  </tfoot>
 </table>
 </div>

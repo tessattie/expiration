@@ -37,7 +37,6 @@
 			  	<th>USER</th>
 			  	<th>STATUS</th>
 			  	<th>TYPE</th>
-			  	<th></th>
 		  	</tr>
 		  </thead>
 		  <tbody>
@@ -58,7 +57,6 @@
 		  			echo "<td>".$data['reports'][$i]['user_firstname']." ".$data['reports'][$i]['user_lastname']."</td>";
 		  			echo "<td>".$status[$data['reports'][$i]['status']]."</td>";
 		  			echo "<td>".strtoupper($type[$data['reports'][$i]['type']])."</td>";
-		  			echo "<td class='order_".strtolower($r_status[$data['reports'][$i]['received_status']])."'>".$r_status[$data['reports'][$i]['received_status']][0]."</td>";
 		  			
 		  			echo "<tr>";
 		  		}
