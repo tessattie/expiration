@@ -193,6 +193,7 @@ class reports extends Controller{
 			if($report[$i]['received_status'] == 3 && $report[$i]['status'] == 3){
 				if($orderinfo[0]["lastReceivingDate"]." 00:00:00" > $report[$i]['timestamp'])
 				{
+					$report[$i]['received_status'] = 4;
 					$this->report->update_item($report[$i]['id'], "status", 4);
 					$this->report->update_reportStatus($report[0]['rid'], "4");
 				}
@@ -604,12 +605,16 @@ class reports extends Controller{
 					$_SESSION["report"]['type'] = 4;
 				    for($i=1;$i<=$highestRow;$i++)
 				    {
+				    	$qty = null;
 				    	$upc = $sheet->getCell("A".$i)->getValue();
+				    	if(!empty($sheet->getCell("B".$i)->getValue())){
+				    		$qty = $sheet->getCell("B".$i)->getValue();
+				    	}
 				    	$upc = $this->completeUPC($upc);
 				    	$item = $this->brdata->get_item($upc, $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
 				    	if($item != null)
 				    	{
-				    		$item['order'] = null;
+				    		$item['order'] = $qty;
 							$item['expiration'] = null;
 							$item['expiration_date'] = null;
 							$_SESSION["report"]["items"][$item["UPC"]] = $item;
