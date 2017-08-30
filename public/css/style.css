@@ -26,22 +26,6 @@ table.batchTable{
 table.table > tbody > tr > td{
 	vertical-align: middle;
 }
-.order_new{
-	background-color: #fcf8e3;
-	font-weight:bold;
-}
-.order_edited{
-	background-color: #d9edf7;
-	font-weight:bold;
-}
-.order_pending{
-	background-color: #f2dede;
-	font-weight:bold;
-}
-.order_received{
-	background-color:#dff0d8;
-	font-weight:bold;
-}
 .btn-file {
     position: absolute;
     right:10px;
