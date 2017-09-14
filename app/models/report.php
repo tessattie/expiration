@@ -152,10 +152,10 @@ class report extends Model{
 		$this->db->query($update);	
 	}
 
-	public function update_report_vendor($id, $vdrno, $vdrname, $casecost, $certcode, $lastorder, $lastorderdate)
+	public function update_report_vendor($id, $vdrno, $vdrname, $casecost, $certcode, $lastorder, $lastorderdate, $pack)
 	{
 		$update = "UPDATE items SET vdrno ='" . $vdrno . "', vdrname = '".$vdrname."', casecost = '".$casecost."', 
-		itemcode = '".$certcode."', lastorder = '".$lastorder."', lastorderdate = '".$lastorderdate."'  WHERE id =" . $id;
+		itemcode = '".$certcode."', lastorder = '".$lastorder."', lastorderdate = '".$lastorderdate."', pack = '".$pack."'  WHERE id =" . $id;
 		$this->db->query($update);	
 	}
 

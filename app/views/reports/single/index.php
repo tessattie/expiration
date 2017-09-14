@@ -188,8 +188,8 @@
 			  			echo "<td id='".$data['report'][$i]['upc']."' class='certcode'>".$data['report'][$i]['itemcode']."</td>";
 			  			echo "<td>".$data['report'][$i]['brand']."</td>";
 			  			echo "<td class='textLeft'>".$data['report'][$i]['description']."</td>";
-			  			echo "<td>".$data['report'][$i]['pack']."</td>";
-			  			echo "<td>".$data['report'][$i]['size']."</td>";
+			  			echo "<td class='pack'>".$data['report'][$i]['pack']."</td>";
+			  			echo "<td class='size'>".$data['report'][$i]['size']."</td>";
 			  			echo "<td  class='casecost'>".number_format($data['report'][$i]['casecost'], 2, ".", "")."</td>";
 			  			echo "<td>".number_format($data['report'][$i]['retail'], 2, ".", '')."</td>";
 			  			if(round($data['report'][$i]['onhand']) < 0){
@@ -235,7 +235,7 @@
 						  			echo "<td  class = 'certcode'>".$data['upcPriceCompare'][$j]['CertCode']."</td>";
 						  			echo "<td  class = 'brand'>".$data['upcPriceCompare'][$j]['Brand']."</td>";
 						  			echo "<td class = 'ItemDescription'>".$data['upcPriceCompare'][$j]['ItemDescription']."</td>";
-						  			echo "<td>".$data['upcPriceCompare'][$j]['Pack']."</td>";
+						  			echo "<td class='pack'>".$data['upcPriceCompare'][$j]['Pack']."</td>";
 						  			echo "<td>".$data['upcPriceCompare'][$j]['SizeAlpha']."</td>";
 						  			echo "<td class = 'casecost'>".number_format($data['upcPriceCompare'][$j]['CaseCost'], 2, ".", "")."</td>";
 						  			echo "<td>".number_format($data['upcPriceCompare'][$j]['Retail'], 2, ".", '')."</td>";
