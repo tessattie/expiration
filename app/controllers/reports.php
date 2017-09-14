@@ -167,7 +167,6 @@ class reports extends Controller{
 		}
 		$name = $this->report->getReportName($id);
 		$report = $this->report->get_report($id);
-		$report = $this->report->get_report($id);
 		if($upc != false)
 		{
 			$upcPriceCompare = $this->brdata->get_upcReport($upc, $this->today, $report[0]['date_from'], $report[0]['date_to']);
@@ -183,15 +182,6 @@ class reports extends Controller{
 			header('Location: /orders/public/home');
 		}
 		$this->view('reports/single', array("report" => $report, "anchor" => $anchor, "upcPriceCompare" => $upcPriceCompare, "report_id" => $id, "upc" => $upc));
-	}
-
-	public function updateReportStatus(){
-		if(!empty($_POST['id']) && !empty($_POST['status'])){
-			$this->report->update_reportStatus($_POST['id'], $_POST['status']);
-			header('Location: /orders/public/reports/single/'. $_POST['id']);
-		}else{
-			header('Location:/orders/public/reports');
-		}
 	}
 
 	public function edit($id)
@@ -568,12 +558,16 @@ class reports extends Controller{
 					$_SESSION["report"]['type'] = 4;
 				    for($i=1;$i<=$highestRow;$i++)
 				    {
+				    	$qty = null;
 				    	$upc = $sheet->getCell("A".$i)->getValue();
+				    	if(!empty($sheet->getCell("B".$i)->getValue())){
+				    		$qty = $sheet->getCell("B".$i)->getValue();
+				    	}
 				    	$upc = $this->completeUPC($upc);
 				    	$item = $this->brdata->get_item($upc, $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
 				    	if($item != null)
 				    	{
-				    		$item['order'] = null;
+				    		$item['order'] = $qty;
 							$item['expiration'] = null;
 							$item['expiration_date'] = null;
 							$_SESSION["report"]["items"][$item["UPC"]] = $item;

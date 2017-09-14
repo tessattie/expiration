@@ -55,7 +55,7 @@ class brdata extends Model{
 				WHERE id.RecordType = 'P' AND id.UPC = p.UPC ORDER BY LastUpdated DESC) AND UPC= p.UPC),0) 
 				+ ISNULL((SELECT SUM(QtySold) FROM dbo.ItemMovement WHERE Date > (SELECT TOP 1 Date FROM dbo.InventoryDetail id 
 				WHERE id.RecordType = 'P' AND id.UPC = p.UPC ORDER BY LastUpdated DESC) AND UPC= p.UPC),0) 
-				+ ISNULL((SELECT SUM(Units) FROM dbo.InventoryDetail WHERE RecordType = 'R' AND LastUpdated > (SELECT TOP 1 LastUpdated FROM dbo.InventoryDetail id 
+				+ ISNULL((SELECT SUM(Units) FROM dbo.InventoryDetail WHERE RecordType = 'R' AND LastUpdated >= (SELECT TOP 1 LastUpdated FROM dbo.InventoryDetail id 
 				WHERE id.RecordType = 'P' AND id.UPC = p.UPC ORDER BY LastUpdated DESC) AND UPC=p.UPC),0) 
 				FROM dbo.InventoryDetail WHERE UPC=p.UPC),99999) FROM dbo.InventoryDetail) AS onhand, (vc.CaseCost / NULLIF(vc.Pack, 0)) AS unitPrice
 				FROM dbo.VendorCost vc
