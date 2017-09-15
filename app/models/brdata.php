@@ -12,11 +12,12 @@ class brdata extends Model{
 	public function get_item($upcNumber, $today, $to, $from)
 	{
 		$upcNumber = "".$upcNumber;
-		$SQL ="SELECT DISTINCT TOP 1 vc.UPC, vc.Vendor AS VdrNo, p.BasePRice AS Retail, vc.VendorItem AS CertCode, vc.CaseCost, i.Brand, i.Description AS ItemDescription,
+		$SQL ="SELECT DISTINCT TOP 1 vc.UPC, p.BasePRice AS Retail, vc.VendorItem AS CertCode, vc.CaseCost, i.Brand, i.Description AS ItemDescription,
 				i.SizeAlpha, vc.Pack, v.VendorName AS VdrName, p.TPRPrice AS tpr, p.TPRStartDate AS tprStart, p.TPREndDate AS tprEnd, i.Department AS SctNo, d.Description AS SctName,
 				(SELECT SUM(im.QtySold) FROM dbo.ItemMovement im 
 				WHERE im.UPC = p.UPC AND im.Date BETWEEN '".$from."' AND '".$to."') AS sales, 
 				(SELECT TOP 1 id.Date FROM dbo.InventoryDetail id WHERE id.RecordType = 'R' AND id.UPC=vc.UPC ORDER BY id.LastUpdated DESC, id.Date DESC) AS lastReceivingDate,
+				(SELECT TOP 1 Vendor FROM dbo.InventoryDetail id WHERE id.RecordType = 'R' AND id.UPC=vc.UPC ORDER BY id.LastUpdated DESC, id.Date DESC) AS VdrNo,
 				(SELECT TOP 1 id.Units FROM dbo.InventoryDetail id WHERE id.RecordType = 'R' AND id.UPC=vc.UPC ORDER BY id.LastUpdated DESC, id.Date DESC) AS lastReceiving,
 				(SELECT TOP 1 ISNULL((SELECT TOP 1 ISNULL((SELECT TOP 1 id.Units FROM dbo.InventoryDetail id WHERE UPC= p.UPC AND id.RecordType = 'P' ORDER BY id.LastUpdated DESC),0)
 				+ ISNULL((SELECT SUM(Units) FROM dbo.InventoryDetail WHERE RecordType = 'A' AND LastUpdated > (SELECT TOP 1 LastUpdated FROM dbo.InventoryDetail id 
@@ -29,11 +30,11 @@ class brdata extends Model{
 				FROM dbo.VendorCost vc
 				LEFT JOIN dbo.Price p ON p.UPC = vc.UPC
 				INNER JOIN dbo.Item i ON i.UPC = vc.UPC 
-				INNER JOIN dbo.Vendors v ON v.Vendor = vc.Vendor 
+				INNER JOIN dbo.Vendors v ON v.Vendor = (SELECT TOP 1 Vendor FROM dbo.InventoryDetail id WHERE id.RecordType = 'R' AND id.UPC=vc.UPC ORDER BY id.LastUpdated DESC, id.Date DESC)
 				INNER JOIN dbo.Departments d ON d.Department = i.Department
 				LEFT JOIN dbo.InventoryDetail id ON id.UPC = vc.UPC
 				WHERE vc.UPC = '".$upcNumber."'
-				ORDER BY unitPrice, vc.CaseCost;";
+				ORDER BY lastReceivingDate, vc.CaseCost;";
 
 		// Execute query
 		$results = $this->db->query($SQL);

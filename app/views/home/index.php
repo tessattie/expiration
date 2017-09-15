@@ -102,6 +102,7 @@
 		  	<?php 
 		  	if(!empty($_SESSION['report']['items']))
 		  	{
+		  		$next = '';
 		  		$i = 1;
 		  		foreach(array_reverse($_SESSION['report']['items']) as $key => $value)
 		  		{
@@ -164,8 +165,9 @@
 			  			echo "<td>".$value['tpr']."</td>";
 			  			echo "<td>".$value['tprStart']."</td>";
 			  			echo "<td>".$value['tprEnd']."</td>";
-			  			echo "<td class = 'tdminus'><a href='/orders/public/reports/removeItem/".$key."'><span class='glyphicon glyphicon-minus'></span></a></td>";
+			  			echo "<td class = 'tdminus'><a href='/orders/public/reports/removeItem/".$key."/".$next."'><span class='glyphicon glyphicon-minus'></span></a></td>";
 			  			echo "</tr>";
+			  			$next = $key;
 		  			}
 		  		}
 		  	}

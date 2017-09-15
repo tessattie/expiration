@@ -425,13 +425,13 @@ class reports extends Controller{
 		die();
 	}
 
-	public function removeItem($upc)
+	public function removeItem($upc,$next)
 	{
 		if(!empty($_SESSION['report']['items'][$upc]))
 		{
 			unset($_SESSION['report']['items'][$upc]);
 		}
-		header('Location: /orders/public/home');
+		header('Location: /orders/public/home/#'.$next);
 	}
 
 	public function save_report()
