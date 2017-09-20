@@ -315,8 +315,11 @@ class reports extends Controller{
 	{
 		if(isset($_POST["newitem"]))
 		{
+			// var_dump($_POST["newitem"]);
 			$_POST["newitem"] = $this->completeUPC($_POST["newitem"]);
+			// var_dump($_POST["newitem"]);
 			$item = $this->brdata->get_item($_POST["newitem"], $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
+			// var_dump($item); die();
 			// Set the item in the session 
 			if(!empty($item))
 			{
