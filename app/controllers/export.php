@@ -219,7 +219,7 @@ class export extends Controller{
 			foreach($header as $key => $value)
 			{
 				$this->sheet->getStyle($key . $j) ->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-				if($this->columns[$value] != "UPC")
+				if($this->columns[$value] != "upc")
 				{
 					if(($value == "TPR PRICE" && $report[$i]["tprprice"] == ".00")
 					|| ($value == "TPR START" && $report[$i]["tprprice"] == ".00") 
@@ -260,12 +260,18 @@ class export extends Controller{
 				}
 		        else
 		        {
-		        	$this->sheet->getStyle($key . $j)->getNumberFormat()->setFormatCode('0000000000000');
 		        	$this->sheet->setCellValue($key . $j, $report[$i][$this->columns[$value]]);
+		        	$report[$i][$this->columns[$value]] = ltrim($report[$i][$this->columns[$value]], "0");
+		        	$length = strlen($report[$i][$this->columns[$value]]);
+		        	$format = '';
+		        	for($w=0;$w<$length;$w++){
+		        		$format .= "0";
+		        	}
+		        	$this->sheet->getStyle($key . $j)->getNumberFormat()->setFormatCode($format);
 		        }
-		        if($this->columns[$value] == "CertCode")
+		        if($this->columns[$value] == "itemcode")
 				{
-					$this->sheet->setCellValue($key . $j, trim($report[$i][$this->columns[$value]]));
+					$this->sheet->setCellValue($key . $j, str_replace(" ", "",$report[$i][$this->columns[$value]]));
 				}
 		        if($value != "ITEM DESCRIPTION")
 		        {
