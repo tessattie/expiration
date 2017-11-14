@@ -16,7 +16,8 @@ jQuery(function($){
 		  url: "/orders/public/reports/new_report",
 		  data: {name : $("#name").val(),
 		  		 date_from : $("#date_from").val(),  
-		  		 date_to : $("#date_to").val()},
+		  		 date_to : $("#date_to").val(),
+		  		 vendors : $("#reportType").val()},
 		  success: function(data){
 		  	console.log(data);
 		  }, 
@@ -175,9 +176,13 @@ jQuery(function($){
 		});
 	})
 
+
+
 	$("#newitem").change(function(){
 		$("#newItemsForm").submit();
 	})
+
+
 
 	$("#newBatchItem").change(function(){
 		$("#batchReport").append("<tr><td class='upcTD'>" + $(this).val() + "</td><td class='redTD colorTD'></td></tr>");

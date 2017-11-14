@@ -46,6 +46,13 @@ class report extends Model{
 		return $result->fetchAll(PDO::FETCH_BOTH);
 	}
 
+	public function get_reportsByUser($user)
+	{
+		$SQL = "SELECT * FROM reports WHERE user_id = '".$user."' ORDER BY timestamp DESC";
+		$result = $this->db->query($SQL);
+		return $result->fetchAll(PDO::FETCH_BOTH);
+	}
+
 	public function getReportName($id){
 		$SQL = "SELECT r.name
 				FROM dbo.reports r 

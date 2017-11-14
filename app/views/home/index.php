@@ -14,6 +14,8 @@
 	</div>
 </div>
 <div class="row newReport">
+
+
 	<?php  
 		if($_SESSION['orders']['role'] != 5){
 			include "importMenu.php";
@@ -72,8 +74,8 @@
 		    	}
 		    ?>
 	  	</div>
-	  	<a style="color:white" href="/orders/public/reports/reset" id="resetButton"><button type="button" class="btn btn-primary" id="reset" name="reset" style="margin-right:10px"><span class="glyphicon glyphicon-refresh"> </span> DELETE</button></a>
-	  	<a style="color:white" href="/orders/public/reports/addItems"><button type="button" class="btn btn-primary" id="reset" name="reset"  style="margin-right:10px"><span class="glyphicon glyphicon-repeat"> </span> UPDATE</button></a>
+	  	<a style="color:white" href="/orders/public/reports/reset" id="resetButton"><button type="button" class="btn btn-danger" id="reset" name="reset" style="margin-right:10px"><span class="glyphicon glyphicon-refresh"> </span> DELETE</button></a>
+	  	<a style="color:white" href="/orders/public/reports/addItems"><button type="button" class="btn btn-warning" id="reset" name="reset"  style="margin-right:10px"><span class="glyphicon glyphicon-repeat"> </span> UPDATE</button></a>
 	  	<a style="color:white" href="/orders/public/reports/save_report"><button type="button" class="btn btn-success" id="save" name="save"><span class="glyphicon glyphicon-save"> </span> SAVE</button></a>
 	    <table class="table">
 		  <thead>
