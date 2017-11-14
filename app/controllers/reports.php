@@ -45,10 +45,22 @@ class reports extends Controller{
 		$this->view('reports', array("reports" => $reports));
 	}
 
+	public function completeValue($val, $length){
+		$total = $length;
+		$value = '';
+		$amount = strlen($val);
+		$toadd = $total - (int)$amount;
+		for($i=0;$i<$toadd;$i++){
+			$value .= "0";
+		}
+		return $value.$val;
+	}
+
 	public function importVendor()
 	{
 		if(isset($_POST["vendorNumber"]))
 		{
+			$_POST["vendorNumber"] = $this->completeValue($_POST["vendorNumber"], 6);
 			unset($_SESSION["report"]["items"]);
 			$items = $this->brdata->get_vendorReport($_POST["vendorNumber"], $this->today, $_SESSION["report"]["date_from"], $_SESSION["report"]["date_to"]);
 			for($i=0;$i<count($items);$i++)
