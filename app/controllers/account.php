@@ -17,7 +17,7 @@ class account extends Controller{
 	{
 		parent::__construct();
 		$this->exportURL = "#";
-		$this->roles = array(7 => "Order 0", 6 => "Order 1", 5 => "Order 2");
+		$this->roles = array(7 => "Order 0", 6 => "Order 1", 5 => "Order 2", 8 => "Order 5");
 		$this->from = date('Y-m-01');
 		$this->to = date('Y-m-d');
 	} 
@@ -44,6 +44,7 @@ class account extends Controller{
 			}
 			$_POST['password'] = $password;
 			$this->users->setUser($_POST);
+
 		}
 		$users = $this->users->getUsers();
 		$count = count($users);
@@ -68,7 +69,7 @@ class account extends Controller{
 		$errormessage = "";
 		if(isset($_POST['submit']))
 		{
-			$this->users->updateUser($_POST['firstname'], $_POST['lastname'], $_POST['username'], $_POST['email'], $_POST['role'], $_POST['id']);
+			$this->users->updateUser($_POST['firstname'], $_POST['lastname'], $_POST['username'], $_POST['email'], $_POST['role'], $_POST['vendors'], $_POST['id']);
 		}
 		$users = $this->users->getUsers();
 		$user = $this->users->getUserById($id);

@@ -30,13 +30,16 @@
       </ul>
     <ul class="nav navbar-nav navbar-left">
     <?php  
-      if($_SESSION['orders']['role'] == 5 || $_SESSION['orders']['role'] == 6 || $_SESSION['orders']['role'] == 7)
+      if($_SESSION['orders']['role'] == 5 || $_SESSION['orders']['role'] == 6 || $_SESSION['orders']['role'] == 7 || $_SESSION['orders']['role'] == 8)
       {
         echo '<li><a class="menuitems" href="/orders/public/home">New order</a></li>';
       }
-      if($_SESSION['orders']['role'] == 7 || $_SESSION['orders']['role'] == 6)
+      if($_SESSION['orders']['role'] == 7 || $_SESSION['orders']['role'] == 6 || $_SESSION['orders']['role'] == 8)
       {
         echo '<li><a class="menuitems" href="/orders/public/reports">Order list</a></li>';
+      }
+      if($_SESSION['orders']['role'] == 7 || $_SESSION['orders']['role'] == 6)
+      {
         echo '<li><a class="menuitems" href="/orders/public/reports/batch">Batch order</a></li>';
       }
     ?>

@@ -74,6 +74,39 @@ class export extends Controller{
 		$this->saveReport('orders_'.$report[0]['name'].'_'.$this->today);
 	}
 
+
+	public function reportExportSection($id)
+	{
+		$header = array("A" => "UPC", 
+						"B" => "VDR ITEM #", 
+						"C" => "BRAND", 
+						"D" => "ITEM DESCRIPTION", 
+						"E" => "PACK", 
+						"F" => "SIZE", 
+						"G" => "CASE COST", 
+						"H" => "RETAIL", 
+						"I" => "ORDER", 
+						"J" => "EXP DATE",
+						"K" => "EXP QTY",
+						"L" => "ON-HAND",
+						"M" => "LAST ORDER", 
+						"N" => "LAST ORDER DATE", 
+						"O" => "SALES", 
+						"P" => "TPR PRICE", 
+						"Q" => "TPR START", 
+						"R" => "TPR END",
+						"S" => "VDR #", 
+						"T" => "VDR NAME");
+		$report = $this->report->get_report2($id);
+		$this->setSheetName($report[0]['name']);
+		$this->exportOrderLog($report[0]['name'], $id);
+		$lastItem = count($report) + 4;
+		$this->setHeader($report[0]['name'],"[ EXPORT DATE : ".date("Y-m-d")." ] - [ SALES FROM ".$report[0]['date_from']." TO ".$report[0]['date_to']." ] ", $header, 'reportExport', $lastItem);
+		$this->setReportWithSection($header, $report);
+		$this->saveReport('orders_'.$report[0]['name'].'_'.$this->today);
+	}
+
+
 	private function setSheetName($sheetName)
 	{
 		$this->sheet->Name = $sheetName;

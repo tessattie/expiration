@@ -37,10 +37,10 @@
 		<button type="button" class="btn btn-primary single"><a style="color:white" target="_blank" href="/orders/public/reports/edit/<?= $data['report'][0]['report_id']?>"><span class="glyphicon glyphicon-pencil"></span> Edit</a></button>
 	<?php endif; ?>
 	<button type="button" class="btn btn-primary single"><a style="color:white" target="_blank" href="/orders/public/reports/duplicate/<?= $data['report'][0]['report_id']?>"><span class="glyphicon glyphicon-duplicate"></span> Duplicate</a></button>
-	<button type="button" class="btn btn-primary single"><a style="color:white" target="_blank" href="/orders/public/export/reportExport/<?= $data['report'][0]['report_id']?>"><span class="glyphicon glyphicon-export"></span> Export</a></button>
+	<button type="button" class="btn btn-primary single"><a style="color:white" target="_blank" href="/orders/public/export/reportExportSection/<?= $data['report'][0]['report_id']?>"><span class="glyphicon glyphicon-export"></span> Export</a></button>
 	<button type="button" class="btn btn-primary single"><a style="color:white" target="_blank" href="/orders/public/reports"><span class="glyphicon glyphicon-arrow-left"></span> Back</a></button>
 	<button type="button" class="btn btn-primary single"><a style="color:white" href="/orders/public/reports/single/<?= $data['report_id']?>"><span class="glyphicon glyphicon-refresh"></span> Refresh</a></button>
-	<button type="button" class="btn btn-success single"><a style="color:white" href="/orders/public/reports/singleSection/<?= $data['report_id']?>"><span class="glyphicon glyphicon-filter"></span> Filter by Section</a></button>
+	<button type="button" class="btn btn-success single"><a style="color:white" href="/orders/public/reports/single/<?= $data['report_id']?>"><span class="glyphicon glyphicon-filter"></span> Filter by Vendor</a></button>
 </div>
 <table class="table table-bordered">
 	<thead>
