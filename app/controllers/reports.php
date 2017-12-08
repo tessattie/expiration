@@ -693,7 +693,7 @@ class reports extends Controller{
 							// debug($items);
 							// die();
 							if($items){
-								$items['order'] = null;
+								$items['order'] = $sheet->getCell("B".$i)->getValue();
 								$items['expiration'] = null;
 								$items['expiration_date'] = null;
 								$_SESSION["report"]["items"][$items["UPC"]] = $items;
@@ -701,7 +701,7 @@ class reports extends Controller{
 						}else{
 							$items = $this->returnItemWithCheapestVendor($items);
 							if(!empty($items)){
-								$items['order'] = null;
+								$items['order'] = $sheet->getCell("B".$i)->getValue();
 								$items['expiration'] = null;
 								$items['expiration_date'] = null;
 								$_SESSION["report"]["items"][$items["UPC"]] = $items;
