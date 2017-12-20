@@ -61,6 +61,12 @@ class reports extends Controller{
 		return $value.$vendor;
 	}
 
+	public function exportVendorReport(){
+		$items = $this->brdata->get_LimitedVendorReport("000031", $this->today);
+		// print_r($items); 
+		// die();
+	}
+
 	public function importVendor()
 	{
 		if(isset($_POST["vendorNumber"]))

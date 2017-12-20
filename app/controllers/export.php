@@ -41,6 +41,9 @@ class export extends Controller{
 		$this->columns = array("UPC" => "upc", "VDR ITEM #" => "itemcode", "BRAND" => "brand", "ITEM DESCRIPTION" => "description", "PACK" => "pack", "SIZE" => "size", "CASE COST" => "casecost", "RETAIL" => "retail", 
 			"ON-HAND" => "onhand", "LAST ORDER" => "lastorder", "LAST ORDER DATE" => "lastorderdate", "SALES" => "sales", "VDR #" => "vdrno", "VDR NAME" => "vdrname", "TPR PRICE" => "tprprice", "TPR START" => "tprstart", 
 			"TPR END" => "tprend", "SCT NO" => "SctNo", "SCT NAME" => "SctName", "DPT NO" => "DptNo", "DPT NAME" => "DptName", "EXP QTY" => "expiration", "EXP DATE" => "expiration_date", "ORDER" => "orderqty");
+		$this->columnsVdr = array("UPC" => "UPC", "VDR ITEM #" => "CertCode", "BRAND" => "Brand", "ITEM DESCRIPTION" => "ItemDescription", "PACK" => "Pack", "SIZE" => "SizeAlpha", "RETAIL" => "Retail", 
+			"ON-HAND" => "onhand", "VDR #" => "VdrNo");
+
 	} 
 
 	public function reportExport($id)
@@ -74,6 +77,24 @@ class export extends Controller{
 		$this->saveReport('orders_'.$report[0]['name'].'_'.$this->today);
 	}
 
+	public function reportExportLimitedVendor($vendor)
+	{
+		$header = array("A" => "UPC", 
+						"B" => "VDR ITEM #", 
+						"C" => "ITEM DESCRIPTION", 
+						"D" => "PACK", 
+						"E" => "SIZE", 
+						"F" => "SIZE", 
+						"G" => "RETAIL", 
+						"H" => "ON-HAND");
+		$report = $this->brdata->get_LimitedVendorreport($vendor, $this->today);
+		$this->setSheetName("EXPORT REPORT");
+		$lastItem = count($report) + 4;
+		$this->setHeaderLimitedVendor("EXPORT REPORT","[ EXPORT DATE : ".date("Y-m-d")." ] ", $header, 'vendorExport', $lastItem);
+		$this->setReport($header, $report);
+		$this->saveReport('VENDOR_EXPORT_'.$this->today);
+	}
+
 	private function setSheetName($sheetName)
 	{
 		$this->sheet->Name = $sheetName;
@@ -91,6 +112,66 @@ class export extends Controller{
 			}
 		}
 		return $returnValue;
+	}
+
+	private function setHeaderLimitedVendor($title, $subtitle, $header, $reportType, $lastItem)
+	{
+		$myWorkSheet = new PHPExcel_Worksheet($this->phpExcel, $reportType); 
+		// Attach the “My Data” worksheet as the first worksheet in the PHPExcel object 
+		$lastKey = $this->getLastArrayKey($header);
+		$this->phpExcel->addSheet($myWorkSheet, 0);
+		// Set report to landscape 
+
+		$this->sheet->getRowDimension('1')->setRowHeight(35);
+		$this->sheet->getStyle('A1:' . $lastKey . '1')->getFont()->setBold(true);
+		$this->sheet->getStyle('A1:' . $lastKey . '1') ->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+		$this->sheet->getStyle('A1:' . $lastKey . '1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+		// $this->sheet->getPageSetup()->setPrintArea("A1:" . $lastKey . $lastItem);  
+
+		$this->phpExcel->getProperties()->setCreator("Tess Attie"); 
+		$this->phpExcel->getProperties()->setLastModifiedBy("Today"); 
+		$this->phpExcel->getProperties()->setTitle($title); 
+		$this->phpExcel->getProperties()->setSubject("Office 2005 XLS Test Document"); 
+		$this->phpExcel->getProperties()->setDescription("Test document for Office 2005 XLS, generated using PHP classes."); 
+		$this->phpExcel->getProperties()->setKeywords("office 2007 openxml php"); 
+		$this->phpExcel->getProperties()->setCategory("Test result file");
+
+		$this->phpExcel->getActiveSheet()
+		    ->getHeaderFooter()->setOddHeader('&R &P / &N');
+		$this->phpExcel->getActiveSheet()
+		    ->getHeaderFooter()->setEvenHeader('&R &P / &N');
+
+		foreach($header AS $key => $value)
+		{
+			if($value == "UPC")
+			{
+				$this->sheet->getColumnDimension($key)->setWidth('15');
+			}
+			else
+			{
+				if($value == "VDR ITEM #")
+				{
+					$this->sheet->getColumnDimension($key)->setWidth('15');
+				}
+				else
+				{
+					if($value == "VDR NAME")
+					{
+						$this->sheet->getColumnDimension($key)->setWidth('22');
+					}
+					else
+					{
+						if($value == "ITEM DESCRIPTION")
+						{
+							$this->sheet->getColumnDimension($key)->setWidth('26');
+						}
+					}
+				}
+				
+			}
+			$this->sheet->setCellValue($key."1", $value);
+		}
 	}
 
 	private function setHeader($title, $subtitle, $header, $reportType, $lastItem)
@@ -168,7 +249,6 @@ class export extends Controller{
 						}
 					}
 				}
-				
 			}
 			$this->sheet->setCellValue($key."3", $value);
 		}
@@ -183,6 +263,32 @@ class export extends Controller{
 			$last = $key;
 		}
 		return $last;
+	}
+
+	private function setReport($header, $report)
+	{
+		$j = 2;
+		$lastKey = $this->getLastArrayKey($header);
+		for ($i=0;$i<count($report);$i++)
+		{
+			foreach($header as $key => $value)
+			{
+		        if($this->columnsVdr[$value] == "CertCode")
+				{
+					$this->sheet->setCellValue($key . $j, str_replace(" ", "",  $report[$i][$this->columnsVdr[$value]]));
+				}else{
+					$this->sheet->setCellValue($key . $j, $report[$i][$this->columnsVdr[$value]]);
+				}
+			} 
+			$j = $j + 1;
+		}
+		$j = $j - 1;
+		$this->sheet->getStyle("A1:" . $lastKey . $j) ->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+		$this->sheet->getStyle("A1:" . $lastKey . $j)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+		$this->sheet->getStyle("A1:A" . $j)->getNumberFormat()->setFormatCode('0000000000000');
+		$styleArray = array( 'borders' => array( 'allborders' => array( 'style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array('rgb' => '000000'), ), ), ); 
+		$this->phpExcel->getActiveSheet()->getStyle('A1:'.$lastKey.$j)->applyFromArray($styleArray);
 	}
 
 	private function setReportWithSection($header, $report)
