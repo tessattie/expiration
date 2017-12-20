@@ -50,6 +50,17 @@ class reports extends Controller{
 		$this->view('reports', array("reports" => $reports));
 	}
 
+	public function completeValue($val, $length){
+		$total = $length;
+		$value = '';
+		$amount = strlen($val);
+		$toadd = $total - (int)$amount;
+		for($i=0;$i<$toadd;$i++){
+			$value .= "0";
+		}
+		return $value.$val;
+	}
+
 	public function completeVendor($vendor){
 		$total = 6;
 		$value = '';
@@ -73,6 +84,9 @@ class reports extends Controller{
 		{
 			$_POST["vendorNumber"] = $this->completeVendor($_POST["vendorNumber"]);
 			unset($_SESSION["report"]["items"]);
+			if(empty($_SESSION['orders']['vendors'])){
+				$_SESSION['orders']['vendors'] = array();
+			}
 			if(in_array($_POST["vendorNumber"], $_SESSION['orders']['vendors']) || $_SESSION['orders']['role'] != 8){
 				$items = $this->brdata->get_vendorReport($_POST["vendorNumber"], $this->today, $_SESSION["report"]["date_from"], $_SESSION["report"]["date_to"]);
 				for($i=0;$i<count($items);$i++)
@@ -96,6 +110,7 @@ class reports extends Controller{
 		if(isset($_POST["sectionNumber"]))
 		{
 			unset($_SESSION["report"]["items"]);
+			$_POST["sectionNumber"] = $this->completeValue($_POST["sectionNumber"], 4);
 			$items = $this->brdata->get_sectionReport($_POST["sectionNumber"], $this->today, $_SESSION["report"]["date_from"], $_SESSION["report"]["date_to"]);
 			for($i=0;$i<count($items);$i++)
 			{
@@ -117,6 +132,8 @@ class reports extends Controller{
 		if(isset($_POST["svendorNumber"]) && isset($_POST["sctvendorNumber"]))
 		{
 			unset($_SESSION["report"]["items"]);
+			$_POST["svendorNumber"] = $this->completeValue($_POST["svendorNumber"], 6);
+			$_POST["sctvendorNumber"] = $this->completeValue($_POST["sctvendorNumber"], 6);
 			$items = $this->brdata->get_vendorSectionReport($_POST["svendorNumber"], $_POST["sctvendorNumber"], $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
 			for($i=0;$i<count($items);$i++)
 			{
@@ -141,43 +158,55 @@ class reports extends Controller{
 	public function updateBatch(){
 		$_POST["upc"] = $this->completeUPC($_POST["upc"]);
 		if(!empty($_POST['upc'])){
-					$item = $this->brdata->get_item($_POST['upc'], $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
-		// Set the item in the session 
-		if(!empty($item))
-		{
-			$item['order'] = null;
-			$item['expiration'] = null;
-			$item['expiration_date'] = null;
-			$_SESSION["report"]["items"][$item["UPC"]] = $item;
-		}
-		else{
-			$item['UPC'] = $_POST['upc'];
-			$item['ItemDescription'] = "ITEM NOT FOUND";
-			$item['VdrNo'] = null;
-			$item['Retail'] = null;
-			$item['CertCode'] = null;
-			$item['CaseCost'] = null;
-			$item['Brand'] = null;
-			$item['SizeAlpha'] = null;
-			$item['SctNo'] = "00";
-			$item['SctName'] = "N/A";
-			$item['DptNo'] = null;
-			$item['DptName'] = null;
-			$item['Pack'] = null;
-			$item['VdrName'] = null;
-			$item['tpr'] = null;
-			$item['tprStart'] = null;
-			$item['tprEnd'] = null;
-			$item['sales'] = null;
-			$item['lastReceiving'] = null;
-			$item['lastReceivingDate'] = null;
-			$item['onhand'] = null;
-			$item['unitPrice'] = null;
-			$item['order'] = null;
-			$item['expiration'] = null;
-			$item['expiration_date'] = null;
-			$_SESSION["report"]["items"][$_POST['upc']] = $item;
-		}
+					$items = $this->brdata->get_itemAllVendors($_POST['upc'], $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
+		if($_SESSION['orders']['role'] == 8){
+				$items = $this->returnRightItem($items);
+				// debug($items);
+				// die();
+				if($items){
+					$items['order'] = null;
+					$items['expiration'] = null;
+					$items['expiration_date'] = null;
+					$_SESSION["report"]["items"][$items["UPC"]] = $items;
+				}
+			}else{
+				$items = $this->returnItemWithCheapestVendor($items);
+				if(!empty($items)){
+					$items['order'] = null;
+					$items['expiration'] = null;
+					$items['expiration_date'] = null;
+					$_SESSION["report"]["items"][$items["UPC"]] = $items;
+				}
+				else
+				{
+					$items['UPC'] = $_POST["newitem"];
+					$items['ItemDescription'] = "ITEM NOT FOUND";
+					$items['VdrNo'] = null;
+					$items['Retail'] = null;
+					$items['CertCode'] = null;
+					$items['CaseCost'] = null;
+					$items['Brand'] = null;
+					$items['SizeAlpha'] = null;
+					$items['SctNo'] = "00";
+					$items['SctName'] = "N/A";
+					$items['DptNo'] = null;
+					$items['DptName'] = null;
+					$items['Pack'] = null;
+					$items['VdrName'] = null;
+					$items['tpr'] = null;
+					$items['tprStart'] = null;
+					$items['tprEnd'] = null;
+					$items['sales'] = null;
+					$items['lastReceiving'] = null;
+					$items['lastReceivingDate'] = null;
+					$items['onhand'] = null;
+					$items['unitPrice'] = null;
+					$items['order'] = null;
+					$items['expiration'] = null;
+					$items['expiration_date'] = null;
+					$_SESSION["report"]["items"][$_POST["newitem"]] = $items;
+				}
+			}	
 		}
 
 		echo json_encode($_SESSION["report"]); die();
@@ -207,6 +236,32 @@ class reports extends Controller{
 			header('Location: /orders/public/home');
 		}
 		$this->view('reports/single', array("report" => $report, "anchor" => $anchor, "upcPriceCompare" => $upcPriceCompare, "report_id" => $id, "upc" => $upc));
+	}
+
+	public function singleSection($id = false, $anchor = false, $upc = false)
+	{
+		$upcPriceCompare = false;
+		if($id == false)
+		{
+			header('Location: /orders/public/reports');
+		}
+		$name = $this->report->getReportName($id);
+		$report = $this->report->get_report2($id);
+		if($upc != false)
+		{
+			$upcPriceCompare = $this->brdata->get_upcReport($upc, $this->today, $report[0]['date_from'], $report[0]['date_to']);
+			$this->UPCPriceCompareLog($name, $id, $upc);
+		}
+		else
+		{
+			$this->orderConsultLog($name, $id);
+		}
+		if(count($report) == 0)
+		{
+			$this->report->delete_report($id);
+			header('Location: /orders/public/home');
+		}
+		$this->view('reports/singleSection', array("report" => $report, "anchor" => $anchor, "upcPriceCompare" => $upcPriceCompare, "report_id" => $id, "upc" => $upc));
 	}
 
 	public function edit($id)
@@ -365,32 +420,32 @@ class reports extends Controller{
 				}
 				else
 				{
-					$items[$i]['UPC'] = $_POST["newitem"];
-					$items[$i]['ItemDescription'] = "ITEM NOT FOUND";
-					$items[$i]['VdrNo'] = null;
-					$items[$i]['Retail'] = null;
-					$items[$i]['CertCode'] = null;
-					$items[$i]['CaseCost'] = null;
-					$items[$i]['Brand'] = null;
-					$items[$i]['SizeAlpha'] = null;
-					$items[$i]['SctNo'] = "00";
-					$items[$i]['SctName'] = "N/A";
-					$items[$i]['DptNo'] = null;
-					$items[$i]['DptName'] = null;
-					$items[$i]['Pack'] = null;
-					$items[$i]['VdrName'] = null;
-					$items[$i]['tpr'] = null;
-					$items[$i]['tprStart'] = null;
-					$items[$i]['tprEnd'] = null;
-					$items[$i]['sales'] = null;
-					$items[$i]['lastReceiving'] = null;
-					$items[$i]['lastReceivingDate'] = null;
-					$items[$i]['onhand'] = null;
-					$items[$i]['unitPrice'] = null;
-					$items[$i]['order'] = null;
-					$items[$i]['expiration'] = null;
-					$items[$i]['expiration_date'] = null;
-					$_SESSION["report"]["vendoritems"][$_POST["newitem"]] = $items;
+					$items['UPC'] = $_POST["newitem"];
+					$items['ItemDescription'] = "ITEM NOT FOUND";
+					$items['VdrNo'] = null;
+					$items['Retail'] = null;
+					$items['CertCode'] = null;
+					$items['CaseCost'] = null;
+					$items['Brand'] = null;
+					$items['SizeAlpha'] = null;
+					$items['SctNo'] = "00";
+					$items['SctName'] = "N/A";
+					$items['DptNo'] = null;
+					$items['DptName'] = null;
+					$items['Pack'] = null;
+					$items['VdrName'] = null;
+					$items['tpr'] = null;
+					$items['tprStart'] = null;
+					$items['tprEnd'] = null;
+					$items['sales'] = null;
+					$items['lastReceiving'] = null;
+					$items['lastReceivingDate'] = null;
+					$items['onhand'] = null;
+					$items['unitPrice'] = null;
+					$items['order'] = null;
+					$items['expiration'] = null;
+					$items['expiration_date'] = null;
+					$_SESSION["report"]["items"][$_POST["newitem"]] = $items;
 				}
 			}			
 		}
@@ -424,43 +479,55 @@ class reports extends Controller{
 	{
 		foreach($_SESSION["report"]["items"] AS $key => $value)
 		{
-			$item = $this->brdata->get_item($value['UPC'], $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
-			if($item != null)
-	    	{
-	    		$item['order'] = $_SESSION['report']['items'][$value['UPC']]['order'];
-				$item['expiration'] = $_SESSION['report']['items'][$value['UPC']]['expiration'];
-				$item['expiration_date'] = $_SESSION['report']['items'][$value['UPC']]['expiration_date'];
-				$_SESSION["report"]["items"][$item["UPC"]] = $item;
-	    	}
-	    	else
-	    	{
-	    		$item['UPC'] = $value['UPC'];
-				$item['ItemDescription'] = "ITEM NOT FOUND";
-				$item['VdrNo'] = null;
-				$item['Retail'] = null;
-				$item['CertCode'] = null;
-				$item['CaseCost'] = null;
-				$item['Brand'] = null;
-				$item['SizeAlpha'] = null;
-				$item['SctNo'] = "00";
-				$item['SctName'] = "N/A";
-				$item['DptNo'] = null;
-				$item['DptName'] = null;
-				$item['Pack'] = null;
-				$item['VdrName'] = null;
-				$item['tpr'] = null;
-				$item['tprStart'] = null;
-				$item['tprEnd'] = null;
-				$item['sales'] = null;
-				$item['lastReceiving'] = null;
-				$item['lastReceivingDate'] = null;
-				$item['onhand'] = null;
-				$item['unitPrice'] = null;
-				$item['order'] = null;
-				$item['expiration'] = null;
-				$item['expiration_date'] = null;
-				$_SESSION["report"]["items"][$value['UPC']] = $item;
-	    	}
+			$items = $this->brdata->get_itemAllVendors($value['UPC'], $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
+			if($_SESSION['orders']['role'] == 8){
+				$items = $this->returnRightItem($items);
+				// debug($items);
+				// die();
+				if($items){
+					$items['order'] = null;
+					$items['expiration'] = null;
+					$items['expiration_date'] = null;
+					$_SESSION["report"]["items"][$items["UPC"]] = $items;
+				}
+			}else{
+				$items = $this->returnItemWithCheapestVendor($items);
+				if(!empty($items)){
+					$items['order'] = null;
+					$items['expiration'] = null;
+					$items['expiration_date'] = null;
+					$_SESSION["report"]["items"][$items["UPC"]] = $items;
+				}
+				else
+				{
+					$items['UPC'] = $value['UPC'];
+					$items['ItemDescription'] = "ITEM NOT FOUND";
+					$items['VdrNo'] = null;
+					$items['Retail'] = null;
+					$items['CertCode'] = null;
+					$items['CaseCost'] = null;
+					$items['Brand'] = null;
+					$items['SizeAlpha'] = null;
+					$items['SctNo'] = "00";
+					$items['SctName'] = "N/A";
+					$items['DptNo'] = null;
+					$items['DptName'] = null;
+					$items['Pack'] = null;
+					$items['VdrName'] = null;
+					$items['tpr'] = null;
+					$items['tprStart'] = null;
+					$items['tprEnd'] = null;
+					$items['sales'] = null;
+					$items['lastReceiving'] = null;
+					$items['lastReceivingDate'] = null;
+					$items['onhand'] = null;
+					$items['unitPrice'] = null;
+					$items['order'] = null;
+					$items['expiration'] = null;
+					$items['expiration_date'] = null;
+					$_SESSION["report"]["items"][$value['UPC']] = $items;
+				}
+			}	
 		}
 		header('Location: /orders/public/home');
 	}
@@ -626,43 +693,55 @@ class reports extends Controller{
 				    		$qty = $sheet->getCell("B".$i)->getValue();
 				    	}
 				    	$upc = $this->completeUPC($upc);
-				    	$item = $this->brdata->get_item($upc, $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
-				    	if($item != null)
-				    	{
-				    		$item['order'] = $qty;
-							$item['expiration'] = null;
-							$item['expiration_date'] = null;
-							$_SESSION["report"]["items"][$item["UPC"]] = $item;
-				    	}
-				    	else
-				    	{
-				    		$item['UPC'] = $upc;
-							$item['ItemDescription'] = "ITEM NOT FOUND";
-							$item['VdrNo'] = null;
-							$item['Retail'] = null;
-							$item['CertCode'] = null;
-							$item['CaseCost'] = null;
-							$item['Brand'] = null;
-							$item['SizeAlpha'] = null;
-							$item['SctNo'] = "00";
-							$item['SctName'] = "N/A";
-							$item['DptNo'] = null;
-							$item['DptName'] = null;
-							$item['Pack'] = null;
-							$item['VdrName'] = null;
-							$item['tpr'] = null;
-							$item['tprStart'] = null;
-							$item['tprEnd'] = null;
-							$item['sales'] = null;
-							$item['lastReceiving'] = null;
-							$item['lastReceivingDate'] = null;
-							$item['onhand'] = null;
-							$item['unitPrice'] = null;
-							$item['order'] = null;
-							$item['expiration'] = null;
-							$item['expiration_date'] = null;
-							$_SESSION["report"]["items"][$upc] = $item;
-				    	}
+				    	$items = $this->brdata->get_itemAllVendors($upc, $this->today, $_SESSION["report"]["date_to"], $_SESSION["report"]["date_from"]);
+				    	if($_SESSION['orders']['role'] == 8){
+							$items = $this->returnRightItem($items);
+							// debug($items);
+							// die();
+							if($items){
+								$items['order'] = $sheet->getCell("B".$i)->getValue();
+								$items['expiration'] = null;
+								$items['expiration_date'] = null;
+								$_SESSION["report"]["items"][$items["UPC"]] = $items;
+							}
+						}else{
+							$items = $this->returnItemWithCheapestVendor($items);
+							if(!empty($items)){
+								$items['order'] = $sheet->getCell("B".$i)->getValue();
+								$items['expiration'] = null;
+								$items['expiration_date'] = null;
+								$_SESSION["report"]["items"][$items["UPC"]] = $items;
+							}
+							else
+							{
+								$items['UPC'] = $upc;
+								$items['ItemDescription'] = "ITEM NOT FOUND";
+								$items['VdrNo'] = null;
+								$items['Retail'] = null;
+								$items['CertCode'] = null;
+								$items['CaseCost'] = null;
+								$items['Brand'] = null;
+								$items['SizeAlpha'] = null;
+								$items['SctNo'] = "00";
+								$items['SctName'] = "N/A";
+								$items['DptNo'] = null;
+								$items['DptName'] = null;
+								$items['Pack'] = null;
+								$items['VdrName'] = null;
+								$items['tpr'] = null;
+								$items['tprStart'] = null;
+								$items['tprEnd'] = null;
+								$items['sales'] = null;
+								$items['lastReceiving'] = null;
+								$items['lastReceivingDate'] = null;
+								$items['onhand'] = null;
+								$items['unitPrice'] = null;
+								$items['order'] = null;
+								$items['expiration'] = null;
+								$items['expiration_date'] = null;
+								$_SESSION["report"]["items"][$upc] = $items;
+							}
+						}	
 				    }
 				}
 				else

@@ -144,7 +144,7 @@ table
 	border:1px solid #c0c0c0;
 	opacity:0.9;
 }
-.btn.btn-primary.single
+.btn.btn-primary.single, .btn.btn-success.single
 {
 	float:right;
 	padding:3px;
